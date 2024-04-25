@@ -1,0 +1,18 @@
+.Main {
+    margin-top : 5px;
+    display : flex;
+    flex-wrap: wrap-reverse;
+    justify-content: center;
+    /* border : 2px solid black; */
+    max-width: 100%;
+}
+
+.Home {
+    border : 2px solid black;
+    width : 30%
+}
+
+.Auction {
+    border : 2px solid red;
+    width : 60%
+}

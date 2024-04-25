@@ -23,15 +23,13 @@ public class MemberService {
     private final BCryptPasswordEncoder bcryptPasswordEncoder;
 
     public ResponseDTO signUp(SignUpDTO request){
+        if (request.getNickname().isEmpty()) request.setNickname(request.getId());
         ResponseDTO response = new ResponseDTO();
         Optional<Member> idCheck = repository.findById(request.getId());
-        Optional<Member> emailCheck = repository.findByMemEmail(request.getEmail());
         if (idCheck.isPresent()) {
             response.setMessage("사용할 수 없는 아이디입니다. (중복 아이디)");
         }
-        else if (emailCheck.isPresent()){
-            response.setMessage("사용할 수 없는 이메일입니다. (중복 이메일)");
-        }else {
+        else {
             request.setPw(bcryptPasswordEncoder.encode(request.getPw()));
             Member member = SignUpDTO.toMember(request);
 
@@ -52,6 +50,7 @@ public class MemberService {
         else {
             response.setStatus(true);
             response.setMessage("로그인 성공");
+            response.setNickname(member.get().getMemNickname());
         }
         return response;
     }

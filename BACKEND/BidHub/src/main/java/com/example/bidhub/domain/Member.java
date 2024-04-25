@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -21,18 +20,14 @@ public class Member {
     @Column(length = 50)
     private String memNickname;
 
-    @Column(length = 30)
-    private String memEmail;
-
     public Member() {}
 
     @Builder
-    public Member(String memId, String memPw, Long memPoint, String memNickname, String memEmail) {
+    public Member(String memId, String memPw, Long memPoint, String memNickname) {
         this.memId = memId;
         this.memPw = memPw;
         this.memPoint = memPoint;
         this.memNickname = memNickname;
-        this.memEmail = memEmail;
     }
 
 }
