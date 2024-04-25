@@ -1,0 +1,56 @@
+CREATE TABLE member(
+    mem_id VARCHAR2(50),
+    mem_pw VARCHAR2(255),
+    mem_point NUMBER DEFAULT(0),
+    mem_nickname VARCHAR2(50),
+    mem_email VARCHAR2(30),
+    CONSTRAINT MEMBER_ID_PK PRIMARY KEY (mem_id)
+);
+
+CREATE TABLE auction_item(
+    aitem_id VARCHAR2(50),
+    aitem_date DATE,
+    aitem_start VARCHAR2(10),
+    aitem_immediate VARCHAR2(10),
+    aitem_bid VARCHAR2(10),
+    aitem_current CHAR(10),
+    aitem_title VARCHAR2(300),
+    aitem_img VARCHAR2(300),
+    aitem_content VARCHAR2(1500),
+    mem_id VARCHAR2(50),
+    CONSTRAINT AUCTION_ITEM_ID_PK PRIMARY KEY (aitem_id),
+    CONSTRAINT AUCTION_ITEM_MEMID_FK FOREIGN KEY (mem_id) REFERENCES MEMBER(mem_id)
+    ON DELETE SET NULL
+);
+
+CREATE TABLE auction(
+    mem_id VARCHAR2(50),
+    aitem_id VARCHAR2(50),
+    bidding VARCHAR2(10),
+    cre_date TIMESTAMP DEFAULT (LOCALTIMESTAMP),
+    CONSTRAINT AUCTION_MEM_AUCTIONITEM_PK PRIMARY KEY (mem_id, aitem_id)
+);
+
+CREATE TABLE SUC_BIDDER(
+    sb_id VARCHAR2(50),
+    aitem_id VARCHAR2(50),
+    mem_id VARCHAR2(50),
+    CONSTRAINT SB_ID_PK PRIMARY KEY (SB_id),
+    CONSTRAINT SB_aitem_id FOREIGN KEY (aitem_id) REFERENCES AUCTION_ITEM(aitem_id)
+    ON DELETE CASCADE,
+    CONSTRAINT SB_mem_id FOREIGN KEY (mem_id) REFERENCES MEMBER(mem_id)
+    ON DELETE CASCADE   
+);
+
+create unique index member_email_idx on member(mem_email);
+
+create table refreshtoken(
+    id number,
+    mem_id varchar2(50),
+    refresh_token varchar2(255),
+    constraint refreshtoken_id_pk primary key(id),
+    constraint refreshtoken_memid_uk unique(mem_id)
+);
+create sequence REFRESH_ID_GENERATOR
+increment by 1
+start with 1;
