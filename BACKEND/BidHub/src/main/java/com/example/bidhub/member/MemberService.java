@@ -51,6 +51,7 @@ public class MemberService {
             response.setStatus(true);
             response.setMessage("로그인 성공");
             response.setNickname(member.get().getMemNickname());
+            response.setPoint(member.get().getMemPoint());
         }
         return response;
     }

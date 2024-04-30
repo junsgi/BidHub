@@ -14,4 +14,5 @@ public class ResponseDTO{
     private boolean status;
     private String message;
     private String nickname;
+    private Long point;
 }

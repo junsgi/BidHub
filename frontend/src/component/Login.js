@@ -1,14 +1,18 @@
+import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { login } from '../Api';
 const Login = (props) => {
     const rightBnt = {
         textAlign : 'right',
         width : '100%',
         paddingLeft : "5px"
     }
-    const idHandler = props.idHandler;
-    const pwHandler = props.pwHandler;
-    const submit = props.submit;
-    const statusHandler = props.statusHandler;
+    const [ID, SetID] = useState("");
+    const [PW, SetPW] = useState("");
+    const SetStatus = props.SetStatus;
+    const submit = () => login({ id: ID, pw: PW }, SetStatus);
+    const idHandler = e => SetID(e.target.value);
+    const pwHandler = e => SetPW(e.target.value);
     return (
         <Form className='LoginForm'>
             <Form.Group className="mb-3" controlId="formGroupid">
@@ -20,7 +24,7 @@ const Login = (props) => {
                 <Form.Control type="password" placeholder="비밀번호를 입력해 주세요" onChange={pwHandler}/>
             </Form.Group>
             <div style={rightBnt}>
-                <Button variant="dark" type="button" onClick={()=>statusHandler("signup")}>
+                <Button variant="dark" type="button" onClick={()=>SetStatus("signup")}>
                     회원가입
                 </Button> &nbsp;
                 <Button variant="dark" type="button" onClick={submit}>
