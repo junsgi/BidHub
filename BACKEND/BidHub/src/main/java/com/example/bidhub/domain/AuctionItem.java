@@ -40,4 +40,6 @@ public class AuctionItem {
     @ManyToOne
     @JoinColumn(name = "memId")
     private Member member;
+
+
 }

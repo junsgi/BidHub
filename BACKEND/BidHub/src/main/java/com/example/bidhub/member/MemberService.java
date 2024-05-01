@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -57,9 +56,7 @@ public class MemberService {
     }
 
     public List<MyItemDTO> getMyItem(String memId) {
-        List<MyItemDTO> response = new ArrayList<>();
-
-        return response;
+        return repository.findByMemId(memId);
     }
 
     public ResponseDTO updateId(UpdateDTO request) {

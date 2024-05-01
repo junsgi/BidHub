@@ -5,11 +5,9 @@ import com.example.bidhub.dto.MyItemDTO;
 import com.example.bidhub.dto.SignUpDTO;
 import com.example.bidhub.dto.UpdateDTO;
 import com.example.bidhub.global.ResponseDTO;
-import com.example.bidhub.jwt.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +16,6 @@ import java.util.Map;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService service;
-    private final TokenService tokenService;
     @PostMapping(path = "/signup")
     public ResponseDTO signUp(@RequestBody SignUpDTO request) {
         return service.signUp(request);

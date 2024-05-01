@@ -1,4 +1,4 @@
-package com.example.bidhub.global;
+package com.example.bidhub.file;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateAccessTokenRequest {
-    private String memId;
-    private String memPw;
-    private String token;
+public class FileResponse {
+    private String contentType;
+    private byte[] bytes;
 }
