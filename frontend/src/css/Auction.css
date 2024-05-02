@@ -1,0 +1,15 @@
+.Auction {
+    border : 2px solid red;
+    width : 60%;
+}
+
+.Auction img{
+    border-radius: 10px;
+}
+
+.Auction .item{
+    border : 2px solid blue;
+}
+.Auction .info{
+    border : 2px solid blue;
+}

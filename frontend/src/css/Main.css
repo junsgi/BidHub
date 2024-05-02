@@ -5,14 +5,10 @@
     justify-content: center;
     /* border : 2px solid black; */
     max-width: 100%;
+    border : 2px solid black;
 }
 
 .Home {
     border : 2px solid black;
     width : 30%
-}
-
-.Auction {
-    border : 2px solid red;
-    width : 60%
 }

@@ -3,7 +3,7 @@ import Auction from "./Auction";
 import Home from "./Home";
 const Main = () => {
     return (
-        <div className="Main"> 
+        <div className="Main">
             <Auction />
             <Home />
         </div>
