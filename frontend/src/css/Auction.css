@@ -1,6 +1,8 @@
 .Auction {
     border : 2px solid red;
     width : 60%;
+    border-collapse: separate;
+    border-spacing: 10px;
 }
 
 .Auction img{
@@ -8,8 +10,18 @@
 }
 
 .Auction .item{
+    max-width: 100%;
+}
+.Auction .img{
+    width: 0
+}
+
+.Auction .info{
+    text-align: center;
     border : 2px solid blue;
 }
-.Auction .info{
+
+.Auction .price{
     border : 2px solid blue;
+    display: inline-flex;
 }
