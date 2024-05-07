@@ -1,4 +1,4 @@
-package com.example.bidhub.auction;
+package com.example.bidhub.auctionitem;
 
 import com.example.bidhub.domain.AuctionItem;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface AuctionRepository extends JpaRepository<AuctionItem, String> {
+public interface AuctionItemRepository extends JpaRepository<AuctionItem, String> {
     @Query(value = "SELECT AUCTION_ITEM_SEQ.NEXTVAL FROM DUAL", nativeQuery = true)
     public Long getSeq();
 

@@ -1,6 +1,7 @@
-import { Form, InputGroup, Button } from "react-bootstrap";
+import { Form, InputGroup, Button, Modal } from "react-bootstrap";
 import "../css/MyPage.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { recharge } from "../Api";
 const MyPage = (props) => {
   const SetStatus = props.SetStatus;
   const NICK = sessionStorage.getItem("nickname") ?? "null";
@@ -9,7 +10,23 @@ const MyPage = (props) => {
     SetStatus("guest");
   };
   const [point, SetPoint] = useState(sessionStorage.getItem("point") ?? NaN);
-
+  const [money, SetMoney] = useState(0);
+  const [pointModal, SetPointModal] = useState(false);
+  const linkKakao = () => SetPointModal(e => !e);
+  const inputMoney = (e) => {
+    SetMoney(e.target.value);
+  }
+  const submit = () => {
+    if (!money || money <= 0) alert('금액을 입력해주세요!');
+    else if (isNaN(money)) alert("숫자만 입력해주세요!");
+    else {
+      let data = {
+        partner_user_id : sessionStorage.getItem("id"),
+        total_amount : parseInt(money)
+      };
+      recharge(data, SetPoint);
+    }
+  }
   return (
     <div className="mypage">
       <div className="myInfo">
@@ -45,7 +62,7 @@ const MyPage = (props) => {
       <div className="btns">
         <Button variant="dark">정보 수정</Button>
         <Button variant="dark">경매 등록</Button>
-        <Button variant="dark">포인트</Button>
+        <Button variant="dark" onClick={linkKakao}>포인트</Button>
       </div>
       <table className="mySuccessTable">
         <thead>
@@ -57,12 +74,21 @@ const MyPage = (props) => {
           {
             [1, 2].map((e, i) => {
               return (
-                <MyItem key = {i}/>
+                <MyItem key={i} />
               )
             })
           }
         </tbody>
       </table>
+      {
+        pointModal &&
+        <PointModal
+          show={pointModal}
+          onHide={() => SetPointModal(false)}
+          onChange = {inputMoney}
+          submit = {submit}
+        />
+      }
     </div>
   );
 };
@@ -85,3 +111,30 @@ const MyItem = () => {
     </tr>
   );
 };
+
+
+function PointModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>충전</h4>
+        <Form className='LoginForm'>
+          <Form.Group className="mb-3" controlId="formGroupid">
+            <Form.Control type="text" placeholder="금액을 입력해 주세요" onChange={props.onChange}/>
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>닫기</Button>
+        <Button onClick={props.submit}>충전</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}

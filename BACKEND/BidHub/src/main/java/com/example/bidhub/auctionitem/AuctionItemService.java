@@ -1,4 +1,4 @@
-package com.example.bidhub.auction;
+package com.example.bidhub.auctionitem;
 
 import com.example.bidhub.domain.AuctionItem;
 import com.example.bidhub.dto.AuctionItemRequest;
@@ -14,8 +14,8 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuctionService {
-    private final AuctionRepository repository;
+public class AuctionItemService {
+    private final AuctionItemRepository repository;
     private final MemberRepository memberRepository;
     private final FileService fileService;
     public ResponseDTO submit(AuctionItemRequest request) {

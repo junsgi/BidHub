@@ -1,9 +1,6 @@
 package com.example.bidhub.member;
 
-import com.example.bidhub.dto.LoginDTO;
-import com.example.bidhub.dto.MyItemDTO;
-import com.example.bidhub.dto.SignUpDTO;
-import com.example.bidhub.dto.UpdateDTO;
+import com.example.bidhub.dto.*;
 import com.example.bidhub.global.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -50,4 +47,9 @@ public class MemberController {
     public ResponseDTO deleteMem(@RequestBody Map<String, Object> request){
         return service.deleteMem(request);
     }
+
+    @PostMapping(path = "/point")
+    public ResponseDTO point(@RequestBody KakaoPointRequest request) {return service.point(request);}
+
+
 }

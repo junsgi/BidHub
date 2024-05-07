@@ -1,4 +1,4 @@
-package com.example.bidhub.auction;
+package com.example.bidhub.auctionitem;
 
 import com.example.bidhub.dto.AuctionItemRequest;
 import com.example.bidhub.dto.AuctionItemResponse;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/auction")
-public class AuctionController {
-    private final AuctionService service;
+public class AuctionItemController {
+    private final AuctionItemService service;
     @PostMapping(path = "/submit")
     public ResponseDTO submit(@RequestBody AuctionItemRequest request) {
         return service.submit(request);
