@@ -24,9 +24,10 @@ const MyPage = (props) => {
         partner_user_id : sessionStorage.getItem("id"),
         total_amount : parseInt(money)
       };
-      recharge(data, SetPoint);
+      recharge(data);
     }
   }
+  
   return (
     <div className="mypage">
       <div className="myInfo">
@@ -125,9 +126,9 @@ function PointModal(props) {
       </Modal.Header>
       <Modal.Body>
         <h4>충전</h4>
-        <Form className='LoginForm'>
+        <Form className='LoginForm' onSubmit={event => event.preventDefault()} >
           <Form.Group className="mb-3" controlId="formGroupid">
-            <Form.Control type="text" placeholder="금액을 입력해 주세요" onChange={props.onChange}/>
+            <Form.Control type="text" placeholder="금액을 입력해 주세요" onChange={props.onChange} onKeyDown={e => e.key === "Enter" ? e.stopPropagation() : null }/>
           </Form.Group>
         </Form>
       </Modal.Body>

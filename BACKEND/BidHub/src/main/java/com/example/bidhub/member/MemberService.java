@@ -129,8 +129,10 @@ public class MemberService {
         ResponseDTO res = new ResponseDTO();
         // client : partner_user_id, total_amount
 
-        request.setCid("TC0ONETIME");
-        request.setPartner_order_id(this.getOrderId());
+        request.setCid(cid);
+        String orderId = LocalDateTime.now() + "_" + request.getPartner_user_id() + "_" + request.getTotal_amount();
+        request.setPartner_order_id(orderId);
+
         request.setItem_name("point_recharge");
         request.setQuantity(1);
         request.setTax_free_amount(0);
@@ -139,7 +141,6 @@ public class MemberService {
         request.setFail_url("http://localhost:3000/fail");
 
 
-        System.out.println(request.getTotal_amount());
         try {
             // request 준비 및 요청
             URL url = new URL(kakaoPaymentURL);
@@ -152,7 +153,7 @@ public class MemberService {
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
             wr.write(new Gson().toJson(request));
             wr.flush();
-
+            System.out.println("request : " + new Gson().toJson(request));
             // response
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder result = new StringBuilder();
@@ -166,51 +167,102 @@ public class MemberService {
             JsonObject el = pr.parse(result.toString()).getAsJsonObject();
 
             String tid = el.get("tid").toString();
+            tid = tid.substring(1, tid.length() - 1);
+
             String pcURL = el.get("next_redirect_pc_url").toString();
+            pcURL = pcURL.substring(1, pcURL.length() - 1);
+
+            res.setStatus(true);
+            res.setMessage(pcURL + "_" + tid + "_" + orderId);
+
             br.close();
             wr.close();
-
-
             // response DB 저장
             PaymentLogId id = new PaymentLogId();
             id.setTid(tid); id.setMemId(request.getPartner_user_id());
             PaymentLog entity = new PaymentLog();
             entity.setPaymentLogId(id);
+            entity.setOrderId(orderId);
             paymentRepository.save(entity);
 
-            Optional<Member> otn = repository.findById(request.getPartner_user_id());
-            if (otn.isPresent()){
-                Member mem = otn.get();
-                mem.setMemPoint(mem.getMemPoint() + request.getTotal_amount());
-                repository.save(mem);
-
-                res.setStatus(true);
-                res.setMessage(pcURL);
-            }else {
-                res.setStatus(false);
-                res.setMessage("존재하지 않는 사용자입니다.");
-            }
         }catch (Exception e) {
             res.setStatus(false);
             res.setMessage("오류가 발생했습니다. 다시 시도해 주세요");
         }
         return res;
     }
-    public String getOrderId() {
-        StringBuilder res = new StringBuilder();
-        LocalDateTime now = LocalDateTime.now();
-        res.append(now.getYear());
-        if (now.getMonthValue() < 10) res.append("0");
-        res.append(now.getMonthValue());
-        if (now.getDayOfMonth() < 10) res.append("0");
-        res.append(now.getDayOfMonth());
-        res.append("_");
-        if (now.getHour() < 10) res.append("0");
-        res.append(now.getHour());
-        if (now.getMinute() < 10) res.append("0");
-        res.append(now.getMinute());
-        if (now.getSecond() < 10) res.append("0");
-        res.append(now.getSecond());
-        return res.toString();
+
+    public ResponseDTO approved(ApprovedRequest request) {
+        ResponseDTO res = new ResponseDTO();
+        request.setCid(cid);
+        try{
+            URL url = new URL("https://open-api.kakaopay.com/online/v1/payment/approve");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "SECRET_KEY " + key);
+
+            conn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
+            wr.write(new Gson().toJson(request));
+            wr.flush(); // 출력 후 버퍼를 비움
+            System.out.println("response : " + new Gson().toJson(request));
+            if (conn.getResponseCode() != 200) {
+                res.setMessage("s");
+                return res;
+            }
+            // response
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder result = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                result.append(line);
+            }
+
+            br.close();
+            wr.close();
+
+            // response - parse
+            JsonParser pr = new JsonParser();
+            JsonObject el = pr.parse(result.toString()).getAsJsonObject();
+            if (conn.getResponseCode() == 200) {
+                String memId = request.getPartner_user_id();
+                String tid = request.getTid();
+                String total = el.get("amount").getAsJsonObject().get("total").toString();
+                String approvedAt = el.get("approved_at").toString();
+                approvedAt = approvedAt.substring(1, approvedAt.length() - 1);
+
+                PaymentLogId id = new PaymentLogId();
+                id.setMemId(memId); id.setTid(tid);
+
+                Optional<PaymentLog> obj = paymentRepository.findById(id);
+                Optional<Member> mem = repository.findById(memId);
+                if (obj.isPresent() && mem.isPresent()) {
+                    Member member = mem.get();
+                    member.setMemPoint(member.getMemPoint() + Integer.parseInt(total));
+                    repository.save(member);
+
+                    PaymentLog entity = obj.get();
+                    entity.setApprovedAt(approvedAt);
+                    paymentRepository.save(entity);
+
+                    res.setStatus(true);
+                    res.setMessage("충전이 완료되었습니다.");
+
+                }else {
+                    System.out.println("Entity Error");
+                    throw new Exception();
+                }
+            }else {
+                res.setMessage(el.get("extras").getAsJsonObject().get("method_result_message").toString());
+                res.setStatus(false);
+            }
+
+        }catch (Exception e) {
+            res.setStatus(false);
+            res.setMessage("다시 시도해주세요");
+            e.printStackTrace();
+        }
+        return res;
     }
 }

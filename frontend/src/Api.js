@@ -31,20 +31,37 @@ export const signup = async (data, mes, con, status) => {
     .catch(e => console.error(e))
 }
 
-export const recharge = async (data, SetPoint) => {
+export const recharge = async (data) => {
     const URL = S + "member/point";
 
     await axios.post(URL, data)
     .then(res => {
         if (res.data.status){
-            SetPoint(e => parseInt(e) + parseInt(data.total_amount))
-            console.log(res.data.message);
-            // window.open(res.data.message,'kakao', "popup=yes");
+            let result = res.data.message.split("_");
+            sessionStorage.setItem("tid", result[1]);
+            sessionStorage.setItem("orderId", `${result[2]}_${result[3]}_${result[4]}`);
+            alert(`${result[2]}_${result[3]}_${result[4]}`)
+            window.open(result[0], '_blank', "popup=yes");
         }else {
             alert(res.data.message);
         }
     })
     .catch(e => {
         console.error(e);
+    })
+}
+
+
+
+export const pointApproved = async (data) => {
+    let URL = S + "member/point/approved";
+    console.log(data);
+    await axios.post(URL, data)
+    .then(res => {
+        alert(res.data.message);
+        if (res.data.status) {
+            
+        }
+        window.close();
     })
 }

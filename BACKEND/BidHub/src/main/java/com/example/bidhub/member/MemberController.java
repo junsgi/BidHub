@@ -43,13 +43,18 @@ public class MemberController {
         return service.updatePw(request);
     }
 
-    @DeleteMapping(path = "/without")
+    @DeleteMapping(path = "/without") // { "id" : string }
     public ResponseDTO deleteMem(@RequestBody Map<String, Object> request){
         return service.deleteMem(request);
     }
 
     @PostMapping(path = "/point")
     public ResponseDTO point(@RequestBody KakaoPointRequest request) {return service.point(request);}
+
+    @PostMapping(path = "/point/approved")
+    public ResponseDTO approved(@RequestBody ApprovedRequest request) {
+        return service.approved(request);
+    }
 
 
 }
