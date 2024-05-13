@@ -7,21 +7,22 @@ const Login = (props) => {
         width : '100%',
         paddingLeft : "5px"
     }
-    const [ID, SetID] = useState("");
-    const [PW, SetPW] = useState("");
+    const [data, setData] = useState({
+        id : "",
+        pw : ""
+    })
+    const dataHandler = (e) => setData({...data, [e.target.name] : e.target.value})
+    const submit = () => login(data, SetStatus);
     const SetStatus = props.SetStatus;
-    const submit = () => login({ id: ID, pw: PW }, SetStatus);
-    const idHandler = e => SetID(e.target.value);
-    const pwHandler = e => SetPW(e.target.value);
     return (
         <Form className='LoginForm'>
             <Form.Group className="mb-3" controlId="formGroupid">
                 <Form.Label>ID</Form.Label>
-                <Form.Control type="text" placeholder="아이디를 입력해 주세요" onChange={idHandler}/>
+                <Form.Control type="text" placeholder="아이디를 입력해 주세요" value = {data.id} name = "id" onChange={dataHandler}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formGroupPassword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="비밀번호를 입력해 주세요" onChange={pwHandler}/>
+                <Form.Control type="password" placeholder="비밀번호를 입력해 주세요" value = {data.pw} name = "pw" onChange={dataHandler}/>
             </Form.Group>
             <div style={rightBnt}>
                 <Button variant="dark" type="button" onClick={()=>SetStatus("signup")}>

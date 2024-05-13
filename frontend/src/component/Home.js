@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { login, signup } from '../Api';
 import Login from './Login';
 import Signup from './Signup';
 import MyPage from './MyPage';
@@ -9,6 +8,7 @@ const Home = () => {
     useEffect(()=>{
         if (id) SetStatus("member");
     }, [Status])
+
     if (!id && Status === "guest") {
         return (
             <div className='Home'>

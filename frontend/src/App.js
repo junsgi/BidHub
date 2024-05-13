@@ -11,11 +11,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/approve" element={<PaymentProc />}></Route>
-
         </Routes>
       </BrowserRouter>
     </div>
   );
 }
+
 
 export default App;
