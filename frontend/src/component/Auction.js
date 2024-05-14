@@ -1,12 +1,22 @@
+import { useEffect, useState } from "react";
 import "../css/Auction.css";
+import { getAuctionItems } from "../Api";
 const Auction = () => {
+    const [list, SetList] = useState([]);
+    useEffect(()=>{
+        getAuctionItems(SetList);
+    }, [])
     return (
         <>
             <table className="Auction">
                 <tbody >
                     {
-                        [1, 2, 3, 4, 5].map((d, i)=>{
-                            return <Item key={i}/>
+                        list.map((d, i)=>{
+                            return <Item 
+                                        key={d.aitem_id}
+                                        data = {d}
+                                        top = {i * 160}
+                                        />
                         })
                     }
                 </tbody>
@@ -22,20 +32,26 @@ const Auction = () => {
 
 export default Auction;
 
-function Item() {
+function Item(props) {
+    const id = props.data.aitem_id;
+    const title = props.data.title;
+    const current = props.data.current;
+    const immediate = props.data.immediate;
+    const remaining = props.data.remaining;
+    const top = props.top;
     return (
-        <tr className="item" >
-            <td className="img">
-                <img src={process.env.PUBLIC_URL + "/img/bidhub.png"}></img>
+        <tr className="item" style={{top:`${top}px`}}>
+            <td className="img element">
+                <img src={`http://localhost:3977/auction/img/${id}`} width={128} height={128}></img>
             </td>
-            <td className="info">
-                <h4>제목</h4>
+            <td className="info element">
+                <h4>{title}</h4>
                 <div className="price">
-                    <p>현재가 : </p>, 
-                    <p>즉시 구매가 : </p>
+                    <p>현재가 : {current}</p>, &nbsp;
+                    <p>즉시 구매가 : {immediate}</p>
                 </div>
                 <div>
-                    남은 시간
+                    남은 시간 : {remaining}
                 </div>
             </td>
         </tr>

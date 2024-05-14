@@ -20,11 +20,11 @@ public class AuctionItemRequest {
 
     private String bid;
 
-    private LocalDateTime date;
+    private String date;
 
     private String immediate;
 
-    private String userid;
+    private String userId;
 
 
 }

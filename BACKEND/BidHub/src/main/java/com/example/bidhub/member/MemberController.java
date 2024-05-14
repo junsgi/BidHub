@@ -56,5 +56,8 @@ public class MemberController {
         return service.approved(request);
     }
 
+    @GetMapping(path = "/getpoint")
+    public ResponseDTO getPoint(@RequestParam Map<String, Object> request) { return service.getPoint(request.get("id").toString());}
+
 
 }

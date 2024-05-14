@@ -2,36 +2,52 @@ import { useEffect, useState } from 'react';
 import Login from './Login';
 import Signup from './Signup';
 import MyPage from './MyPage';
+import Regist from './Regist';
 const Home = () => {
     const [Status, SetStatus] = useState("guest");
-    const id = sessionStorage.getItem("id") ?? false;
-    useEffect(()=>{
-        if (id) SetStatus("member");
-    }, [Status])
-
-    if (!id && Status === "guest") {
+    useEffect(() => {
+        if (sessionStorage.getItem("id") && !(Status === "member" && Status === "regist")) {
+            SetStatus("member");
+        }
+    }, [])
+    if (Status === "member") {
         return (
             <div className='Home'>
-                <Login
-                    SetStatus = {SetStatus}
+                <MyPage
+                    SetStatus={SetStatus}
+                />
+            </div>
+        );
+    } else if (Status === "regist") {
+        return (
+            <div className='Home'>
+                <Regist
+                    SetStatus={SetStatus}
                 />
             </div>
         );
     }
-    else if (id || Status === "member") {
+    else if (Status === "guest") {
         return (
             <div className='Home'>
-                <MyPage 
-                    SetStatus = {SetStatus}
+                <Login
+                    SetStatus={SetStatus}
                 />
             </div>
         );
-    }else if (Status === "signup") {
+    }
+    else if (Status === "signup") {
         return (
             <div className='Home'>
-                <Signup 
-                    SetStatus = {SetStatus}
+                <Signup
+                    SetStatus={SetStatus}
                 />
+            </div>
+        );
+    } else {
+        return (
+            <div>
+                ㅈ됨
             </div>
         );
     }

@@ -17,7 +17,7 @@ public class FileService {
     private String filedir;
 
     public String uploadFile(MultipartFile file) {
-        if (!file.isEmpty()){
+        if (file != null && !file.isEmpty()){
             String uuid = UUID.randomUUID().toString();
             String name = uuid + "_" + file.getOriginalFilename(); // 클라이언트 컴퓨터에 저장되어 있던 사진 이름을 가져옵니다.
 

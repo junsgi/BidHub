@@ -265,4 +265,17 @@ public class MemberService {
         }
         return res;
     }
+
+    public ResponseDTO getPoint(String id) {
+        Optional<Member> opt = repository.findById(id);
+        ResponseDTO res = new ResponseDTO();
+        if (opt.isPresent()) {
+            res.setStatus(true);
+            res.setPoint(opt.get().getMemPoint());
+        }else {
+            res.setMessage("다시 로그인 해주세요");
+            res.setStatus(false);
+        }
+        return res;
+    }
 }

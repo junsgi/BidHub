@@ -1,7 +1,7 @@
 import { Form, InputGroup, Button, Modal } from "react-bootstrap";
 import "../css/MyPage.css";
 import { useEffect, useState } from "react";
-import { recharge } from "../Api";
+import { recharge, getPoint } from "../Api";
 const MyPage = (props) => {
   const SetStatus = props.SetStatus;
   const NICK = sessionStorage.getItem("nickname") ?? "null";
@@ -9,7 +9,13 @@ const MyPage = (props) => {
     sessionStorage.clear();
     SetStatus("guest");
   };
-  const [point, SetPoint] = useState(sessionStorage.getItem("point") ?? NaN);
+
+  const regist = () => {
+    SetStatus("regist");
+  }
+
+
+  const [point, SetPoint] = useState(sessionStorage.getItem("point") ?? 0);
   const [money, SetMoney] = useState(0);
   const [pointModal, SetPointModal] = useState(false);
   const linkKakao = () => SetPointModal(e => !e);
@@ -21,13 +27,18 @@ const MyPage = (props) => {
     else if (isNaN(money)) alert("숫자만 입력해주세요!");
     else {
       let data = {
-        partner_user_id : sessionStorage.getItem("id"),
-        total_amount : parseInt(money)
+        partner_user_id: sessionStorage.getItem("id"),
+        total_amount: parseInt(money)
       };
       recharge(data);
+      SetPointModal(false);
     }
   }
-  
+
+  useEffect(() => {
+    getPoint(SetPoint);
+  }, []);
+
   return (
     <div className="mypage">
       <div className="myInfo">
@@ -62,14 +73,16 @@ const MyPage = (props) => {
       </div>
       <div className="btns">
         <Button variant="dark">정보 수정</Button>
-        <Button variant="dark">경매 등록</Button>
+        <Button variant="dark" onClick={regist}>경매 등록</Button>
         <Button variant="dark" onClick={linkKakao}>포인트</Button>
       </div>
       <table className="mySuccessTable">
         <thead>
-          <th colSpan={2}>
-            <h3>내 낙찰 목록</h3>
-          </th>
+          <tr>
+            <th colSpan={2}>
+              <h3>내 낙찰 목록</h3>
+            </th>
+          </tr>
         </thead>
         <tbody>
           {
@@ -86,8 +99,9 @@ const MyPage = (props) => {
         <PointModal
           show={pointModal}
           onHide={() => SetPointModal(false)}
-          onChange = {inputMoney}
-          submit = {submit}
+          onChange={inputMoney}
+          submit={submit}
+          SetMoney = {SetMoney}
         />
       }
     </div>
@@ -115,6 +129,11 @@ const MyItem = () => {
 
 
 function PointModal(props) {
+  useEffect(()=>{
+    return () => {
+      getPoint(props.SetMoney);
+    }
+  }, [])
   return (
     <Modal
       {...props}
@@ -128,7 +147,7 @@ function PointModal(props) {
         <h4>충전</h4>
         <Form className='LoginForm' onSubmit={event => event.preventDefault()} >
           <Form.Group className="mb-3" controlId="formGroupid">
-            <Form.Control type="text" placeholder="금액을 입력해 주세요" onChange={props.onChange} onKeyDown={e => e.key === "Enter" ? e.stopPropagation() : null }/>
+            <Form.Control type="text" placeholder="금액을 입력해 주세요" onChange={props.onChange} onKeyDown={e => e.key === "Enter" ? e.stopPropagation() : null} />
           </Form.Group>
         </Form>
       </Modal.Body>

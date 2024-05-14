@@ -9,7 +9,6 @@ export const login = async (data, SetStatus) => {
         if (res.data.status) {
             sessionStorage.setItem("id", data.id);
             sessionStorage.setItem("nickname", res.data.nickname);
-            sessionStorage.setItem("point", res.data.point);
             SetStatus("member");
         }
     })
@@ -40,7 +39,7 @@ export const recharge = async (data) => {
             let result = res.data.message.split("_");
             sessionStorage.setItem("tid", result[1]);
             sessionStorage.setItem("orderId", `${result[2]}_${result[3]}_${result[4]}`);
-            alert(`${result[2]}_${result[3]}_${result[4]}`)
+            // alert(`${result[2]}_${result[3]}_${result[4]}`)
             window.open(result[0], '_blank', "popup=yes");
         }else {
             alert(res.data.message);
@@ -55,13 +54,49 @@ export const recharge = async (data) => {
 
 export const pointApproved = async (data) => {
     let URL = S + "member/point/approved";
-    console.log(data);
     await axios.post(URL, data)
     .then(res => {
         alert(res.data.message);
-        if (res.data.status) {
-            
-        }
+        sessionStorage.removeItem("tid");
+        sessionStorage.removeItem("orderId");
         window.close();
+    })
+}
+
+export const getPoint = async (SetPoint) => {
+    let URL = S + `member/getpoint?id=${sessionStorage.getItem("id")}`;
+    await axios.get(URL)
+    .then(res => {
+        if (res.data.status) {
+            SetPoint(res.data.point);
+        }else {
+            alert(res.data.message);
+        }
+    })
+    .catch(e => {
+        console.error(e);
+    })
+}
+
+export const submit = async (data) => {
+    let URL = S + "auction/submit";
+    await axios.post(URL, data)
+    .then(res => {
+        window.location.reload();
+        alert(res.data.message)
+    })
+    .catch(e => {
+        console.error(e);
+    })
+}
+
+export const getAuctionItems = async (SetList) => {
+    let URL = S + "auction/";
+    await axios.get(URL)
+    .then(res => {
+        SetList(res.data)
+    })
+    .catch(e => {
+        console.error(e)
     })
 }

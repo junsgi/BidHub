@@ -4,6 +4,7 @@ import com.example.bidhub.domain.AuctionItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AuctionItemRepository extends JpaRepository<AuctionItem, String> {
@@ -11,4 +12,6 @@ public interface AuctionItemRepository extends JpaRepository<AuctionItem, String
     public Long getSeq();
 
     public Optional<AuctionItem> findById(String aitemId);
+
+    public List<AuctionItem> findAllByOrderByAitemIdDesc();
 }

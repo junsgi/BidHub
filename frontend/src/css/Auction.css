@@ -2,23 +2,24 @@
     border : 2px solid red;
     width : 60%;
     border-collapse: separate;
-    border-spacing: 10px;
+    position: relative;
 }
 
 .Auction img{
     border-radius: 10px;
 }
 
-.Auction .item{
-    max-width: 100%;
-}
-.Auction .img{
-    width: 0
+.Auction tr.item {
+    height: 145px; 
+    position: absolute;
+    max-width : 100%;
+    width :100%;
 }
 
 .Auction .info{
     text-align: center;
     border : 2px solid blue;
+    width : 100%
 }
 
 .Auction .price{
