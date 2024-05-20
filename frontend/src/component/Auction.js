@@ -1,28 +1,40 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../css/Auction.css";
-import { getAuctionItems } from "../Api";
-const Auction = () => {
-    const [list, SetList] = useState([]);
-    useEffect(()=>{
-        getAuctionItems(SetList);
-    }, [])
+import { Pagination } from 'react-bootstrap';
+const Auction = ({list, SetList}) => {
+    
+
+
+    //paging start
+    const [currentPage, setCurrentPage] = useState(1);
+    const onPageClick = (num) => setCurrentPage(num);
+    let items = [];
+    for (let number = 1; number <= 5; number++) {
+        items.push(
+            <Pagination.Item key={number} active={number === currentPage} onClick={()=>onPageClick(number)}>
+                {number}
+            </Pagination.Item>,
+        );
+    }
+    //paging end
+
     return (
         <>
             <table className="Auction">
                 <tbody >
                     {
-                        list.map((d, i)=>{
-                            return <Item 
-                                        key={d.aitem_id}
-                                        data = {d}
-                                        top = {i * 160}
-                                        />
+                        list.map((d, i) => {
+                            return <Item
+                                key={d.aitem_id}
+                                data={d}
+                                top={i * 160}
+                            />
                         })
                     }
                 </tbody>
                 <tfoot>
-                    <tr colSpan = {2}>
-                        
+                    <tr colSpan={2}>
+                        <Pagination>{items}</Pagination>
                     </tr>
                 </tfoot>
             </table>
@@ -40,7 +52,7 @@ function Item(props) {
     const remaining = props.data.remaining;
     const top = props.top;
     return (
-        <tr className="item" style={{top:`${top}px`}}>
+        <tr className="item" style={{ top: `${top}px` }}>
             <td className="img element">
                 <img src={`http://localhost:3977/auction/img/${id}`} width={128} height={128}></img>
             </td>

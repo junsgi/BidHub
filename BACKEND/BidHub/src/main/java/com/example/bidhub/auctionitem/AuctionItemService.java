@@ -75,7 +75,16 @@ public class AuctionItemService {
         }
         return res;
     }
-
+    private String getRemaining(LocalDateTime time){
+        LocalDateTime now = LocalDateTime.now();
+        return time.minusYears(now.getYear())
+                .minusMonths(now.getMonthValue())
+                .minusDays(now.getDayOfMonth())
+                .minusHours(now.getHour())
+                .minusMinutes(now.getMinute())
+                .minusSeconds(now.getSecond())
+                .toString();
+    }
     public List<AitemsResponse> getItems(Integer st, Integer ed) {
         return null;
     }

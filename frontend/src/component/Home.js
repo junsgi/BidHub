@@ -9,7 +9,8 @@ const Home = () => {
         if (sessionStorage.getItem("id") && !(Status === "member" && Status === "regist")) {
             SetStatus("member");
         }
-    }, [])
+    }, []);
+    
     if (Status === "member") {
         return (
             <div className='Home'>

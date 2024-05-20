@@ -100,3 +100,17 @@ export const getAuctionItems = async (SetList) => {
         console.error(e)
     })
 }
+
+
+const getNow = () => {
+    let date = new Date();
+    let year = date.getFullYear();
+    if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) year = 60 * 60 * 24 * 366;
+    else year = 60 * 60 * 24 * 365;
+    
+    let month = date.getMonth() * 60 * 60
+}
+
+export const getRemaining = () => {
+
+}
