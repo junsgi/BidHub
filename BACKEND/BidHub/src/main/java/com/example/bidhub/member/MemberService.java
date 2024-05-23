@@ -186,6 +186,7 @@ public class MemberService {
             paymentRepository.save(entity);
 
         }catch (Exception e) {
+            e.printStackTrace();
             res.setStatus(false);
             res.setMessage("오류가 발생했습니다. 다시 시도해 주세요");
         }

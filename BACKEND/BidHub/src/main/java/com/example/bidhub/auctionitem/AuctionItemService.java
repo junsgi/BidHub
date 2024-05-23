@@ -11,6 +11,7 @@ import com.example.bidhub.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -69,21 +70,15 @@ public class AuctionItemService {
                     .title(item.getAitemTitle())
                     .current(Long.parseLong(item.getAitemCurrent().trim()))
                     .immediate(item.getAitemImmediate())
-                    .remaining(item.getAitemDate().toString())
+                    .remaining(String.valueOf(getRemaining(item.getAitemDate())))
                     .build()
             );
         }
+
         return res;
     }
-    private String getRemaining(LocalDateTime time){
-        LocalDateTime now = LocalDateTime.now();
-        return time.minusYears(now.getYear())
-                .minusMonths(now.getMonthValue())
-                .minusDays(now.getDayOfMonth())
-                .minusHours(now.getHour())
-                .minusMinutes(now.getMinute())
-                .minusSeconds(now.getSecond())
-                .toString();
+    private long getRemaining(LocalDateTime time){
+        return Duration.between(LocalDateTime.now(), time).getSeconds();
     }
     public List<AitemsResponse> getItems(Integer st, Integer ed) {
         return null;

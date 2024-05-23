@@ -49,7 +49,7 @@ function Item(props) {
     const title = props.data.title;
     const current = props.data.current;
     const immediate = props.data.immediate;
-    const remaining = props.data.remaining;
+    const remaining = parseInt(props.data.remaining) < 0 ? "경매 종료" : parseInt(props.data.remaining);
     const top = props.top;
     return (
         <tr className="item" style={{ top: `${top}px` }}>
