@@ -54,7 +54,7 @@ public class AuctionItemService {
                 .aitemStart(ai.getAitemStart())
                 .aitemTitle(ai.getAitemTitle())
                 .aitemBid(ai.getAitemBid())
-                .aitemCurrent(ai.getAitemCurrent())
+                .aitemCurrent(ai.getAitemCurrent().trim())
                 .aitemImmediate(ai.getAitemImmediate())
                 .aitemDate(ai.getAitemDate())
                 .aitemImg(ai.getAitemImg())
@@ -64,6 +64,7 @@ public class AuctionItemService {
     public List<AitemsResponse> getItems() {
         List<AitemsResponse> res = new LinkedList<>();
         List<AuctionItem> list = repository.findAllByOrderByAitemIdDesc();
+//        List<AuctionItem> list = repository.findAllByAitemDateAfterOrderByAitemIdDesc(LocalDateTime.now());
         for(AuctionItem item : list) {
             res.add(AitemsResponse.builder()
                     .aitem_id(item.getAitemId())
@@ -91,7 +92,7 @@ public class AuctionItemService {
         if (i.isPresent()) {
             AuctionItem item = i.get();
             name = item.getAitemImg();
-            if (name.equals("null")) name = "bidhub.png";
+            if (name == null) name = "bidhub.png";
             response = fileService.getFile(name).getBytes();
         }else {
             response = fileService.getFile("bidhub.png").getBytes();

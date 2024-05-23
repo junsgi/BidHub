@@ -3,7 +3,6 @@ CREATE TABLE member(
     mem_pw VARCHAR2(255),
     mem_point NUMBER DEFAULT(0),
     mem_nickname VARCHAR2(50),
-    mem_email VARCHAR2(30),
     CONSTRAINT MEMBER_ID_PK PRIMARY KEY (mem_id)
 );
 
@@ -20,7 +19,7 @@ CREATE TABLE auction_item(
     mem_id VARCHAR2(50),
     CONSTRAINT AUCTION_ITEM_ID_PK PRIMARY KEY (aitem_id),
     CONSTRAINT AUCTION_ITEM_MEMID_FK FOREIGN KEY (mem_id) REFERENCES MEMBER(mem_id)
-    ON DELETE SET NULL
+    ON DELETE CASCADE
 );
 
 CREATE TABLE auction(
@@ -42,8 +41,6 @@ CREATE TABLE SUC_BIDDER(
     ON DELETE CASCADE   
 );
 
-create unique index member_email_idx on member(mem_email);
-
 create table refreshtoken(
     id number,
     mem_id varchar2(50),
@@ -52,5 +49,12 @@ create table refreshtoken(
     constraint refreshtoken_memid_uk unique(mem_id)
 );
 create sequence REFRESH_ID_GENERATOR
+increment by 1
+start with 1;
+create sequence AUCTION_ITEM_SEQ
+increment by 1
+start with 1;
+
+create sequence AUCTION_SEQ
 increment by 1
 start with 1;

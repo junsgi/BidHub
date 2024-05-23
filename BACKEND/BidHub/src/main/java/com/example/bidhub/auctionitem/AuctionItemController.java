@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/auction")
+@RequestMapping(path = "/auctionitem")
 public class AuctionItemController {
     private final AuctionItemService service;
     @PostMapping(path = "/submit")

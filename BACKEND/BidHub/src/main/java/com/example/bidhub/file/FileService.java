@@ -29,7 +29,7 @@ public class FileService {
                 e.printStackTrace();
             }
         }
-        return "null";
+        return null;
     }
 
     public void deleteFile(String name) {

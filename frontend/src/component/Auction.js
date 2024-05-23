@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../css/Auction.css";
-import { Pagination } from 'react-bootstrap';
-const Auction = ({list, SetList}) => {
-    
-
+import { Pagination, Button, Modal } from 'react-bootstrap';
+import { getAuctionItemDetail } from "../Api";
+const Auction = ({ list, SetList }) => {
 
     //paging start
     const [currentPage, setCurrentPage] = useState(1);
@@ -11,7 +10,7 @@ const Auction = ({list, SetList}) => {
     let items = [];
     for (let number = 1; number <= 5; number++) {
         items.push(
-            <Pagination.Item key={number} active={number === currentPage} onClick={()=>onPageClick(number)}>
+            <Pagination.Item key={number} active={number === currentPage} onClick={() => onPageClick(number)}>
                 {number}
             </Pagination.Item>,
         );
@@ -49,23 +48,156 @@ function Item(props) {
     const title = props.data.title;
     const current = props.data.current;
     const immediate = props.data.immediate;
-    const remaining = parseInt(props.data.remaining) < 0 ? "경매 종료" : parseInt(props.data.remaining);
+    let [remaining, setRemaining] = useState(parseInt(props.data.remaining));
     const top = props.top;
+    const [modalShow, setModalShow] = useState(false);
+    let tickTock;
+
+    useEffect(() => {
+        tickTock = setInterval(() => {
+            setRemaining(e => {
+                if (e - 1 < 0) {
+                    clearInterval(tickTock);
+                    return 0;
+                }
+                return e - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(tickTock);
+    }, [])
     return (
-        <tr className="item" style={{ top: `${top}px` }}>
-            <td className="img element">
-                <img src={`http://localhost:3977/auction/img/${id}`} width={128} height={128}></img>
-            </td>
-            <td className="info element">
-                <h4>{title}</h4>
-                <div className="price">
-                    <p>현재가 : {current}</p>, &nbsp;
-                    <p>즉시 구매가 : {immediate}</p>
-                </div>
-                <div>
-                    남은 시간 : {remaining}
-                </div>
-            </td>
-        </tr>
+        <>
+            <tr className="item" style={{ top: `${top}px` }} onClick={() => setModalShow(true)}>
+                <td className="img element">
+                    <img src={`http://localhost:3977/auctionitem/img/${id}`} width={128} height={128}></img>
+                </td>
+                <td className="info element">
+                    <h4>{title}</h4>
+                    <div className="price">
+                        <p>현재가 : {current}</p>, &nbsp;
+                        <p>즉시 구매가 : {immediate}</p>
+                    </div>
+                    <div>
+                        {
+                            convertSeconds(remaining)
+                        }
+                    </div>
+                </td>
+            </tr>
+            {
+                modalShow &&
+                <AuctionItemDetail
+                    show={modalShow}
+                    {...props}
+                    remain={convertSeconds(remaining)}
+                    onHide={() => { setModalShow(false) }}
+                />}
+        </>
+    );
+
+    function convertSeconds(seconds) {
+        if (seconds < 0) return "종료된 경매"
+        const MINUTE = 60;
+        const HOUR = 3600;
+        const DAY = 86400;
+
+        let days = 0;
+        let hours = 0;
+        let minutes = 0;
+        let remainingSeconds = seconds;
+
+        // days
+        days = Math.floor(remainingSeconds / DAY);
+        remainingSeconds %= DAY;
+
+        // hours
+        hours = Math.floor(remainingSeconds / HOUR);
+        remainingSeconds %= HOUR;
+
+        // minutes
+        minutes = Math.floor(remainingSeconds / MINUTE);
+        remainingSeconds %= MINUTE;
+
+        return `${days}일 ${hours}시간 ${minutes}분 ${remainingSeconds}초 남음`;
+    }
+}
+
+
+const AuctionItemDetail = (props) => {
+    const [modalShow, setModalShow] = useState(false);
+    const [info, setInfo] = useState({
+        aitemBid: "",
+        aitemContent: "",
+        aitemCurrent: "",
+        aitemDate: "",
+        aitemId: "",
+        aitemImg: "",
+        aitemImmediate: "",
+        aitemStart: "",
+        aitemTitle: "",
+        memId: "",
+    })
+    const id = props.data.aitem_id;
+    const title = props.data.title;
+    const remaining = props.remain;
+
+    useEffect(() => {
+        getAuctionItemDetail(id, setInfo);
+    }, []);
+
+    const bidding = () => {
+        let flag = window.confirm("입찰하시겠습니까?\n환불 x, 확인 후 취소 x");
+        if (flag) {
+            
+        }
+    }
+    return (
+        <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    {title}
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img src={`http://localhost:3977/auctionitem/img/${id}`} width={256} height={256}></img>
+                            </td>
+                            <td>
+                                <p>시작가 : {info.aitemStart}원</p>
+                                <p>즉시 구매가 : {info.aitemImmediate}원</p>
+                                <p>입찰 단위 : {info.aitemBid}원</p>
+                                <h3>현재가 : {info.aitemCurrent}원</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                판매자 : {info.memId}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {info.aitemContent ?? "설명 없음"}
+                            </td>
+                        </tr>
+                        <tr>
+                            남은 시간 : {remaining}
+                        </tr>
+                    </tbody>
+                </table>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="danger" onClick={bidding}>입찰</Button>
+                <Button onClick={props.onHide}>Close</Button>
+            </Modal.Footer>
+        </Modal>
     );
 }

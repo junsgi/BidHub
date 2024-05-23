@@ -79,7 +79,7 @@ export const getPoint = async (SetPoint) => {
 }
 
 export const submit = async (data) => {
-    let URL = S + "auction/submit";
+    let URL = S + "auctionitem/submit";
     await axios.post(URL, data)
     .then(res => {
         window.location.reload();
@@ -91,7 +91,7 @@ export const submit = async (data) => {
 }
 
 export const getAuctionItems = async (SetList) => {
-    let URL = S + "auction/";
+    let URL = S + "auctionitem/";
     await axios.get(URL)
     .then(res => {
         SetList(res.data)
@@ -102,15 +102,11 @@ export const getAuctionItems = async (SetList) => {
 }
 
 
-const getNow = () => {
-    let date = new Date();
-    let year = date.getFullYear();
-    if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) year = 60 * 60 * 24 * 366;
-    else year = 60 * 60 * 24 * 365;
-    
-    let month = date.getMonth() * 60 * 60
-}
-
-export const getRemaining = () => {
-
+export const getAuctionItemDetail = async (id, setInfo) => {
+    let URL = S + `auctionitem/${id}`;
+    await axios.get(URL)
+    .then(res => {
+        setInfo(res.data);
+    })
+    .catch(e => console.error(e))
 }
