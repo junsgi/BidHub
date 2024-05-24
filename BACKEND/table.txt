@@ -16,6 +16,7 @@ CREATE TABLE auction_item(
     aitem_title VARCHAR2(300),
     aitem_img VARCHAR2(300),
     aitem_content VARCHAR2(1500),
+    aitem_status VARCHAR2(1),
     mem_id VARCHAR2(50),
     CONSTRAINT AUCTION_ITEM_ID_PK PRIMARY KEY (aitem_id),
     CONSTRAINT AUCTION_ITEM_MEMID_FK FOREIGN KEY (mem_id) REFERENCES MEMBER(mem_id)
@@ -23,11 +24,13 @@ CREATE TABLE auction_item(
 );
 
 CREATE TABLE auction(
+    auction_id number,
     mem_id VARCHAR2(50),
     aitem_id VARCHAR2(50),
     bidding VARCHAR2(10),
     cre_date TIMESTAMP DEFAULT (LOCALTIMESTAMP),
-    CONSTRAINT AUCTION_MEM_AUCTIONITEM_PK PRIMARY KEY (mem_id, aitem_id)
+    CONSTRAINT AUCTION_ID_PK PRIMARY KEY (auction_id),
+    CONSTRAINT AUCTION_MEMID_FK FOREIGN KEY (mem_id) REFERENCES MEMBER(mem_id) ON DELETE CASCADE
 );
 
 CREATE TABLE SUC_BIDDER(
