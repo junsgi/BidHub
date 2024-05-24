@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../css/Auction.css";
 import { Pagination, Button, Modal } from 'react-bootstrap';
-import { getAuctionItemDetail } from "../Api";
+import { bidding_api, getAuctionItemDetail } from "../Api";
 const Auction = ({ list, SetList }) => {
 
     //paging start
@@ -97,7 +97,7 @@ function Item(props) {
     );
 
     function convertSeconds(seconds) {
-        if (seconds < 0) return "종료된 경매"
+        if (seconds <= 0) return "종료된 경매"
         const MINUTE = 60;
         const HOUR = 3600;
         const DAY = 86400;
@@ -125,7 +125,6 @@ function Item(props) {
 
 
 const AuctionItemDetail = (props) => {
-    const [modalShow, setModalShow] = useState(false);
     const [info, setInfo] = useState({
         aitemBid: "",
         aitemContent: "",
@@ -141,15 +140,31 @@ const AuctionItemDetail = (props) => {
     const id = props.data.aitem_id;
     const title = props.data.title;
     const remaining = props.remain;
-
-    useEffect(() => {
+    const refreshInfo = () => {
         getAuctionItemDetail(id, setInfo);
-    }, []);
+    }
+    useEffect(refreshInfo, []);
 
     const bidding = () => {
         let flag = window.confirm("입찰하시겠습니까?\n환불 x, 확인 후 취소 x");
         if (flag) {
-            
+            const data = {
+                userId: sessionStorage.getItem("id"),
+                itemId: id,
+                current: info.aitemCurrent
+            }
+            bidding_api(data, refreshInfo, false)
+        }
+    }
+    const biddingImm = () => {
+        let flag = window.confirm("즉시 구매하시겠습니까?\n환불 x, 확인 후 취소 x");
+        if (flag) {
+            const data = {
+                userId: sessionStorage.getItem("id"),
+                itemId: id,
+                current: info.aitemCurrent
+            }
+            bidding_api(data, refreshInfo, true)
         }
     }
     return (
@@ -175,7 +190,7 @@ const AuctionItemDetail = (props) => {
                                 <p>시작가 : {info.aitemStart}원</p>
                                 <p>즉시 구매가 : {info.aitemImmediate}원</p>
                                 <p>입찰 단위 : {info.aitemBid}원</p>
-                                <h3>현재가 : {info.aitemCurrent}원</h3>
+                                {info.aitemCurrent > 0 && <h3>현재가 : {info.aitemCurrent}원</h3>}
                             </td>
                         </tr>
                         <tr>
@@ -195,7 +210,17 @@ const AuctionItemDetail = (props) => {
                 </table>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={bidding}>입찰</Button>
+                {
+                    remaining !== "종료된 경매" 
+                    ?   info.memId === sessionStorage.getItem("id")
+                        ? <Button variant="warning" >경매 종료</Button>
+                        : <>
+                            <Button variant="danger" onClick={biddingImm} >즉시 구매</Button>
+                            <Button variant="danger" onClick={bidding}>입찰</Button>
+                        </>
+                    : null
+                }
+
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
         </Modal>

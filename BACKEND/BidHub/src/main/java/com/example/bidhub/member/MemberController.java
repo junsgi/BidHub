@@ -1,7 +1,7 @@
 package com.example.bidhub.member;
 
 import com.example.bidhub.dto.*;
-import com.example.bidhub.global.ResponseDTO;
+import com.example.bidhub.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

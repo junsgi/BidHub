@@ -11,4 +11,5 @@ import lombok.Setter;
 public class BiddingRequest {
     private String userId;
     private String itemId;
+    private String current;
 }

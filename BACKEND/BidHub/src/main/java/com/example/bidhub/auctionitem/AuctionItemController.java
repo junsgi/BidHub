@@ -3,7 +3,7 @@ package com.example.bidhub.auctionitem;
 import com.example.bidhub.dto.AuctionItemRequest;
 import com.example.bidhub.dto.AuctionItemResponse;
 import com.example.bidhub.dto.AitemsResponse;
-import com.example.bidhub.global.ResponseDTO;
+import com.example.bidhub.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,7 @@
 package com.example.bidhub.auction;
 
 import com.example.bidhub.dto.BiddingRequest;
-import com.example.bidhub.global.ResponseDTO;
+import com.example.bidhub.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +13,12 @@ public class AuctionController {
 
     @PostMapping(path = "/bidding")
     public ResponseDTO bidding(@RequestBody BiddingRequest request) {
-        return service.bidding(request);
+        return service.bidding(request, false);
     }
+
+    @PostMapping(path = "/bidding/immediately")
+    public ResponseDTO biddingImm(@RequestBody BiddingRequest request) {
+        return service.bidding(request, true);
+    }
+
 }

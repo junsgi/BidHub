@@ -110,3 +110,21 @@ export const getAuctionItemDetail = async (id, setInfo) => {
     })
     .catch(e => console.error(e))
 }
+
+export const bidding_api = async (data, callBack, imm) => {
+    let URL = S + "auction/bidding";
+    if (imm) URL += "/immediately";
+    await axios
+    .post(URL, data)
+    .then(res => {
+        alert(res.data.message)
+    })
+    .catch(e => console.error(e))
+    .finally(callBack)
+}
+
+export const dot = () => {
+    let n = "123"
+    n = String(n)
+    let cnt = n.length
+}

@@ -12,15 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SucBidder {
-    @Id
-    @Column(length = 50)
-    private String sbId;
-
-    @ManyToOne
-    @JoinColumn(name = "memId")
-    private Member member;
-
-    @ManyToOne
-    @JoinColumn(name = "aitemId")
-    private AuctionItem auctionItem;
+    @EmbeddedId
+    private SucBidderId sucBidderId;
 }

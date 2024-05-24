@@ -37,6 +37,9 @@ public class AuctionItem {
     @Column(length = 1500)
     private String aitemContent;
 
+    @Column(length = 1)
+    private String aitemStatus;
+
     @ManyToOne
     @JoinColumn(name = "memId")
     private Member member;

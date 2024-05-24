@@ -31,10 +31,9 @@ CREATE TABLE auction(
 );
 
 CREATE TABLE SUC_BIDDER(
-    sb_id VARCHAR2(50),
     aitem_id VARCHAR2(50),
     mem_id VARCHAR2(50),
-    CONSTRAINT SB_ID_PK PRIMARY KEY (SB_id),
+    CONSTRAINT SB_ID_PK PRIMARY KEY (aitem_id, mem_id),
     CONSTRAINT SB_aitem_id FOREIGN KEY (aitem_id) REFERENCES AUCTION_ITEM(aitem_id)
     ON DELETE CASCADE,
     CONSTRAINT SB_mem_id FOREIGN KEY (mem_id) REFERENCES MEMBER(mem_id)

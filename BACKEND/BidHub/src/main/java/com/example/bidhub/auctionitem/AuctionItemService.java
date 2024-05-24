@@ -4,9 +4,8 @@ import com.example.bidhub.domain.AuctionItem;
 import com.example.bidhub.dto.AitemsResponse;
 import com.example.bidhub.dto.AuctionItemRequest;
 import com.example.bidhub.dto.AuctionItemResponse;
-import com.example.bidhub.file.FileResponse;
 import com.example.bidhub.file.FileService;
-import com.example.bidhub.global.ResponseDTO;
+import com.example.bidhub.dto.ResponseDTO;
 import com.example.bidhub.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,15 @@ public class AuctionItemService {
     public ResponseDTO submit(AuctionItemRequest request) {
         ResponseDTO response = new ResponseDTO();
         AuctionItem entity = null;
+        String[] date = request.getDate().split("T");
+        Object[] ymd = Arrays.stream(date[0].split("-")).map(Integer::parseInt).toArray();
+        Object[] hm = Arrays.stream(date[1].split(":")).map(Integer::parseInt).toArray();
+        LocalDateTime end = LocalDateTime.of((int)ymd[0], (int)ymd[1], (int)ymd[2], (int)hm[0], (int)hm[1]);
+        if (Duration.between(LocalDateTime.now(), end).toSeconds() < 0)
+            return ResponseDTO.builder().status(false).message("오늘 날짜 이후로 설정해주세요").build();
+
         try{
-            entity = dtoToEntity(request);
+            entity = dtoToEntity(request, end);
             repository.save(entity);
             response.setStatus(true);
             response.setMessage("경매 등록 성공");
@@ -99,7 +105,7 @@ public class AuctionItemService {
         }
         return response;
     }
-    public AuctionItem dtoToEntity(AuctionItemRequest dto) {
+    public AuctionItem dtoToEntity(AuctionItemRequest dto, LocalDateTime end) {
         AuctionItem entity = new AuctionItem();
         String id = LocalDateTime.now().toString() + "_" + repository.getSeq().toString();
         entity.setAitemId(id);
@@ -111,10 +117,7 @@ public class AuctionItemService {
         entity.setAitemImmediate(dto.getImmediate());
         entity.setAitemImg(fileService.uploadFile(dto.getImg()));
         entity.setAitemTitle(dto.getTitle());
-        String[] date = dto.getDate().split("T");
-        Object[] ymd = Arrays.stream(date[0].split("-")).map(Integer::parseInt).toArray();
-        Object[] hm = Arrays.stream(date[1].split(":")).map(Integer::parseInt).toArray();
-        entity.setAitemDate(LocalDateTime.of((int)ymd[0], (int)ymd[1], (int)ymd[2], (int)hm[0], (int)hm[1]));
+        entity.setAitemDate(end);
         return entity;
     }
 }
