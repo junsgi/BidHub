@@ -19,8 +19,9 @@ public class AuctionItemResponse {
     private String aitemImmediate;
     private String aitemCurrent;
     private String memId;
+    private String status;
     @Builder
-    public AuctionItemResponse(String aitemId, String aitemImg, String aitemTitle, String aitemContent, String aitemStart, String aitemBid, LocalDateTime aitemDate, String aitemImmediate, String aitemCurrent, String memId) {
+    public AuctionItemResponse(String aitemId, String aitemImg, String aitemTitle, String aitemContent, String aitemStart, String aitemBid, LocalDateTime aitemDate, String aitemImmediate, String aitemCurrent, String memId, String status) {
         this.aitemId = aitemId;
         this.aitemImg = aitemImg;
         this.aitemTitle = aitemTitle;
@@ -31,5 +32,6 @@ public class AuctionItemResponse {
         this.aitemImmediate = aitemImmediate;
         this.aitemCurrent = aitemCurrent;
         this.memId = memId;
+        this.status = status;
     }
 }

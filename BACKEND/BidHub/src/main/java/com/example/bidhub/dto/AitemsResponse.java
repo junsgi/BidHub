@@ -12,13 +12,15 @@ public class AitemsResponse {
     Long current;
     String Immediate;
     String remaining;
-
+    String status;
     @Builder
-    public AitemsResponse(String aitem_id, String title, Long current, String immediate, String remaining) {
+    public AitemsResponse(String aitem_id, String title, Long current, String immediate, String remaining, String status) {
         this.aitem_id = aitem_id;
         this.title = title;
         this.current = current;
-        Immediate = immediate;
+        this.Immediate = immediate;
         this.remaining = remaining;
+        this.status = status;
     }
+
 }

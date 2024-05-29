@@ -12,8 +12,7 @@
 }
 
 
-.mySuccessTable {
-    border : 2px solid red;
+.mypage .mySuccessTable {
     width : 100%;
     border-collapse: separate;
     border-spacing: 10px;

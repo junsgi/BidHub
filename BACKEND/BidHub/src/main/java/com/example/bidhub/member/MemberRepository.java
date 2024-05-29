@@ -15,6 +15,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
             "from suc_bidder as sb JOIN auction_item as ai " +
             "on sb.aitem_id = ai.aitem_id " +
             "where sb.mem_id = :memId", nativeQuery = true)
-    List<MyItemDTO> findByMemId(@Param("memId") String memId);
+    List<MyItemDTO> findBySucMemId(@Param("memId") String memId);
 
 }

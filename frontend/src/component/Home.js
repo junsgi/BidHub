@@ -48,7 +48,7 @@ const Home = () => {
     } else {
         return (
             <div>
-                ㅈ됨
+                loading
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { Form, InputGroup, FloatingLabel, Button } from "react-bootstrap";
 import { submit } from "../Api";
 
@@ -21,7 +21,7 @@ const Regist = ({ SetStatus }) => {
             [e.target.name] : e.target.value
         });
     }
-
+    
     const request = () => {
         let file = null
         let form = new FormData();
@@ -38,8 +38,8 @@ const Regist = ({ SetStatus }) => {
     }
     return (
         <div className="regist">
-            <h3 onClick={back}> {"<"} </h3>
-            <h3>경매 등록</h3>
+            <h5 onClick={back}> {"<"} </h5>
+            <h4>경매 등록</h4>
 
             제목
             <InputGroup className="mb-3">

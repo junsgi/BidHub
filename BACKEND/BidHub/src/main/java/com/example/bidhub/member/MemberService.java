@@ -75,7 +75,7 @@ public class MemberService {
     }
 
     public List<MyItemDTO> getMyItem(String memId) {
-        return repository.findByMemId(memId);
+        return repository.findBySucMemId(memId);
     }
 
     public ResponseDTO updateId(UpdateDTO request) {

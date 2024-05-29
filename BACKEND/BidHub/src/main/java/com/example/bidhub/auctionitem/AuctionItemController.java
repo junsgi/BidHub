@@ -20,13 +20,14 @@ public class AuctionItemController {
     }
 
     @GetMapping(path = "/")
-    public List<AitemsResponse> getItems(
-            @RequestParam(name = "st", required = false) Integer st,
-            @RequestParam(name = "ed", required = false) Integer ed
-    ) {
-        if (st != null && ed != null ) return service.getItems(st, ed);
+    public List<AitemsResponse> getItems(@RequestParam(name = "st", required = false) Integer st) {
+        if (st != null) return service.getItems(st * 5 - 4, st * 5);
         else return service.getItems();
     }
+
+    @GetMapping(path = "/count")
+    public Integer getCount() { return service.getCount(); }
+
 
     @GetMapping(path = "/{aitemId}")
     public AuctionItemResponse getItem(@PathVariable("aitemId") String aitemId){

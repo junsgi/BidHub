@@ -1,4 +1,5 @@
 import axios from "axios";
+import MyItem from "./component/SucItem";
 const S = "http://localhost:3977/";
 
 export const login = async (data, SetStatus) => {
@@ -90,8 +91,9 @@ export const submit = async (data) => {
     })
 }
 
-export const getAuctionItems = async (SetList) => {
-    let URL = S + "auctionitem/";
+export const getAuctionItems = async (SetList, st) => {
+    let URL = S + `auctionitem/?st=${st}`;
+
     await axios.get(URL)
     .then(res => {
         SetList(res.data)
@@ -107,6 +109,7 @@ export const getAuctionItemDetail = async (id, setInfo) => {
     await axios.get(URL)
     .then(res => {
         setInfo(res.data);
+        console.log(res.data)
     })
     .catch(e => console.error(e))
 }
@@ -123,8 +126,84 @@ export const bidding_api = async (data, callBack, imm) => {
     .finally(callBack)
 }
 
-export const dot = () => {
-    let n = "123"
-    n = String(n)
-    let cnt = n.length
+export const auctionClose = async (data) => {
+    let URL = S + "auction/close";
+    await axios.post(URL, data)
+    .then(res => {
+        let flag = window.confirm(res.data.message);
+        auctionDecide({...data, flag : flag})
+    })
+    .catch(e => console.error(e));
+}
+
+const auctionDecide = async (data) => {
+    let URL = S + "auction/decide";
+    await axios.post(URL, data)
+    .then(res => {
+        if (res.data.status){
+            alert(res.data.message);
+            window.location.reload();
+        } 
+    })
+    .catch(e => console.error(e))
+}
+
+export const dot = num => {
+    num = String(num)
+    let LEN = num.length
+    if (LEN <= 3) return num;
+    let res = "";
+    let i = 0;
+
+    for(i = 0 ; LEN % 3 > 0 && i < LEN % 3 ; i++) res += num[i];
+    if (LEN % 3 !== 0) {
+        res += ","; 
+    }
+    for(let j = 0;i < LEN ; i++, j++) {
+        if (j > 0 && j % 3 === 0) res += ",";
+        res += num[i];
+    }
+    return res;
+}
+
+export const getCount = async (ref, callback) => {
+    let URL = S + "auctionitem/count";
+    await axios.get(URL)
+    .then(res => {
+        ref.current = Math.ceil(res.data / 5)
+        callback()
+    })
+}
+
+export function convertSeconds(seconds) {
+    if (seconds <= 0) return "종료된 경매"
+    const MINUTE = 60;
+    const HOUR = 3600;
+    const DAY = 86400;
+
+    let days = 0;
+    let hours = 0;
+    let minutes = 0;
+    let remainingSeconds = seconds;
+
+    // days
+    days = Math.floor(remainingSeconds / DAY);
+    remainingSeconds %= DAY;
+
+    // hours
+    hours = Math.floor(remainingSeconds / HOUR);
+    remainingSeconds %= HOUR;
+
+    // minutes
+    minutes = Math.floor(remainingSeconds / MINUTE);
+    remainingSeconds %= MINUTE;
+
+    return `${days}일 ${hours}시간 ${minutes}분 ${remainingSeconds}초 남음`;
+}
+
+export const getSucItems = async (SetList) => {
+    let URL = S + `suc/${sessionStorage.getItem("id")}`;
+    await axios.get(URL)
+    .then(res => SetList(res.data.map(e => <MyItem key={e.aitem_id} data = {e} />)))
+    .catch(e => console.error(e))
 }

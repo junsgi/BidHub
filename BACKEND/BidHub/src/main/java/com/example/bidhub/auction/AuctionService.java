@@ -4,6 +4,7 @@ import com.example.bidhub.auctionitem.AuctionItemRepository;
 import com.example.bidhub.domain.*;
 import com.example.bidhub.dto.BiddingRequest;
 import com.example.bidhub.dto.ResponseDTO;
+import com.example.bidhub.dto.SucBidderDTO;
 import com.example.bidhub.member.MemberRepository;
 import com.example.bidhub.success.SucBidderRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,14 +52,15 @@ public class AuctionService {
                 item.setAitemCurrent(String.valueOf(immediate));
                 item.setAitemDate(LocalDateTime.of(1970, 1, 1, 0, 0));
                 item.setAitemCurrent(String.valueOf(immediate));
+                item.setAitemStatus("0");
 
                 //member
                 mem.setMemPoint(mem_point - immediate);
 
                 // SucBidder
                 SucBidderId sbId = new SucBidderId();
-                sbId.setAitemId(item.getAitemId());
-                sbId.setMemId(mem.getMemId());
+                sbId.setAitemId(auctionItemRepository.findById(item.getAitemId()).get());
+                sbId.setMemId(memberRepository.findById(mem.getMemId()).get());
                 SucBidder sucBidder = new SucBidder(sbId);
 
                 auctionItemRepository.save(item);
@@ -82,8 +84,49 @@ public class AuctionService {
         return res;
     }
 
-    public ResponseDTO biddingClose(BiddingRequest request, boolean imm) {
-        return ResponseDTO.builder().build();
+    public ResponseDTO biddingClose(BiddingRequest request) {
+        Optional<SucBidderDTO> obj = repository.findByAitemId(request.getItemId());
+        Optional<AuctionItem> aitem = auctionItemRepository.findById(request.getItemId());
+        ResponseDTO res = new ResponseDTO();
+        if (obj.isPresent()) {
+            SucBidderDTO dto = obj.get();
+            res.setMessage(String.format("중단하시겠습니까?\n낙찰자 : %s, 금액 : %s", dto.getMemId(), dto.getBidding()));
+        }else
+            res.setMessage("취소하시겠습니까?\n낙찰자 없음");
+
+        if (aitem.isPresent()) {
+            AuctionItem item = aitem.get();
+            item.setAitemStatus("2");
+            auctionItemRepository.save(item);
+        }
+        return res;
+    }
+
+    public ResponseDTO decide(BiddingRequest request) {
+        ResponseDTO res = ResponseDTO.builder().build();
+        AuctionItem item = auctionItemRepository.findById(request.getItemId()).get();
+        Optional<SucBidderDTO> obj = repository.findByAitemId(request.getItemId());
+        Member mem = memberRepository.findById(request.getUserId()).get();
+        if (request.getFlag()) { // 취소한다면
+            item.setAitemDate(LocalDateTime.of(1970, 1, 1, 0, 0));
+            item.setAitemStatus("0");
+
+            if (obj.isPresent()) { // 낙찰
+                SucBidderId id = new SucBidderId();
+                id.setMemId(mem);
+                id.setAitemId(item);
+                SucBidder entity = new SucBidder();
+                entity.setSucBidderId(id);
+                sucBidderRepository.save(entity);
+            }
+            res.setStatus(true);
+            res.setMessage("경매가 종료되었습니다.");
+        }else {
+            item.setAitemStatus("1");
+        }
+
+        auctionItemRepository.save(item);
+        return res;
     }
 
     private ResponseDTO biddingSwitch(int i) {

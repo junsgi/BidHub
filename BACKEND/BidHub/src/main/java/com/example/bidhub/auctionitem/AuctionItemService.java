@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +43,9 @@ public class AuctionItemService {
         }
         return response;
     }
+    public Integer getCount() {
+        return repository.findAll().size();
+    }
 
     public AuctionItemResponse getItem(String aitemId) {
         Optional<AuctionItem> res = repository.findById(aitemId);
@@ -64,13 +64,34 @@ public class AuctionItemService {
                 .aitemImmediate(ai.getAitemImmediate())
                 .aitemDate(ai.getAitemDate())
                 .aitemImg(ai.getAitemImg())
+                .status(ai.getAitemStatus())
                 .build();
     }
 
     public List<AitemsResponse> getItems() {
         List<AitemsResponse> res = new LinkedList<>();
         List<AuctionItem> list = repository.findAllByOrderByAitemIdDesc();
-//        List<AuctionItem> list = repository.findAllByAitemDateAfterOrderByAitemIdDesc(LocalDateTime.now());
+        for(AuctionItem item : list) {
+            res.add(AitemsResponse.builder()
+                    .aitem_id(item.getAitemId())
+                    .title(item.getAitemTitle())
+                    .current(Long.parseLong(item.getAitemCurrent().trim()))
+                    .immediate(item.getAitemImmediate())
+                    .remaining(String.valueOf(getRemaining(item.getAitemDate())))
+                    .status(item.getAitemStatus())
+                    .build()
+            );
+        }
+
+        return res;
+    }
+    public long getRemaining(LocalDateTime time){
+        return Duration.between(LocalDateTime.now(), time).getSeconds();
+    }
+
+    public List<AitemsResponse> getItems(Integer st, Integer ed) {
+        List<AitemsResponse> res = new LinkedList<>();
+        List<AuctionItem> list = repository.findAllByStEd(st, ed);
         for(AuctionItem item : list) {
             res.add(AitemsResponse.builder()
                     .aitem_id(item.getAitemId())
@@ -81,14 +102,7 @@ public class AuctionItemService {
                     .build()
             );
         }
-
         return res;
-    }
-    private long getRemaining(LocalDateTime time){
-        return Duration.between(LocalDateTime.now(), time).getSeconds();
-    }
-    public List<AitemsResponse> getItems(Integer st, Integer ed) {
-        return null;
     }
 
     public byte[] getImg(String id) {
@@ -117,6 +131,7 @@ public class AuctionItemService {
         entity.setAitemImmediate(dto.getImmediate());
         entity.setAitemImg(fileService.uploadFile(dto.getImg()));
         entity.setAitemTitle(dto.getTitle());
+        entity.setAitemStatus("1");
         entity.setAitemDate(end);
         return entity;
     }

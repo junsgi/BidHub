@@ -1,7 +1,7 @@
 import { Form, InputGroup, Button, Modal } from "react-bootstrap";
 import "../css/MyPage.css";
-import { useEffect, useState } from "react";
-import { recharge, getPoint } from "../Api";
+import React, { useEffect, useState } from "react";
+import { getSucItems, recharge, getPoint, dot } from "../Api";
 const MyPage = (props) => {
   const SetStatus = props.SetStatus;
   const NICK = sessionStorage.getItem("nickname") ?? "null";
@@ -18,6 +18,8 @@ const MyPage = (props) => {
   const [point, SetPoint] = useState(sessionStorage.getItem("point") ?? 0);
   const [money, SetMoney] = useState(0);
   const [pointModal, SetPointModal] = useState(false);
+  const [SucList, SetList] = useState([]);
+
   const linkKakao = () => SetPointModal(e => !e);
   const inputMoney = (e) => {
     SetMoney(e.target.value);
@@ -37,6 +39,7 @@ const MyPage = (props) => {
 
   useEffect(() => {
     getPoint(SetPoint);
+    getSucItems(SetList);
   }, []);
 
   return (
@@ -65,7 +68,7 @@ const MyPage = (props) => {
             placeholder="Username"
             aria-label="Username"
             aria-describedby="basic-addon1"
-            value={point}
+            value={dot(point)}
             disabled
             readOnly
           />
@@ -85,13 +88,7 @@ const MyPage = (props) => {
           </tr>
         </thead>
         <tbody>
-          {
-            [1, 2].map((e, i) => {
-              return (
-                <MyItem key={i} />
-              )
-            })
-          }
+          {SucList}
         </tbody>
       </table>
       {
@@ -100,6 +97,7 @@ const MyPage = (props) => {
           show={pointModal}
           onHide={() => SetPointModal(false)}
           onChange={inputMoney}
+          money = {money}
           submit={submit}
           SetMoney = {SetMoney}
         />
@@ -108,30 +106,14 @@ const MyPage = (props) => {
   );
 };
 
-export default MyPage;
 
-const MyItem = () => {
-  return (
-    <tr className="item">
-      <td className="img">
-        <img src={process.env.PUBLIC_URL + "/img/bidhub.png"}></img>
-      </td>
-      <td className="info">
-        <h6>제목</h6>
-        <div className="price">
-          <div>낙찰 금액 : </div>
-          <div>낙찰 날짜 : </div>
-        </div>
-      </td>
-    </tr>
-  );
-};
+
 
 
 function PointModal(props) {
   useEffect(()=>{
     return () => {
-      getPoint(props.SetMoney);
+      props.SetMoney(0);
     }
   }, [])
   return (
@@ -144,7 +126,7 @@ function PointModal(props) {
       <Modal.Header closeButton>
       </Modal.Header>
       <Modal.Body>
-        <h4>충전</h4>
+        <h4>충전 <sub>{dot(props.money)}</sub></h4>
         <Form className='LoginForm' onSubmit={event => event.preventDefault()} >
           <Form.Group className="mb-3" controlId="formGroupid">
             <Form.Control type="text" placeholder="금액을 입력해 주세요" onChange={props.onChange} onKeyDown={e => e.key === "Enter" ? e.stopPropagation() : null} />
@@ -158,3 +140,5 @@ function PointModal(props) {
     </Modal>
   );
 }
+
+export default React.memo(MyPage);

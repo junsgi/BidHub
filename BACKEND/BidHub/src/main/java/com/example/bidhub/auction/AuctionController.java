@@ -21,4 +21,9 @@ public class AuctionController {
         return service.bidding(request, true);
     }
 
+    @PostMapping(path = "/close")
+    public ResponseDTO close(@RequestBody BiddingRequest request) {return service.biddingClose(request);}
+
+    @PostMapping(path = "/decide")
+    public ResponseDTO decide(@RequestBody BiddingRequest request) {return service.decide(request);}
 }

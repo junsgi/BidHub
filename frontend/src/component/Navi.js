@@ -1,4 +1,5 @@
 import "../App.css";
+import React from "react";
 const Navi = () => {
     return (
         <nav onClick={()=>alert("BidHub!")}>
@@ -7,4 +8,4 @@ const Navi = () => {
         </nav>
     );
 }
-export default Navi;
+export default React.memo(Navi);
