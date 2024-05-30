@@ -1,10 +1,10 @@
-import {useEffect,  useState } from "react";
-import { dot, bidding_api, getAuctionItemDetail, auctionClose } from "../Api";
-import {  Button, Modal } from 'react-bootstrap';
-
-import Auction from "./Auction";
-import Home from "./Home";
+import { useContext, useEffect, useState } from "react";
+import { dot, bidding_api, getAuctionItemDetail, auctionClose, bidPayment } from "../Api";
+import { Button, Modal } from 'react-bootstrap';
+import {P} from "../App";
 const AuctionItemDetail = (props) => {
+    const {setpoint} = useContext(P);
+
     const [info, setInfo] = useState({
         aitemBid: "",
         aitemContent: "",
@@ -20,10 +20,15 @@ const AuctionItemDetail = (props) => {
     const id = props.data.aitem_id;
     const title = props.data.title;
     const remaining = props.remain;
+    const status = props.data.status;
+    const flag = props.flag; // 낙찰 목록인지 아닌지
+    const sucListRefresh = props.sucListRefresh;
     const refreshInfo = () => {
         getAuctionItemDetail(id, setInfo);
     }
-    useEffect(refreshInfo, []);
+    useEffect(() => {
+        getAuctionItemDetail(id, setInfo);
+    }, [id]);
 
     const bidding = () => {
         let flag = window.confirm("입찰하시겠습니까?\n환불 x, 확인 후 취소 x");
@@ -49,8 +54,15 @@ const AuctionItemDetail = (props) => {
     }
     const biddingClose = () => {
         auctionClose({ itemId: id })
-        
     };
+
+    const payment = () => {
+        const data = {
+            userId: sessionStorage.getItem("id"),
+            itemId: id,
+        }
+        bidPayment(data, sucListRefresh, setpoint)
+    }
     return (
         <Modal
             {...props}
@@ -68,11 +80,11 @@ const AuctionItemDetail = (props) => {
                     <tbody>
                         <tr>
                             <td>
-                                <img src={`http://localhost:3977/auctionitem/img/${id}`} width={256} height={256}></img>
+                                <img src={`http://localhost:3977/auctionitem/img/${id}`} alt="bidhub" width={256} height={256}></img>
                             </td>
                             <td>
                                 <p>시작가 : {dot(info.aitemStart)}원</p>
-                                <p>즉시 구매가 : {dot(info.aitemImmediate)}원</p>
+                                {info.aitemImmediate && <p>즉시 구매가 : {dot(info.aitemImmediate)}원</p>}
                                 <p>입찰 단위 : {dot(info.aitemBid)}원</p>
                                 {info.aitemCurrent > 0 && <h3>현재가 : {dot(info.aitemCurrent)}원</h3>}
                             </td>
@@ -88,23 +100,27 @@ const AuctionItemDetail = (props) => {
                             </td>
                         </tr>
                         <tr>
-                            남은 시간 : {info.aitemDate.includes("1970") ? "종료된 경매" : remaining}
+                            <td>
+                                남은 시간 : {info.aitemDate.includes("1970") ? "종료된 경매" : remaining}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </Modal.Body>
             <Modal.Footer>
                 {
-                    remaining !== "종료된 경매"
-                        ? info.memId === sessionStorage.getItem("id")
-                            ? <Button variant="warning" onClick={biddingClose} >경매 종료</Button>
-                            : <>
-                                <Button variant="danger" onClick={biddingImm} >즉시 구매</Button>
-                                <Button variant="danger" onClick={bidding}>입찰</Button>
-                            </>
-                        : null
+                    !sessionStorage.getItem("id")
+                        ? "로그인 후 이용 가능합니다."
+                        : remaining !== "종료된 경매"
+                            ? info.memId === sessionStorage.getItem("id")
+                                ? <Button variant="warning" onClick={biddingClose} >경매 종료</Button>
+                                : <>
+                                    {info.aitemImmediate && <Button variant="danger" onClick={biddingImm} >즉시 구매</Button>}
+                                    <Button variant="danger" onClick={bidding}>입찰</Button>
+                                  </>
+                            : null
                 }
-
+                {flag && status==="1" && <Button onClick={payment}>결제</Button>}
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
         </Modal>

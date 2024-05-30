@@ -37,7 +37,6 @@ public class AuctionService {
 
             long bid = Long.parseLong(item.getAitemBid());
             long current = Long.parseLong(item.getAitemCurrent().trim());
-            long immediate = Long.parseLong(item.getAitemImmediate());
             long NEW = current + bid;
 
             long now = Duration.between(LocalDateTime.now(), item.getAitemDate()).getSeconds();
@@ -45,6 +44,7 @@ public class AuctionService {
             if (now < 0) return biddingSwitch(2);
 
             if (imm) { // 즉시 구매
+                long immediate = Long.parseLong(item.getAitemImmediate());
                 if (immediate < current) return biddingSwitch(3);
                 if (mem_point < immediate) return biddingSwitch(1);
 
@@ -129,7 +129,7 @@ public class AuctionService {
         return res;
     }
 
-    private ResponseDTO biddingSwitch(int i) {
+    public ResponseDTO biddingSwitch(int i) {
         return switch (i) {
             case 1 -> ResponseDTO.builder().status(false).message("포인트가 부족합니다.").build();
             case 2 -> ResponseDTO.builder().status(false).message("경매가 종료되었습니다.").build();

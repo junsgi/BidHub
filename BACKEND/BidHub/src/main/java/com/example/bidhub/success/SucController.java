@@ -1,11 +1,10 @@
 package com.example.bidhub.success;
 
 import com.example.bidhub.dto.AitemsResponse;
+import com.example.bidhub.dto.BiddingRequest;
+import com.example.bidhub.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,5 +16,9 @@ public class SucController {
     @GetMapping(path = "/{memId}")
     public List<AitemsResponse> getMemberItems(@PathVariable("memId") String memId) {
         return service.getMemberItems(memId);
+    }
+    @PostMapping(path = "/payment")
+    public ResponseDTO insertSucBidder(@RequestBody BiddingRequest request) {
+        return service.insertSucBidder(request);
     }
 }

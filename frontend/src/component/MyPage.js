@@ -1,10 +1,12 @@
 import { Form, InputGroup, Button, Modal } from "react-bootstrap";
 import "../css/MyPage.css";
-import React, { useEffect, useState } from "react";
-import { getSucItems, recharge, getPoint, dot } from "../Api";
-const MyPage = (props) => {
-  const SetStatus = props.SetStatus;
+import React, { useEffect, useState, useContext } from "react";
+import { getSucItems, recharge, dot } from "../Api";
+import { P } from "../App";
+
+const MyPage = ({ SetStatus }) => {
   const NICK = sessionStorage.getItem("nickname") ?? "null";
+  const { point, setpoint } = useContext(P);
   const logout = () => {
     sessionStorage.clear();
     SetStatus("guest");
@@ -15,7 +17,6 @@ const MyPage = (props) => {
   }
 
 
-  const [point, SetPoint] = useState(sessionStorage.getItem("point") ?? 0);
   const [money, SetMoney] = useState(0);
   const [pointModal, SetPointModal] = useState(false);
   const [SucList, SetList] = useState([]);
@@ -36,10 +37,16 @@ const MyPage = (props) => {
       SetPointModal(false);
     }
   }
-
-  useEffect(() => {
-    getPoint(SetPoint);
+  const sucListRefresh = () => {
     getSucItems(SetList);
+  }
+  useEffect(() => {
+    // 메시지 이벤트 핸들러 등록
+    window.addEventListener('message', function (event) {
+      setpoint();
+    });
+    setpoint();
+    getSucItems(SetList, sucListRefresh);
   }, []);
 
   return (
@@ -97,9 +104,9 @@ const MyPage = (props) => {
           show={pointModal}
           onHide={() => SetPointModal(false)}
           onChange={inputMoney}
-          money = {money}
+          money={money}
           submit={submit}
-          SetMoney = {SetMoney}
+          SetMoney={SetMoney}
         />
       }
     </div>
@@ -111,7 +118,7 @@ const MyPage = (props) => {
 
 
 function PointModal(props) {
-  useEffect(()=>{
+  useEffect(() => {
     return () => {
       props.SetMoney(0);
     }

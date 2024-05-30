@@ -2,7 +2,7 @@ import {  useRef, useState } from "react";
 import { Form, InputGroup, FloatingLabel, Button } from "react-bootstrap";
 import { submit } from "../Api";
 
-const Regist = ({ SetStatus }) => {
+const Regist = ({ SetStatus, refresh }) => {
     const back = () => SetStatus("member");
     const imgRef = useRef();
     const [data, SetData] = useState({
@@ -34,7 +34,7 @@ const Regist = ({ SetStatus }) => {
         }
         if (!file) form.set("img", new Blob());
         else form.set("img", file);
-        submit(form);
+        submit(form, refresh, back);
     }
     return (
         <div className="regist">
@@ -48,6 +48,7 @@ const Regist = ({ SetStatus }) => {
                     name = "title"
                     aria-describedby="basic-addon1"
                     onChange={handler}
+                    required = {true}
                 />
             </InputGroup>
 
@@ -58,6 +59,7 @@ const Regist = ({ SetStatus }) => {
                     placeholder="시작 가격"
                     aria-describedby="basic-addon1"
                     onChange={handler}
+                    required = {true}
                 />
             </InputGroup>
 
@@ -78,6 +80,7 @@ const Regist = ({ SetStatus }) => {
                     placeholder="입찰 단위"
                     aria-describedby="basic-addon1"
                     onChange={handler}
+                    required = {true}
                 />
             </InputGroup>
 
@@ -88,6 +91,7 @@ const Regist = ({ SetStatus }) => {
                     type="datetime-local"
                     aria-describedby="basic-addon1"
                     onChange={handler}
+                    required = {true}
                 />
             </InputGroup>
 
@@ -111,6 +115,7 @@ const Regist = ({ SetStatus }) => {
                     onChange={handler}
                     placeholder="Leave a comment here"
                     style={{ height: '100px' }}
+                    required = {true}
                 />
             </FloatingLabel>
             <br />

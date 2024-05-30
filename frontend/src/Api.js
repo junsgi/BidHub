@@ -1,5 +1,5 @@
 import axios from "axios";
-import MyItem from "./component/SucItem";
+import SucItem from "./component/SucItem";
 const S = "http://localhost:3977/";
 
 export const login = async (data, SetStatus) => {
@@ -53,7 +53,7 @@ export const recharge = async (data) => {
 
 
 
-export const pointApproved = async (data) => {
+export const pointApproved = async (data, setpoint) => {
     let URL = S + "member/point/approved";
     await axios.post(URL, data)
     .then(res => {
@@ -61,6 +61,7 @@ export const pointApproved = async (data) => {
         sessionStorage.removeItem("tid");
         sessionStorage.removeItem("orderId");
         window.close();
+        setpoint();
     })
 }
 
@@ -79,12 +80,15 @@ export const getPoint = async (SetPoint) => {
     })
 }
 
-export const submit = async (data) => {
+export const submit = async (data, refresh, back) => {
     let URL = S + "auctionitem/submit";
     await axios.post(URL, data)
     .then(res => {
-        window.location.reload();
         alert(res.data.message)
+        if (res.data.status) {
+            back();
+            refresh()
+        }
     })
     .catch(e => {
         console.error(e);
@@ -109,7 +113,6 @@ export const getAuctionItemDetail = async (id, setInfo) => {
     await axios.get(URL)
     .then(res => {
         setInfo(res.data);
-        console.log(res.data)
     })
     .catch(e => console.error(e))
 }
@@ -142,13 +145,36 @@ const auctionDecide = async (data) => {
     .then(res => {
         if (res.data.status){
             alert(res.data.message);
-            window.location.reload();
         } 
     })
     .catch(e => console.error(e))
 }
 
+
+export const getCount = async (ref, callback) => {
+    let URL = S + "auctionitem/count";
+    await axios.get(URL)
+    .then(res => {
+        ref.current = Math.ceil(res.data / 5)
+        callback()
+    })
+    .catch(e => console.log(e))
+}
+
+export const bidPayment = async (data, refresh, setpoint) => {
+    let URL = S + "suc/payment";
+    await axios.post(URL, data)
+    .then(res => {
+        alert(res.data.message);
+        if (res.data.status) {
+            refresh();
+            setpoint();
+        }
+    })
+}
+
 export const dot = num => {
+    if (!num) return null
     num = String(num)
     let LEN = num.length
     if (LEN <= 3) return num;
@@ -166,14 +192,6 @@ export const dot = num => {
     return res;
 }
 
-export const getCount = async (ref, callback) => {
-    let URL = S + "auctionitem/count";
-    await axios.get(URL)
-    .then(res => {
-        ref.current = Math.ceil(res.data / 5)
-        callback()
-    })
-}
 
 export function convertSeconds(seconds) {
     if (seconds <= 0) return "종료된 경매"
@@ -201,9 +219,9 @@ export function convertSeconds(seconds) {
     return `${days}일 ${hours}시간 ${minutes}분 ${remainingSeconds}초 남음`;
 }
 
-export const getSucItems = async (SetList) => {
+export const getSucItems = async (SetList, sucListRefresh) => {
     let URL = S + `suc/${sessionStorage.getItem("id")}`;
     await axios.get(URL)
-    .then(res => SetList(res.data.map(e => <MyItem key={e.aitem_id} data = {e} />)))
+    .then(res => SetList(res.data.map(e => <SucItem key={e.aitem_id} sucListRefresh = {sucListRefresh} data = {e} />)))
     .catch(e => console.error(e))
 }

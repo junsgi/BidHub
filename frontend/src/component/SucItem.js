@@ -3,13 +3,14 @@ import AuctionItemDetail from "./AuctionItemDetail";
 import React, {  useState } from "react";
 import { convertSeconds,dot } from "../Api";
 
-const MyItem = (props) => {
+const SucItem = (props) => {
     const id = props.data.aitem_id;
     const title = props.data.title;
     const current = dot(props.data.current);
     const immediate = dot(props.data.immediate);
     const status = props.data.status === "0" ? "완료" : "대기";
     const top = props.top;
+    const sucListRefresh = props.sucListRefresh;
     const [modalShow, setModalShow] = useState(false);
     return (
         <>
@@ -21,7 +22,7 @@ const MyItem = (props) => {
                     <h4>{title}</h4>
                     <div className="price">
                         <div>현재가 : {current}원</div> 
-                        <div>즉시 구매가 : {immediate}원</div>
+                        {immediate && <div>즉시 구매가 : {immediate}원</div>}
                     </div>
                     <div>
                         결제 {status}
@@ -35,9 +36,11 @@ const MyItem = (props) => {
                     {...props}
                     remain={convertSeconds(-1)}
                     onHide={() => { setModalShow(false) }}
+                    flag = {true}
+                    sucListRefresh = {sucListRefresh}
                 />
             }
         </>
     );
 };
-export default MyItem;
+export default SucItem;
