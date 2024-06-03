@@ -1,12 +1,19 @@
 import { Form, InputGroup, Button, Modal } from "react-bootstrap";
 import "../css/MyPage.css";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo, useCallback } from "react";
 import { getSucItems, recharge, dot } from "../Api";
 import { P } from "../App";
+import RechargeModal from "../modal/RechargeModal";
+import MemberUpdate from "../modal/MemberUpdate";
 
 const MyPage = ({ SetStatus }) => {
   const NICK = sessionStorage.getItem("nickname") ?? "null";
   const { point, setpoint } = useContext(P);
+  const pointAddDot = useMemo(()=>dot(point), [point]);
+
+  const [pointModal, SetPointModal] = useState(false);
+  const [updateModal, SetUpdateModal] = useState(false);
+
   const logout = () => {
     sessionStorage.clear();
     SetStatus("guest");
@@ -17,8 +24,8 @@ const MyPage = ({ SetStatus }) => {
   }
 
 
+  const userId = sessionStorage.getItem("id") ?? "Null";
   const [money, SetMoney] = useState(0);
-  const [pointModal, SetPointModal] = useState(false);
   const [SucList, SetList] = useState([]);
 
   const linkKakao = () => SetPointModal(e => !e);
@@ -30,30 +37,33 @@ const MyPage = ({ SetStatus }) => {
     else if (isNaN(money)) alert("숫자만 입력해주세요!");
     else {
       let data = {
-        partner_user_id: sessionStorage.getItem("id"),
+        partner_user_id: userId,
         total_amount: parseInt(money)
       };
       recharge(data);
       SetPointModal(false);
     }
   }
-  const sucListRefresh = () => {
-    getSucItems(SetList);
-  }
+  const updateClick = useCallback(() => {
+    SetUpdateModal(e => !e);
+    console.log("%qkf")
+  }, [])
+
+
   useEffect(() => {
     // 메시지 이벤트 핸들러 등록
     window.addEventListener('message', function (event) {
       setpoint();
     });
     setpoint();
-    getSucItems(SetList, sucListRefresh);
+    getSucItems(SetList);
   }, []);
 
   return (
     <div className="mypage">
       <div className="myInfo">
         <h2>
-          {NICK}님&nbsp;
+          {NICK}님 &nbsp;
           <sub className="logout" onClick={logout}>
             로그아웃
           </sub>
@@ -64,7 +74,7 @@ const MyPage = ({ SetStatus }) => {
             placeholder="Username"
             aria-label="Username"
             aria-describedby="basic-addon1"
-            value={sessionStorage.getItem("id")}
+            value={userId || "userId"}
             disabled
             readOnly
           />
@@ -75,14 +85,14 @@ const MyPage = ({ SetStatus }) => {
             placeholder="Username"
             aria-label="Username"
             aria-describedby="basic-addon1"
-            value={dot(point)}
+            value={pointAddDot || 0}
             disabled
             readOnly
           />
         </InputGroup>
       </div>
       <div className="btns">
-        <Button variant="dark">정보 수정</Button>
+        <Button variant="dark" onClick={updateClick}>정보 수정</Button>
         <Button variant="dark" onClick={regist}>경매 등록</Button>
         <Button variant="dark" onClick={linkKakao}>포인트</Button>
       </div>
@@ -100,7 +110,7 @@ const MyPage = ({ SetStatus }) => {
       </table>
       {
         pointModal &&
-        <PointModal
+        <RechargeModal
           show={pointModal}
           onHide={() => SetPointModal(false)}
           onChange={inputMoney}
@@ -109,43 +119,16 @@ const MyPage = ({ SetStatus }) => {
           SetMoney={SetMoney}
         />
       }
+      {
+        updateModal && 
+        <MemberUpdate 
+          show={updateModal}
+          onHide={() => SetUpdateModal(false)}
+        />
+      }
     </div>
   );
 };
 
 
-
-
-
-function PointModal(props) {
-  useEffect(() => {
-    return () => {
-      props.SetMoney(0);
-    }
-  }, [])
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>충전 <sub>{dot(props.money)}</sub></h4>
-        <Form className='LoginForm' onSubmit={event => event.preventDefault()} >
-          <Form.Group className="mb-3" controlId="formGroupid">
-            <Form.Control type="text" placeholder="금액을 입력해 주세요" onChange={props.onChange} onKeyDown={e => e.key === "Enter" ? e.stopPropagation() : null} />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>닫기</Button>
-        <Button onClick={props.submit}>충전</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-
-export default React.memo(MyPage);
+export default MyPage;

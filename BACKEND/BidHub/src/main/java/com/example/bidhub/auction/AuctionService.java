@@ -108,7 +108,7 @@ public class AuctionService {
         Optional<SucBidderDTO> obj = repository.findByAitemId(request.getItemId());
         Member mem = memberRepository.findById(request.getUserId()).get();
         if (request.getFlag()) { // 취소한다면
-            item.setAitemDate(LocalDateTime.of(1970, 1, 1, 0, 0));
+            item.setAitemDate(LocalDateTime.now().minusSeconds(2));
             item.setAitemStatus("0");
 
             if (obj.isPresent()) { // 낙찰

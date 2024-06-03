@@ -6,6 +6,7 @@ import com.example.bidhub.auctionitem.AuctionItemService;
 import com.example.bidhub.domain.AuctionItem;
 import com.example.bidhub.domain.Member;
 import com.example.bidhub.domain.SucBidder;
+import com.example.bidhub.domain.SucBidderId;
 import com.example.bidhub.dto.AitemsResponse;
 import com.example.bidhub.dto.BiddingRequest;
 import com.example.bidhub.dto.ResponseDTO;
@@ -59,11 +60,17 @@ public class SucService {
 
             // item status, date update
             item.setAitemStatus("0");
-            item.setAitemDate(LocalDateTime.of(1970, 1, 1, 0, 0));
+            item.setAitemDate(LocalDateTime.now().minusSeconds(2));
 
+
+            SucBidder entity = new SucBidder();
+            SucBidderId id = new SucBidderId();
+            id.setMemId(mem); id.setAitemId(item);
+            entity.setSucBidderId(id);
 
             memberRepository.save(mem);
             auctionItemRepository.save(item);
+            repository.save(entity);
 
             res.setStatus(true);
             res.setMessage("결제 완료");

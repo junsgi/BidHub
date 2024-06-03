@@ -22,7 +22,6 @@ const AuctionItemDetail = (props) => {
     const remaining = props.remain;
     const status = props.data.status;
     const flag = props.flag; // 낙찰 목록인지 아닌지
-    const sucListRefresh = props.sucListRefresh;
     const refreshInfo = () => {
         getAuctionItemDetail(id, setInfo);
     }
@@ -61,7 +60,7 @@ const AuctionItemDetail = (props) => {
             userId: sessionStorage.getItem("id"),
             itemId: id,
         }
-        bidPayment(data, sucListRefresh, setpoint)
+        bidPayment(data, setpoint)
     }
     return (
         <Modal

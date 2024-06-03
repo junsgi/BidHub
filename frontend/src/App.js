@@ -7,7 +7,10 @@ import PaymentProc from "./component/PaymentProc";
 import { getPoint } from "./Api";
 export const P = React.createContext();
 function App() {
-  const [point, SetPoint] = useState(Number(sessionStorage.getItem("point")) ?? 0);
+  const [point, SetPoint] = useState(() => {
+    const savedPoint = sessionStorage.getItem("point");
+    return savedPoint !== null ? Number(savedPoint) : 0;
+  });;
 
   const setpoint = () => {
     console.log("가져왕")

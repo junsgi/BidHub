@@ -97,7 +97,6 @@ export const submit = async (data, refresh, back) => {
 
 export const getAuctionItems = async (SetList, st) => {
     let URL = S + `auctionitem/?st=${st}`;
-
     await axios.get(URL)
     .then(res => {
         SetList(res.data)
@@ -161,16 +160,23 @@ export const getCount = async (ref, callback) => {
     .catch(e => console.log(e))
 }
 
-export const bidPayment = async (data, refresh, setpoint) => {
+export const bidPayment = async (data, setpoint) => {
     let URL = S + "suc/payment";
+    console.log(data);
     await axios.post(URL, data)
     .then(res => {
         alert(res.data.message);
         if (res.data.status) {
-            refresh();
             setpoint();
         }
     })
+}
+
+export const getSucItems = async (SetList) => {
+    let URL = S + `suc/${sessionStorage.getItem("id")}`;
+    await axios.get(URL)
+    .then(res => SetList(res.data.map(e => <SucItem key={e.aitem_id} data = {e} />)))
+    .catch(e => console.error(e))
 }
 
 export const dot = num => {
@@ -217,11 +223,4 @@ export function convertSeconds(seconds) {
     remainingSeconds %= MINUTE;
 
     return `${days}일 ${hours}시간 ${minutes}분 ${remainingSeconds}초 남음`;
-}
-
-export const getSucItems = async (SetList, sucListRefresh) => {
-    let URL = S + `suc/${sessionStorage.getItem("id")}`;
-    await axios.get(URL)
-    .then(res => SetList(res.data.map(e => <SucItem key={e.aitem_id} sucListRefresh = {sucListRefresh} data = {e} />)))
-    .catch(e => console.error(e))
 }

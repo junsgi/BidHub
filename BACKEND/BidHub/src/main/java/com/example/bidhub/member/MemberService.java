@@ -105,11 +105,18 @@ public class MemberService {
     public ResponseDTO updatePw(UpdateDTO request) {
         ResponseDTO res = new ResponseDTO();
         Optional<Member> target = repository.findById(request.getId());
-        target.get().setMemPw(request.getAfter());
-        repository.save(target.get());
 
-        res.setStatus(true);
-        res.setMessage("비밀번호 변경에 성공하였습니다.");
+        if (target.isPresent()) {
+            Member mem = target.get();
+            if (!bcryptPasswordEncoder.matches(request.getBefore(), mem.getMemPw())) {
+                res.setStatus(false);
+                res.setMessage("이전 비밀번호가 일치하지 않습니다.");
+            }else {
+                mem.setMemPw(bcryptPasswordEncoder.encode(request.getAfter()));
+                res.setStatus(true);
+                res.setMessage("비밀번호 변경에 성공하였습니다.");
+            }
+        }
         return res;
     }
 

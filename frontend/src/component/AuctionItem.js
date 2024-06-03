@@ -1,16 +1,30 @@
-import "../css/MyPage.css";
+import { useEffect, useState } from "react";
+import { convertSeconds, dot } from "../Api";
 import AuctionItemDetail from "../modal/AuctionItemDetail";
-import React, {  useState } from "react";
-import { convertSeconds,dot } from "../Api";
 
-const SucItem = (props) => {
+function AuctionItem(props) {
     const id = props.data.aitem_id;
     const title = props.data.title;
     const current = dot(props.data.current);
     const immediate = dot(props.data.immediate);
-    const status = props.data.status === "0" ? "완료" : "대기";
+    let [remaining, setRemaining] = useState(parseInt(props.data.remaining));
     const top = props.top;
     const [modalShow, setModalShow] = useState(false);
+    let tickTock;
+    useEffect(() => {
+        tickTock = setInterval(() => {
+            setRemaining(e => {
+                if (e - 1 < 0) {
+                    clearInterval(tickTock);
+                    return 0;
+                }
+                return e - 1;
+            });
+        }, 1000);
+        return () => {
+            clearInterval(tickTock)
+        };
+    }, [])
     return (
         <>
             <tr className="item" style={{ top: `${top}px` }} onClick={() => setModalShow(true)}>
@@ -18,13 +32,15 @@ const SucItem = (props) => {
                     <img src={`http://localhost:3977/auctionitem/img/${id}`} width={128} height={128}></img>
                 </td>
                 <td className="info element">
-                    <h4>{title}</h4>
+                    <h4><b>{title}</b></h4>
                     <div className="price">
-                        <div>현재가 : {current}원</div> 
-                        {immediate && <div>즉시 구매가 : {immediate}원</div>}
+                        <p>현재가 : {current}원</p>
+                        {immediate && <p>, &nbsp;즉시 구매가 : {immediate}원</p>}
                     </div>
                     <div>
-                        결제 {status}
+                        {
+                            convertSeconds(remaining)
+                        }
                     </div>
                 </td>
             </tr>
@@ -33,12 +49,14 @@ const SucItem = (props) => {
                 <AuctionItemDetail
                     show={modalShow}
                     {...props}
-                    remain={convertSeconds(-1)}
+                    remain={convertSeconds(remaining)}
                     onHide={() => { setModalShow(false) }}
-                    flag = {"true"}
                 />
             }
         </>
     );
-};
-export default SucItem;
+
+    
+}
+
+export default AuctionItem;
