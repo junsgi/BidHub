@@ -1,6 +1,13 @@
+import { useEffect } from "react";
 import "../css/Auction.css";
 import { Pagination, Button } from 'react-bootstrap';
 const Auction = ({ items, output, onClick }) => {
+    useEffect(()=>{
+        console.log("Auction updated")
+    })
+    useEffect(()=>{
+        console.log("Auction mounted")
+    }, [])
     return (
         <>
             <table className="Auction">

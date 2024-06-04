@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { convertSeconds, dot } from "../Api";
 import AuctionItemDetail from "../modal/AuctionItemDetail";
 import { REFRESH } from "./Main";
-
 function AuctionItem(props) {
     const { refresh } = useContext(REFRESH)
     const id = props.data.aitem_id;
@@ -28,7 +27,7 @@ function AuctionItem(props) {
             clearInterval(tickTock)
         };
     }, [])
-    if (tickTock && remaining <= 0) clearInterval(tickTock);
+    const clearTickTock = () => setRemaining(e => -1)
     console.log(`auctionItem updated title : ${title}`)
     return (
         <>
@@ -55,6 +54,7 @@ function AuctionItem(props) {
                     show={modalShow}
                     {...props}
                     remain={convertSeconds(remaining)}
+                    clearTickTock = {clearTickTock}
                     onHide={() => { setModalShow(false); refresh() }}
                 />
             }

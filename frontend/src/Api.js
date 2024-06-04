@@ -120,7 +120,7 @@ export const getAuctionItemDetail = async (id, setInfo) => {
     .catch(e => console.error(e))
 }
 
-export const bidding_api = async (data, callBack, imm) => {
+export const bidding_api = async (data, callBack, imm, clearTickTock) => {
     let URL = S + "auction/bidding";
     if (imm) URL += "/immediately";
     await axios
