@@ -1,9 +1,6 @@
 package com.example.bidhub.auctionitem;
 
-import com.example.bidhub.dto.AuctionItemRequest;
-import com.example.bidhub.dto.AuctionItemResponse;
-import com.example.bidhub.dto.AitemsResponse;
-import com.example.bidhub.dto.ResponseDTO;
+import com.example.bidhub.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +17,13 @@ public class AuctionItemController {
     }
 
     @GetMapping(path = "/")
-    public List<AitemsResponse> getItems(@RequestParam(name = "st", required = false) Integer st) {
-        if (st != null) return service.getItems(st * 5 - 4, st * 5);
-        else return service.getItems();
+    public AuctionListResponse getItems(
+            @RequestParam(name = "st") Integer st,
+            @RequestParam(name = "sort") Integer sort,
+            @RequestParam(name = "id", required = false) String id
+    ) {
+        if (sort == 2 && (id.equals("null") || id.isEmpty())) sort = 0;
+        return service.getItems(st * 5 - 4, st * 5, sort, id);
     }
 
     @GetMapping(path = "/count")

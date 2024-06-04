@@ -1,8 +1,9 @@
-import {  useRef, useState } from "react";
+import {  useContext, useRef, useState } from "react";
 import { Form, InputGroup, FloatingLabel, Button } from "react-bootstrap";
 import { submit } from "../Api";
-
-const Regist = ({ SetStatus, refresh }) => {
+import { REFRESH } from "./Main";
+const Regist = ({ SetStatus }) => {
+    const {refresh} = useContext(REFRESH);
     const back = () => SetStatus("member");
     const imgRef = useRef();
     const [data, SetData] = useState({

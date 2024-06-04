@@ -1,28 +1,30 @@
 import "../css/Main.css";
-import { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getAuctionItems, getCount } from "../Api";
 import { Pagination } from 'react-bootstrap';
 import Auction from "./Auction";
 import Home from "./Home";
 import AuctionItem from "./AuctionItem";
+
+export const REFRESH = React.createContext();
+
 const Main = () => {
     //paging start
     const [list, SetList] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [sort, setSort] = useState(0);
     const length = useRef(0);
-    const refresh = () => {
-        getAuctionItems(SetList, currentPage);
-        getCount(length, callback);
-    } 
-    useEffect(refresh, [currentPage])
+    const refresh = useCallback(() => {
+        getAuctionItems(SetList, currentPage, sort, length, callback);
+    }, [currentPage, sort]);
 
+    const refreshDispatch = useMemo(()=>{return {refresh}}, [currentPage, sort])
 
     const onPageClick = (num) => setCurrentPage(num);
     const output = list.map((d, i) => {
         return <AuctionItem
             key={d.aitem_id}
             data={d}
-            // refresh = {refresh}
             top={i * 150}
         />
     })
@@ -39,16 +41,20 @@ const Main = () => {
         setItems(temp);
     }
     //paging end
+    const onClick = e => setSort(parseInt(e.target.name))
+
+    useEffect(refresh, [currentPage, sort])
 
     return (
         <div className="Main">
+            <REFRESH.Provider value = {refreshDispatch} >
             <Auction
                 items={items}
                 output={output}
+                onClick={onClick}
             />
-            <Home 
-                refresh = {refresh}
-            />
+            <Home />
+            </REFRESH.Provider>
         </div>
     );
 }

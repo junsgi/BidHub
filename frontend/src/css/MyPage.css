@@ -17,28 +17,28 @@
     border-collapse: separate;
     border-spacing: 10px;
     overflow : scroll;
+    
 }
 
-.mySuccessTable img{
-    border-radius: 10px;
+.mySuccessTable {
+    width : 100%;
+    border-collapse: separate;
+    border-spacing: 10px;
+    overflow : scroll;
 }
 
+.mySuccessTable tbody{
+}
 .mySuccessTable .item{
     max-width: 100%;
 }
-.mySuccessTable .img{
-    width: 0
-}
 .mySuccessTable img{
-    width : 25px;
-    height : 25px;
+    border-radius: 10px;
+    width: 0;
+    width : 96px;
+    height : 96px;
 }
 
 .mySuccessTable .info{
     text-align: center;
-    border : 2px solid blue;
-}
-
-.mySuccessTable .price{
-    border : 2px solid blue;
 }

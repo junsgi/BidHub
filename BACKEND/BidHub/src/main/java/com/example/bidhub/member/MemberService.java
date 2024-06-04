@@ -113,6 +113,7 @@ public class MemberService {
                 res.setMessage("이전 비밀번호가 일치하지 않습니다.");
             }else {
                 mem.setMemPw(bcryptPasswordEncoder.encode(request.getAfter()));
+                repository.save(mem);
                 res.setStatus(true);
                 res.setMessage("비밀번호 변경에 성공하였습니다.");
             }

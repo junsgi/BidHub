@@ -95,11 +95,15 @@ export const submit = async (data, refresh, back) => {
     })
 }
 
-export const getAuctionItems = async (SetList, st) => {
-    let URL = S + `auctionitem/?st=${st}`;
+export const getAuctionItems = async (SetList, st, sort, length, callback) => {
+    let URL = S + `auctionitem/?st=${st}&sort=${sort}`;
+    if (sort === 2) URL += `&id=${sessionStorage.getItem("id")}`;
+    console.log(URL);
     await axios.get(URL)
     .then(res => {
-        SetList(res.data)
+        SetList(res.data.list);
+        length.current = Math.ceil(res.data.len / 5);
+        callback();
     })
     .catch(e => {
         console.error(e)
@@ -140,6 +144,7 @@ export const auctionClose = async (data) => {
 
 const auctionDecide = async (data) => {
     let URL = S + "auction/decide";
+    console.log(data);
     await axios.post(URL, data)
     .then(res => {
         if (res.data.status){
@@ -149,16 +154,6 @@ const auctionDecide = async (data) => {
     .catch(e => console.error(e))
 }
 
-
-export const getCount = async (ref, callback) => {
-    let URL = S + "auctionitem/count";
-    await axios.get(URL)
-    .then(res => {
-        ref.current = Math.ceil(res.data / 5)
-        callback()
-    })
-    .catch(e => console.log(e))
-}
 
 export const bidPayment = async (data, setpoint) => {
     let URL = S + "suc/payment";
@@ -178,6 +173,34 @@ export const getSucItems = async (SetList) => {
     .then(res => SetList(res.data.map(e => <SucItem key={e.aitem_id} data = {e} />)))
     .catch(e => console.error(e))
 }
+
+
+export const updateNickOrPasswd = async (data, path) => {
+    let URL = S + `member/update/${path}`;
+    await axios.post(URL, data, {
+        headers : {
+            "Content-Type" : "application/json"
+        }
+    })
+    .then(res=>{
+        alert(res.data.message);
+        if (res.data.status && path === 'nickname') {
+            sessionStorage.setItem("nickname", data.after)
+        }
+    })
+    .catch(e => console.error(e))
+}
+
+export const without = async (data) => {
+    let URL = S + 'member/without';
+    await axios.post(URL, data)
+    .then(res => {
+        alert(res.data.message);
+        sessionStorage.clear();
+    })
+    .catch(e => console.error(e))
+}
+
 
 export const dot = num => {
     if (!num) return null
@@ -224,3 +247,4 @@ export function convertSeconds(seconds) {
 
     return `${days}일 ${hours}시간 ${minutes}분 ${remainingSeconds}초 남음`;
 }
+

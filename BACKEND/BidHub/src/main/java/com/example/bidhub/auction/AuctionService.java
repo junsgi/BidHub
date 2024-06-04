@@ -106,12 +106,12 @@ public class AuctionService {
         ResponseDTO res = ResponseDTO.builder().build();
         AuctionItem item = auctionItemRepository.findById(request.getItemId()).get();
         Optional<SucBidderDTO> obj = repository.findByAitemId(request.getItemId());
-        Member mem = memberRepository.findById(request.getUserId()).get();
         if (request.getFlag()) { // 취소한다면
             item.setAitemDate(LocalDateTime.now().minusSeconds(2));
             item.setAitemStatus("0");
 
             if (obj.isPresent()) { // 낙찰
+                Member mem = memberRepository.findById(obj.get().getMemId()).get();
                 SucBidderId id = new SucBidderId();
                 id.setMemId(mem);
                 id.setAitemId(item);

@@ -33,7 +33,7 @@ public class MemberController {
         return service.updateId(request);
     }
 
-    @PatchMapping(path = "/update/nickname")
+    @PostMapping(path = "/update/nickname")
     public ResponseDTO updateNickname(@RequestBody UpdateDTO request) {
         return service.updateNickname(request);
     }

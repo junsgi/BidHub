@@ -46,7 +46,6 @@ const MyPage = ({ SetStatus }) => {
   }
   const updateClick = useCallback(() => {
     SetUpdateModal(e => !e);
-    console.log("%qkf")
   }, [])
 
 
@@ -96,6 +95,7 @@ const MyPage = ({ SetStatus }) => {
         <Button variant="dark" onClick={regist}>경매 등록</Button>
         <Button variant="dark" onClick={linkKakao}>포인트</Button>
       </div>
+      <br />
       <table className="mySuccessTable">
         <thead>
           <tr>

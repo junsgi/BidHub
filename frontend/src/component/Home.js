@@ -3,7 +3,7 @@ import Login from './Login';
 import Signup from './Signup';
 import MyPage from './MyPage';
 import Regist from './Regist';
-const Home = ({refresh}) => {
+const Home = () => {
     const [Status, SetStatus] = useState("guest");
     useEffect(() => {
         if (sessionStorage.getItem("id") && !(Status === "member" && Status === "regist")) {
@@ -24,7 +24,6 @@ const Home = ({refresh}) => {
             <div className='Home'>
                 <Regist
                     SetStatus={SetStatus}
-                    refresh = {refresh}
                 />
             </div>
         );

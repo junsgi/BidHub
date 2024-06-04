@@ -1,11 +1,8 @@
 package com.example.bidhub.auctionitem;
 
 import com.example.bidhub.domain.AuctionItem;
-import com.example.bidhub.dto.AitemsResponse;
-import com.example.bidhub.dto.AuctionItemRequest;
-import com.example.bidhub.dto.AuctionItemResponse;
+import com.example.bidhub.dto.*;
 import com.example.bidhub.file.FileService;
-import com.example.bidhub.dto.ResponseDTO;
 import com.example.bidhub.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -68,32 +65,25 @@ public class AuctionItemService {
                 .build();
     }
 
-    public List<AitemsResponse> getItems() {
-        List<AitemsResponse> res = new LinkedList<>();
-        List<AuctionItem> list = repository.findAllByOrderByAitemIdDesc();
-        for(AuctionItem item : list) {
-            res.add(AitemsResponse.builder()
-                    .aitem_id(item.getAitemId())
-                    .title(item.getAitemTitle())
-                    .current(Long.parseLong(item.getAitemCurrent().trim()))
-                    .immediate(item.getAitemImmediate())
-                    .remaining(String.valueOf(getRemaining(item.getAitemDate())))
-                    .status(item.getAitemStatus())
-                    .build()
-            );
-        }
-
-        return res;
-    }
     public long getRemaining(LocalDateTime time){
         return Duration.between(LocalDateTime.now(), time).getSeconds();
     }
 
-    public List<AitemsResponse> getItems(Integer st, Integer ed) {
-        List<AitemsResponse> res = new LinkedList<>();
-        List<AuctionItem> list = repository.findAllByStEd(st, ed);
+    public AuctionListResponse getItems(Integer st, Integer ed, Integer sort, String id) {
+        AuctionListResponse response = new AuctionListResponse();
+        List<AitemsResponse> result = new LinkedList<>();
+        List<AuctionItem> list = switch (sort) {
+            case 1 -> repository.findAllByStEdProcessing(st, ed);
+            case 2 -> repository.findAllByStEdMine(st, ed, id);
+            default -> repository.findAllByStEd(st, ed);
+        };
+        Integer length = switch (sort) {
+            case 1 -> repository.findAllByStEdProcessingCount();
+            case 2 -> repository.findAllByStEdMineCount(id);
+            default -> getCount();
+        };
         for(AuctionItem item : list) {
-            res.add(AitemsResponse.builder()
+            result.add(AitemsResponse.builder()
                     .aitem_id(item.getAitemId())
                     .title(item.getAitemTitle())
                     .current(Long.parseLong(item.getAitemCurrent().trim()))
@@ -102,7 +92,9 @@ public class AuctionItemService {
                     .build()
             );
         }
-        return res;
+        response.setList(result);
+        response.setLen(length);
+        return response;
     }
 
     public byte[] getImg(String id) {

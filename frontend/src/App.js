@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Main from "./component/Main";
 import Navi from "./component/Navi";
@@ -13,12 +13,15 @@ function App() {
   });;
 
   const setpoint = () => {
-    console.log("가져왕")
     getPoint(SetPoint);
   }
+  const pointDispatch = useMemo(()=>{
+    return {point, setpoint};
+  }, [point])
+
   return (
     <div className="App">
-      <P.Provider value = {{point, setpoint}}>
+      <P.Provider value = {pointDispatch}>
         <Navi />
         <BrowserRouter>
           <Routes>
