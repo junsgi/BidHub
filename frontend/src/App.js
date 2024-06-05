@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Main from "./component/Main";
 import Navi from "./component/Navi";
@@ -12,9 +12,9 @@ function App() {
     return savedPoint !== null ? Number(savedPoint) : 0;
   });;
 
-  const setpoint = () => {
+  const setpoint = useCallback(() => {
     getPoint(SetPoint);
-  }
+  }, [])
   const pointDispatch = useMemo(()=>{
     return {point, setpoint};
   }, [point])

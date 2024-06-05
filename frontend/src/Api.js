@@ -72,7 +72,7 @@ export const getPoint = async (SetPoint) => {
         if (res.data.status) {
             SetPoint(res.data.point);
         }else {
-            alert(res.data.message);
+            alert(res.data.message)
         }
     })
     .catch(e => {
@@ -98,10 +98,9 @@ export const submit = async (data, refresh, back) => {
 export const getAuctionItems = async (SetList, st, sort, length, callback) => {
     let URL = S + `auctionitem/?st=${st}&sort=${sort}`;
     if (sort === 2) URL += `&id=${sessionStorage.getItem("id")}`;
-    console.log(URL);
     await axios.get(URL)
     .then(res => {
-        SetList(res.data.list);
+        SetList(e => res.data.list);
         length.current = Math.ceil(res.data.len / 5);
         callback();
     })
@@ -120,36 +119,43 @@ export const getAuctionItemDetail = async (id, setInfo) => {
     .catch(e => console.error(e))
 }
 
-export const bidding_api = async (data, callBack, imm, clearTickTock) => {
+export const bidding_api = async (data, callBack, imm, setRemaining, setpoint) => {
     let URL = S + "auction/bidding";
     if (imm) URL += "/immediately";
     await axios
     .post(URL, data)
     .then(res => {
         alert(res.data.message)
+        if (res.data.status) setRemaining(e => -1);
     })
     .catch(e => console.error(e))
-    .finally(callBack)
+    .finally(()=>{
+        callBack();
+        setpoint()
+    })
 }
 
-export const auctionClose = async (data) => {
+export const auctionClose = async (data, setRemaining) => {
     let URL = S + "auction/close";
     await axios.post(URL, data)
     .then(res => {
         let flag = window.confirm(res.data.message);
-        auctionDecide({...data, flag : flag})
+        auctionDecide({...data, flag : flag}, setRemaining)
     })
     .catch(e => console.error(e));
 }
 
-const auctionDecide = async (data) => {
+const auctionDecide = async (data, setRemaining) => {
     let URL = S + "auction/decide";
     console.log(data);
     await axios.post(URL, data)
     .then(res => {
         if (res.data.status){
             alert(res.data.message);
-        } 
+            setRemaining(e => -1)
+        }else {
+            alert("다시 시도해주세요")
+        }
     })
     .catch(e => console.error(e))
 }
@@ -201,6 +207,33 @@ export const without = async (data) => {
     .catch(e => console.error(e))
 }
 
+export const getPaymentLog = async (SetList) => {
+    let URL = S + `paymentLog/${sessionStorage.getItem("id")}`;
+    await axios.get(URL)
+    .then(res => {
+        const list = res.data.map(e => {
+            const approvedAt = 
+                e.approvedAt === "취소됨"
+                ? e.approvedAt
+                : e.approvedAt.replace("T", " ")
+            const order = e.order.replace("T", " ").substring(0, e.order.indexOf("."))
+            const amount = e.amount;
+            const tid = e.tid;
+            return (
+                <tr key = {tid}>
+                    <td>{approvedAt}</td>
+                    <td>{order}</td>
+                    <td>{tid}</td>
+                    <td>{amount}</td>
+                </tr>
+            );
+        })
+
+        SetList(list);
+    })
+    .catch(e => console.error(e))
+}
+
 
 export const dot = num => {
     if (!num) return null
@@ -211,10 +244,9 @@ export const dot = num => {
     let i = 0;
 
     for(i = 0 ; LEN % 3 > 0 && i < LEN % 3 ; i++) res += num[i];
-    if (LEN % 3 !== 0) {
-        res += ","; 
-    }
-    for(let j = 0;i < LEN ; i++, j++) {
+    if (LEN % 3 !== 0) res += ","; 
+    
+    for(let j = 0; i < LEN ; i++, j++) {
         if (j > 0 && j % 3 === 0) res += ",";
         res += num[i];
     }

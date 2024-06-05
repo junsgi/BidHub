@@ -15,6 +15,7 @@ const Main = () => {
     const [sort, setSort] = useState(0);
     const length = useRef(0);
     const refresh = useCallback(() => {
+        console.log("auctionList refresh")
         getAuctionItems(SetList, currentPage, sort, length, callback);
     }, [currentPage, sort]);
 

@@ -3,11 +3,13 @@ import "../css/Auction.css";
 import { Pagination, Button } from 'react-bootstrap';
 const Auction = ({ items, output, onClick }) => {
     useEffect(()=>{
-        console.log("Auction updated")
-    })
-    useEffect(()=>{
         console.log("Auction mounted")
     }, [])
+    
+    useEffect(()=>{
+        console.log("Auction updated")
+    })
+    
     return (
         <>
             <table className="Auction">

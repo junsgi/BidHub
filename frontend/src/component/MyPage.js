@@ -5,7 +5,7 @@ import { getSucItems, recharge, dot } from "../Api";
 import { P } from "../App";
 import RechargeModal from "../modal/RechargeModal";
 import MemberUpdate from "../modal/MemberUpdate";
-
+import PaymentModal from "../modal/PaymentModal";
 const MyPage = ({ SetStatus }) => {
   const NICK = sessionStorage.getItem("nickname") ?? "null";
   const { point, setpoint } = useContext(P);
@@ -13,6 +13,7 @@ const MyPage = ({ SetStatus }) => {
 
   const [pointModal, SetPointModal] = useState(false);
   const [updateModal, SetUpdateModal] = useState(false);
+  const [paymentModal, SetPaymentModal] = useState(false);
 
   const logout = () => {
     sessionStorage.clear();
@@ -29,9 +30,9 @@ const MyPage = ({ SetStatus }) => {
   const [SucList, SetList] = useState([]);
 
   const linkKakao = () => SetPointModal(e => !e);
-  const inputMoney = (e) => {
-    SetMoney(e.target.value);
-  }
+  const inputMoney = e => SetMoney(e.target.value);
+  const paymentModalOnOff = () => SetPaymentModal(e => !e)
+
   const submit = () => {
     if (!money || money <= 0) alert('금액을 입력해주세요!');
     else if (isNaN(money)) alert("숫자만 입력해주세요!");
@@ -44,12 +45,11 @@ const MyPage = ({ SetStatus }) => {
       SetPointModal(false);
     }
   }
-  const updateClick = useCallback(() => {
-    SetUpdateModal(e => !e);
-  }, [])
+  const updateClick = useCallback(() => SetUpdateModal(e => !e), [])
 
 
   useEffect(() => {
+    console.log("mypage mounted");
     // 메시지 이벤트 핸들러 등록
     window.addEventListener('message', function (event) {
       setpoint();
@@ -57,6 +57,7 @@ const MyPage = ({ SetStatus }) => {
     setpoint();
     getSucItems(SetList);
   }, []);
+  console.log("mypage updated");
 
   return (
     <div className="mypage">
@@ -94,6 +95,7 @@ const MyPage = ({ SetStatus }) => {
         <Button variant="dark" onClick={updateClick}>정보 수정</Button>
         <Button variant="dark" onClick={regist}>경매 등록</Button>
         <Button variant="dark" onClick={linkKakao}>포인트</Button>
+        <Button variant="dark" onClick={paymentModalOnOff}>충전 내역</Button>
       </div>
       <br />
       <table className="mySuccessTable">
@@ -124,6 +126,20 @@ const MyPage = ({ SetStatus }) => {
         <MemberUpdate 
           show={updateModal}
           onHide={() => SetUpdateModal(false)}
+        />
+      }
+      {
+        updateModal && 
+        <MemberUpdate 
+          show={updateModal}
+          onHide={() => SetUpdateModal(false)}
+        />
+      }
+      {
+        paymentModal &&
+        <PaymentModal
+          show = {paymentModal}
+          onHide={() => SetPaymentModal(false)}
         />
       }
     </div>

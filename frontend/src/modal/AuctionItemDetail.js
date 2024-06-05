@@ -22,13 +22,16 @@ const AuctionItemDetail = (props) => {
     const remaining = props.remain;
     const status = props.data.status;
     const flag = props.flag; // 낙찰 목록인지 아닌지
-    const clearTickTock = props.clearTickTock;
+    const setRemaining = props.setRemaining;
+
     const refreshInfo = () => {
         getAuctionItemDetail(id, setInfo);
-        setpoint();
     }
-    useEffect(refreshInfo, [id]);
-
+    useEffect(()=>{
+        // console.log("Detail mounted");
+        refreshInfo();
+    }, []);
+    // console.log("Detail updated");
     const bidding = () => {
         let flag = window.confirm("입찰하시겠습니까?\n환불 x, 확인 후 취소 x");
         if (flag) {
@@ -37,7 +40,7 @@ const AuctionItemDetail = (props) => {
                 itemId: id,
                 current: info.aitemCurrent
             }
-            bidding_api(data, refreshInfo, false)
+            bidding_api(data, refreshInfo, false, null, setpoint)
         }
     }
     const biddingImm = () => {
@@ -48,11 +51,11 @@ const AuctionItemDetail = (props) => {
                 itemId: id,
                 current: info.aitemCurrent
             }
-            bidding_api(data, refreshInfo, true, clearTickTock)
+            bidding_api(data, refreshInfo, true, setRemaining, setpoint)
         }
     }
     const biddingClose = () => {
-        auctionClose({ itemId: id })
+        auctionClose({ itemId: id }, setRemaining)
     };
 
     const payment = () => {

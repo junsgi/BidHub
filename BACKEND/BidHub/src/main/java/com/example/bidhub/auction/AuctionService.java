@@ -40,7 +40,6 @@ public class AuctionService {
             long NEW = current + bid;
 
             long now = Duration.between(LocalDateTime.now(), item.getAitemDate()).getSeconds();
-            if (mem_point < NEW) return biddingSwitch(1);
             if (now < 0) return biddingSwitch(2);
 
             if (imm) { // 즉시 구매
@@ -68,6 +67,8 @@ public class AuctionService {
                 sucBidderRepository.save(sucBidder);
                 return biddingSwitch(4);
             }else { // 입찰
+                if (mem_point < NEW) return biddingSwitch(1);
+
                 item.setAitemCurrent(String.valueOf(NEW));
                 auction.setMember(mem);
                 auction.setAuctionItem(item);

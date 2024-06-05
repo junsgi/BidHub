@@ -35,13 +35,13 @@ const Regist = ({ SetStatus }) => {
         }
         if (!file) form.set("img", new Blob());
         else form.set("img", file);
-        console.log(form)
         submit(form, refresh, back);
     }
     return (
         <div className="regist">
             <h5 onClick={back}> {"<"} </h5>
             <h4>경매 등록</h4>
+
             제목
             <InputGroup className="mb-3">
                 <Form.Control

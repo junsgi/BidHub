@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { convertSeconds, dot } from "../Api";
 import AuctionItemDetail from "../modal/AuctionItemDetail";
 import { REFRESH } from "./Main";
 function AuctionItem(props) {
+
     const { refresh } = useContext(REFRESH)
     const id = props.data.aitem_id;
     const title = props.data.title;
@@ -13,7 +14,7 @@ function AuctionItem(props) {
     const [modalShow, setModalShow] = useState(false);
     let tickTock;
     useEffect(() => {
-        console.log(`auctionItem load title : ${title}`)
+        // console.log(`auctionItem load title : ${title}`)
         tickTock = setInterval(() => {
             setRemaining(e => {
                 if (e - 1 < 0) {
@@ -27,8 +28,7 @@ function AuctionItem(props) {
             clearInterval(tickTock)
         };
     }, [])
-    const clearTickTock = () => setRemaining(e => -1)
-    console.log(`auctionItem updated title : ${title}`)
+    // console.log(`auctionItem updated title : ${title}`)
     return (
         <>
             <tr className="item" style={{ top: `${top}px` }} onClick={() => setModalShow(true)}>
@@ -54,7 +54,7 @@ function AuctionItem(props) {
                     show={modalShow}
                     {...props}
                     remain={convertSeconds(remaining)}
-                    clearTickTock = {clearTickTock}
+                    setRemaining = {setRemaining}
                     onHide={() => { setModalShow(false); refresh() }}
                 />
             }
@@ -64,4 +64,4 @@ function AuctionItem(props) {
 
 }
 
-export default AuctionItem;
+export default React.memo(AuctionItem);
