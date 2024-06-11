@@ -121,12 +121,12 @@ public class MemberService {
         return res;
     }
 
-    public ResponseDTO deleteMem(Map<String, Object> request){
+    public ResponseDTO deleteMem(String id){
         ResponseDTO res = new ResponseDTO();
         res.setStatus(true);
         res.setMessage("탈퇴 성공");
 
-        repository.deleteById(request.get("id").toString());
+        repository.deleteById(id);
         return res;
     }
 

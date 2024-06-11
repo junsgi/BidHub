@@ -43,9 +43,9 @@ public class MemberController {
         return service.updatePw(request);
     }
 
-    @DeleteMapping(path = "/without") // { "id" : string }
-    public ResponseDTO deleteMem(@RequestBody Map<String, Object> request){
-        return service.deleteMem(request);
+    @DeleteMapping(path = "/without/{id}") // { "id" : string }
+    public ResponseDTO deleteMem(@PathVariable("id") String id){
+        return service.deleteMem(id);
     }
 
     @PostMapping(path = "/point")

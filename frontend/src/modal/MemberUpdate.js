@@ -63,6 +63,7 @@ function MemberUpdate(props) {
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1"> 기존 비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</InputGroup.Text>
                     <Form.Control
+                        type="password"
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                         name="pw"
@@ -72,6 +73,7 @@ function MemberUpdate(props) {
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">새 비밀번호&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</InputGroup.Text>
                     <Form.Control
+                        type="password"
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                         name="newPw"
@@ -81,6 +83,7 @@ function MemberUpdate(props) {
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">비밀번호 확인&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </InputGroup.Text>
                     <Form.Control
+                        type="password"
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                         name="check"

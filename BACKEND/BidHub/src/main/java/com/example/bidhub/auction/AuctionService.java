@@ -29,6 +29,8 @@ public class AuctionService {
 
         if (obj.isPresent() && obj1.isPresent() && request.getCurrent().equals(obj.get().getAitemCurrent().trim())) {
             AuctionItem item = obj.get();
+            Optional<Member> targetObj = memberRepository.findById(item.getMember().getMemId());
+
             Member mem = obj1.get();
 
             if (item.getAitemStatus().equals("2")) return biddingSwitch(5);
@@ -65,6 +67,13 @@ public class AuctionService {
                 auctionItemRepository.save(item);
                 memberRepository.save(mem);
                 sucBidderRepository.save(sucBidder);
+
+                if (targetObj.isPresent()) {
+                    Member target = targetObj.get();
+                    target.setMemPoint(target.getMemPoint() + immediate);
+                    memberRepository.save(target);
+                }
+
                 return biddingSwitch(4);
             }else { // 입찰
                 if (mem_point < NEW) return biddingSwitch(1);
@@ -118,6 +127,7 @@ public class AuctionService {
                 id.setAitemId(item);
                 SucBidder entity = new SucBidder();
                 entity.setSucBidderId(id);
+//                mem.setMemPoint(mem.getMemPoint());
                 sucBidderRepository.save(entity);
             }
             res.setStatus(true);

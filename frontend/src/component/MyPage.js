@@ -1,7 +1,7 @@
 import { Form, InputGroup, Button, Modal } from "react-bootstrap";
 import "../css/MyPage.css";
 import React, { useEffect, useState, useContext, useMemo, useCallback } from "react";
-import { getSucItems, recharge, dot } from "../Api";
+import { getSucItems, recharge, dot, without } from "../Api";
 import { P } from "../App";
 import RechargeModal from "../modal/RechargeModal";
 import MemberUpdate from "../modal/MemberUpdate";
@@ -110,6 +110,8 @@ const MyPage = ({ SetStatus }) => {
           {SucList}
         </tbody>
       </table>
+      <hr />
+      <Button variant="dark" onClick={() => without(logout)}>회원 탈퇴</Button>
       {
         pointModal &&
         <RechargeModal
