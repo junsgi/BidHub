@@ -76,7 +76,7 @@ export const getPoint = async (SetPoint) => {
             }
         })
         .catch(e => {
-            console.error(e);
+            console.error(e); 
         })
 }
 
