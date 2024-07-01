@@ -101,7 +101,7 @@ export const getAuctionItems = async (SetList, st, sort, length, callback) => {
     await axios.get(URL)
         .then(res => {
             SetList(e => res.data.list);
-            length.current = Math.ceil(50 / 5);
+            length.current = Math.ceil(res.data.list.length / 5);
             callback();
         })
         .catch(e => {
