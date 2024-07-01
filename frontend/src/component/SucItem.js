@@ -1,4 +1,3 @@
-import "../css/MyPage.css";
 import AuctionItemDetail from "../modal/AuctionItemDetail";
 import React, {  useState } from "react";
 import { convertSeconds,dot } from "../Api";

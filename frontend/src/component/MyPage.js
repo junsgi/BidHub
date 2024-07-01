@@ -1,5 +1,4 @@
 import { Form, InputGroup, Button, Modal } from "react-bootstrap";
-import "../css/MyPage.css";
 import React, { useEffect, useState, useContext, useMemo, useCallback } from "react";
 import { getSucItems, recharge, dot, without } from "../Api";
 import { P } from "../App";

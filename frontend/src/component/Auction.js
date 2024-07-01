@@ -1,37 +1,41 @@
-import { useEffect } from "react";
-import "../css/Auction.css";
-import { Pagination, Button } from 'react-bootstrap';
-const Auction = ({ items, output, onClick }) => {
-    useEffect(()=>{
-        console.log("Auction mounted")
-    }, [])
-    
-    useEffect(()=>{
-        console.log("Auction updated")
-    })
-    
-    return (
-        <>
-            <table className="Auction">
-                <tbody >
-                    {output}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td style={{paddingTop : "20px"}}>
-                            <Pagination>{items}</Pagination>
-                        </td>
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { getAuctionItems } from "../Api";
 
-                        <td style={{textAlign : "end", marginRight : "15px"}}>
-                            <Button variant="danger" name = '0' onClick = {onClick}>기본순</Button>&nbsp;
-                            <Button variant="danger" name = '1' onClick = {onClick}>종료 제외</Button>&nbsp;
-                            <Button variant="danger" name = '2' onClick = {onClick}>내 것만</Button>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </>
-    );
-}
+const Auction = () => {
+  const [AuctionObj, SetAuctionObj] = useState({
+    len: 0,
+    list: [],
+  });
+  const currentSort = useRef(0);
+  const currentPage = useRef(1);
+  const pageLength = useRef(0);
+  useEffect(() => {
+    getAuctionItems(SetAuctionObj, currentPage, currentSort, pageLength);
+  }, []);
+  return (
+    <>
+      {AuctionObj.list}
+      <Paging />
+    </>
+  );
+};
 
-export default Auction;
+const Paging = () => {
+  return (
+    <div className="join flex justify-center mt-4 mb-4">
+      <button className="join-item btn">«</button>
+      <button className="join-item btn btn-active">1</button>
+      <button className="join-item btn">2</button>
+      <button className="join-item btn">3</button>
+      <button className="join-item btn">4</button>
+      <button className="join-item btn">»</button>
+    </div>
+  );
+};
+export default React.memo(Auction);

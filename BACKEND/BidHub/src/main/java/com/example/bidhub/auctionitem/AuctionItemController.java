@@ -23,7 +23,7 @@ public class AuctionItemController {
             @RequestParam(name = "id", required = false) String id
     ) {
         if (sort == 2 && (id.equals("null") || id.isEmpty())) sort = 0;
-        return service.getItems(st * 5 - 4, st * 5, sort, id);
+        return service.getItems(st * 9 - 8, st * 9, sort, id);
     }
 
     @GetMapping(path = "/count")
