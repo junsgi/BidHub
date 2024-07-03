@@ -119,19 +119,17 @@ export const getAuctionItems = async (SetList, st, sort, pageLength) => {
             temp.push(
               <div
                 key={list[j].aitem_id}
-                className={
-                  "card  bg-base-100 w-80 shadow-xl mr-4"
-                }
+                className={"card  bg-base-100 w-80 shadow-xl mr-4"}
               >
                 <figure>
                   <img
                     src={`http://localhost:3977/auctionitem/img/${list[j].aitem_id}`}
                     style={{
-                        width : "333px",
-                        height : "200px"
+                      width: "333px",
+                      height: "200px",
                     }}
                   />
-                  </figure>
+                </figure>
                 <div className="card-body">
                   <h2 className="card-title">{list[j].title}</h2>
                   <p>Ie?</p>
