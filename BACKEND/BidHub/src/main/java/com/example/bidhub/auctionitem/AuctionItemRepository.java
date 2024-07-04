@@ -20,7 +20,7 @@ public interface AuctionItemRepository extends JpaRepository<AuctionItem, String
             "FROM ( SELECT AITEM_ID, MEM_ID, AITEM_TITLE, AITEM_START, AITEM_IMMEDIATE, AITEM_IMG, AITEM_DATE, AITEM_CURRENT, AITEM_CONTENT, AITEM_BID, AITEM_STATUS, " +
             "           ROW_NUMBER() OVER (ORDER BY AITEM_ID DESC) as rn " +
             "    FROM auction_item) items " +
-            "WHERE items.rn BETWEEN :st AND :ed " +
+            "WHERE items.rn BETWEEN :st AND :ed AND AITEM_DATE >= LOCALTIMESTAMP " +
             "ORDER BY items.AITEM_ID DESC", nativeQuery = true)
     public List<AuctionItem> findAllByStEd(@Param("st") Integer st, @Param("ed") Integer ed);
 

@@ -78,9 +78,9 @@ public class AuctionItemService {
             default -> repository.findAllByStEd(st, ed);
         };
         Integer length = switch (sort) {
-            case 1 -> repository.findAllByStEdProcessingCount();
+            case 1 -> getCount();
             case 2 -> repository.findAllByStEdMineCount(id);
-            default -> getCount();
+            default -> repository.findAllByStEdProcessingCount();
         };
         for(AuctionItem item : list) {
             result.add(AitemsResponse.builder()

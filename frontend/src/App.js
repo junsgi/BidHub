@@ -4,6 +4,7 @@ import Auction from "./component/Auction";
 import Navi from "./component/Navi";
 import PaymentProc from "./component/PaymentProc";
 import { getPoint, getAuctionItems } from "./Api";
+import Login from "./component/Login";
 export const P = React.createContext();
 function App() {
   const [point, SetPoint] = useState(() => {
@@ -17,12 +18,18 @@ function App() {
     return { point, setpoint };
   }, [point]);
 
+  useEffect(()=>{
+    console.log("App mounted");
+  }, [])
+
+  useEffect(()=>console.log("App updated"))
   return (
     <div className="App">
       <P.Provider value={pointDispatch}>
         <Navi />
-        <Auction />
         <Routes>
+          <Route index path="/" element = {<Auction />} ></Route>
+          <Route path="/login" element = {<Login />}></Route>
           <Route path="/approve" element = {<PaymentProc />}></Route>
         </Routes>
       </P.Provider>

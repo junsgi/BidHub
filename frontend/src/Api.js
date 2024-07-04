@@ -100,53 +100,12 @@ export const submit = async (data, refresh, back) => {
     });
 };
 
-export const getAuctionItems = async (SetList, st, sort, pageLength) => {
-  let URL = S + `auctionitem/?st=${st.current}&sort=${sort.current}`;
+export const getAuctionItems = async (callBack, st, sort) => {
+  let URL = S + `auctionitem/?st=${st}&sort=${sort}`;
   if (sort === 2) URL += `&id=${sessionStorage.getItem("id")}`;
   await axios
     .get(URL)
-    .then((res) => {
-      const list = res.data.list;
-      pageLength.current = Math.ceil(res.data.len / 5);
-
-      SetList((e) => {
-        let result = [];
-        for (let i = 0; i < list.length; i += 3) {
-          let temp = [];
-
-          for (let j = i; j < i + 3; j++) {
-            if (j >= list.length) break;
-            temp.push(
-              <div
-                key={list[j].aitem_id}
-                className={"card  bg-base-100 w-80 shadow-xl mr-4"}
-              >
-                <figure>
-                  <img
-                    src={`http://localhost:3977/auctionitem/img/${list[j].aitem_id}`}
-                    style={{
-                      width: "333px",
-                      height: "200px",
-                    }}
-                  />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title">{list[j].title}</h2>
-                  <p>Ie?</p>
-                </div>
-              </div>
-            );
-          }
-
-          result.push(
-            <div key={i} className="flex flex-wrap justify-center mt-4">
-              {temp}
-            </div>
-          );
-        }
-        return { ...e, list: result };
-      });
-    })
+    .then(res => callBack(res))
     .catch((e) => {
       console.error(e);
     });
