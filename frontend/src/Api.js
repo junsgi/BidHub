@@ -2,16 +2,18 @@ import axios from "axios";
 import SucItem from "./component/SucItem";
 const S = "http://localhost:3977/";
 
-export const login = async (data, SetStatus) => {
+export const login = async (data, SetUser, navi) => {
+  console.log(data)
   let URL = S + "member/login";
   await axios
     .post(URL, data)
     .then((res) => {
       alert(res.data.message);
       if (res.data.status) {
+        SetUser({id : data.id, nickname : res.data.nickname});
         sessionStorage.setItem("id", data.id);
         sessionStorage.setItem("nickname", res.data.nickname);
-        SetStatus("member");
+        navi("/")
       }
     })
     .catch((e) => console.error(e));

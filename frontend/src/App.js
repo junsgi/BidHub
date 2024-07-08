@@ -5,6 +5,7 @@ import Navi from "./component/Navi";
 import PaymentProc from "./component/PaymentProc";
 import { getPoint, getAuctionItems } from "./Api";
 import Login from "./component/Login";
+import Signup from "./component/Signup";
 export const P = React.createContext();
 function App() {
   const [point, SetPoint] = useState(() => {
@@ -16,20 +17,26 @@ function App() {
   }, []);
   const pointDispatch = useMemo(() => {
     return { point, setpoint };
-  }, [point]);
+  }, []);
 
+
+
+  const [user, SetUser] = useState({id : "", nickname : ""});
+  const logout = useCallback(()=>{sessionStorage.clear(); SetUser({id : "", nickname : ""})}, []);
+
+  console.log("App updated")
   useEffect(()=>{
     console.log("App mounted");
   }, [])
 
-  useEffect(()=>console.log("App updated"))
   return (
     <div className="App">
       <P.Provider value={pointDispatch}>
-        <Navi />
+        <Navi logout = {logout} NICKNAME = {user.nickname} ID = {user.id} />
         <Routes>
           <Route index path="/" element = {<Auction />} ></Route>
-          <Route path="/login" element = {<Login />}></Route>
+          <Route path="/login" element = {<Login SetUser = {SetUser} />}></Route>
+          <Route path="/signup" element = {<Signup />}></Route>
           <Route path="/approve" element = {<PaymentProc />}></Route>
         </Routes>
       </P.Provider>

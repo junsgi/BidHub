@@ -30,7 +30,7 @@ const Auction = () => {
   const callBack = (res) => {
     const list = res.data.list;
     console.log(res.data.len)
-    pageLength.current = Math.ceil(res.data.len / 5);
+    pageLength.current = Math.ceil(res.data.len / 9);
     SetAuctionObj((prev) => {
       let result = [];
       for (let i = 0; i < list.length; i += 3) {

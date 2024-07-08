@@ -1,10 +1,28 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { convertSeconds, dot } from "../Api";
 function AuctionItem({data}) {
-    console.log(data)
-    const remaining = convertSeconds(+data.remaining)
+    const [remaining, setRemaining] = useState(+data.remaining);
+    const convertSec = useMemo(() => convertSeconds(remaining), [remaining]);
     const current = useMemo(() => dot(data.current), [data]);
     const immediate = useMemo(() => dot(data.immediate), [data]);
+
+    useEffect(()=>{
+        let interval = null;
+
+        if (remaining >= 0) {
+            interval = setInterval(()=>{
+                setRemaining(prev => prev - 1)
+            }, 1000)
+        }else if (interval){
+            clearInterval(interval)
+            interval = null;
+        }
+
+        return () => {
+            if (interval)
+                clearInterval(interval);
+        }
+    }, [])
     return (
         <div
             key={data.aitem_id}
@@ -24,7 +42,7 @@ function AuctionItem({data}) {
                 <h2 className="card-title">{data.title}</h2>
                 <p>현재가 : {current}원</p>
                 {immediate && <p> 즉시 구매가 : {immediate}원 </p>}
-                <p className="text-sm">{remaining}</p>
+                <p className="text-sm">{convertSec}</p>
             </div>
         </div>
     );
