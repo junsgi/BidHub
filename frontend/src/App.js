@@ -6,6 +6,7 @@ import PaymentProc from "./component/PaymentProc";
 import { getPoint, getAuctionItems } from "./Api";
 import Login from "./component/Login";
 import Signup from "./component/Signup";
+import MyPage from "./component/MyPage";
 export const P = React.createContext();
 function App() {
   const [point, SetPoint] = useState(() => {
@@ -21,7 +22,7 @@ function App() {
 
 
 
-  const [user, SetUser] = useState({id : "", nickname : ""});
+  const [user, SetUser] = useState({id : sessionStorage.getItem("id") ?? "", nickname : sessionStorage.getItem("nickname") ?? ""});
   const logout = useCallback(()=>{sessionStorage.clear(); SetUser({id : "", nickname : ""})}, []);
 
   console.log("App updated")
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route index path="/" element = {<Auction />} ></Route>
           <Route path="/login" element = {<Login SetUser = {SetUser} />}></Route>
+          <Route path="/mypage" element = {<MyPage />}></Route>
           <Route path="/signup" element = {<Signup />}></Route>
           <Route path="/approve" element = {<PaymentProc />}></Route>
         </Routes>

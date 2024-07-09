@@ -1,148 +1,37 @@
-import { Form, InputGroup, Button, Modal } from "react-bootstrap";
-import React, { useEffect, useState, useContext, useMemo, useCallback } from "react";
-import { getSucItems, recharge, dot, without } from "../Api";
-import { P } from "../App";
-import RechargeModal from "../modal/RechargeModal";
-import MemberUpdate from "../modal/MemberUpdate";
-import PaymentModal from "../modal/PaymentModal";
-const MyPage = ({ SetStatus }) => {
-  const NICK = sessionStorage.getItem("nickname") ?? "null";
-  const { point, setpoint } = useContext(P);
-  const pointAddDot = useMemo(()=>dot(point), [point]);
-
-  const [pointModal, SetPointModal] = useState(false);
-  const [updateModal, SetUpdateModal] = useState(false);
-  const [paymentModal, SetPaymentModal] = useState(false);
-
-  const logout = () => {
-    sessionStorage.clear();
-    SetStatus("guest");
-  };
-
-  const regist = () => {
-    SetStatus("regist");
-  }
-
-
-  const userId = sessionStorage.getItem("id") ?? "Null";
-  const [money, SetMoney] = useState(0);
-  const [SucList, SetList] = useState([]);
-
-  const linkKakao = () => SetPointModal(e => !e);
-  const inputMoney = e => SetMoney(e.target.value);
-  const paymentModalOnOff = () => SetPaymentModal(e => !e)
-
-  const submit = () => {
-    if (!money || money <= 0) alert('금액을 입력해주세요!');
-    else if (isNaN(money)) alert("숫자만 입력해주세요!");
-    else {
-      let data = {
-        partner_user_id: userId,
-        total_amount: parseInt(money)
-      };
-      recharge(data);
-      SetPointModal(false);
-    }
-  }
-  const updateClick = useCallback(() => SetUpdateModal(e => !e), [])
-
-
-  useEffect(() => {
-    console.log("mypage mounted");
-    // 메시지 이벤트 핸들러 등록
-    window.addEventListener('message', function (event) {
-      setpoint();
-    });
-    setpoint();
-    getSucItems(SetList);
-  }, []);
-  console.log("mypage updated");
-
+import React from "react";
+import { Link } from "react-router-dom";
+const MyPage = ({ SetStatus, NICK, }) => {
   return (
-    <div className="mypage">
-      <div className="myInfo">
-        <h2>
-          {NICK}님 &nbsp;
-          <sub className="logout" onClick={logout}>
-            로그아웃
-          </sub>
-        </h2>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">아이디</InputGroup.Text>
-          <Form.Control
-            placeholder="Username"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            value={userId || "userId"}
-            disabled
-            readOnly
-          />
-        </InputGroup>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">포인트</InputGroup.Text>
-          <Form.Control
-            placeholder="Username"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            value={pointAddDot || 0}
-            disabled
-            readOnly
-          />
-        </InputGroup>
+    <div className="mt-4">
+      <p className="m-auto mb-4 w-64 text-2xl">로그인</p>
+      <label className="input mb-2 m-auto w-64 input-bordered flex items-center gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          className="h-4 w-4 opacity-70">
+          <path
+            d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+        </svg>
+        <input type="text" className="grow" placeholder="id" name="id"  />
+      </label>
+      <label className="input mb-2 m-auto w-64 input-bordered flex items-center gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          className="h-4 w-4 opacity-70">
+          <path
+            fillRule="evenodd"
+            d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+            clipRule="evenodd" />
+        </svg>
+        <input type="password" className="grow" placeholder="password" name="pw" />
+      </label>
+      <div className="flex m-auto w-64 input-bordered flex items-center">
+        <Link to="signup" className="btn w-32">Signup</Link>&nbsp;
+        <button className="btn bg-amber-300 w-32">Login</button>
       </div>
-      <div className="btns">
-        <Button variant="dark" onClick={updateClick}>정보 수정</Button>
-        <Button variant="dark" onClick={regist}>경매 등록</Button>
-        <Button variant="dark" onClick={linkKakao}>포인트</Button>
-        <Button variant="dark" onClick={paymentModalOnOff}>충전 내역</Button>
-      </div>
-      <br />
-      <table className="mySuccessTable">
-        <thead>
-          <tr>
-            <th colSpan={2}>
-              <h3>내 낙찰 목록</h3>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {SucList}
-        </tbody>
-      </table>
-      <hr />
-      <Button variant="dark" onClick={() => without(logout)}>회원 탈퇴</Button>
-      {
-        pointModal &&
-        <RechargeModal
-          show={pointModal}
-          onHide={() => SetPointModal(false)}
-          onChange={inputMoney}
-          money={money}
-          submit={submit}
-          SetMoney={SetMoney}
-        />
-      }
-      {
-        updateModal && 
-        <MemberUpdate 
-          show={updateModal}
-          onHide={() => SetUpdateModal(false)}
-        />
-      }
-      {
-        updateModal && 
-        <MemberUpdate 
-          show={updateModal}
-          onHide={() => SetUpdateModal(false)}
-        />
-      }
-      {
-        paymentModal &&
-        <PaymentModal
-          show = {paymentModal}
-          onHide={() => SetPaymentModal(false)}
-        />
-      }
     </div>
   );
 };

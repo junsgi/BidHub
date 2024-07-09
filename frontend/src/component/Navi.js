@@ -13,7 +13,7 @@ const Navi = ({logout, NICKNAME, ID}) => {
             ID.length >= 1
               ? <>
                   <li>
-                    <Link to="/">{NICKNAME}님</Link>
+                    <Link to="/mypage">{NICKNAME}님</Link>
                   </li>
                   <li>
                     <Link to="/" onClick={logout}>로그아웃</Link>

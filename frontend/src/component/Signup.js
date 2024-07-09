@@ -8,13 +8,16 @@ const Signup = () => {
         pwCheck : ""
     })
     const onChange = useCallback((e)=>SetData(prev => {return {...prev, [e.target.name] : e.target.value}}), [])
-    const submit = () => {
-        console.log(data)
-    }
+    const submit = useCallback(() => {
+        const {id, nickname, pw, pwCheck} = data
+        if (!(id && pw && pwCheck)) {
+            alert("")
+        }
+    }, [data])
 
     return (
         <div className="mt-4">
-            <p className="m-auto mb-4 w-64 text-2xl">헤언가입</p>
+            <p className="m-auto mb-4 w-64 text-2xl">회원가입</p>
             <label className="input mb-2 m-auto w-64 input-bordered flex items-center gap-2">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
