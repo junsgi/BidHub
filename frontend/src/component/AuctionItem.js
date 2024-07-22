@@ -34,12 +34,13 @@ function AuctionItem({data}) {
                     style={{
                         width: "100%",
                         height: "200px",
+                        botton: "0"
                     }}
                 />
             </figure>
             <hr />
-            <div className="card-body">
-                <h2 className="card-title">{data.title}</h2>
+            <div className="card-body top-0">
+                <h2 className="card-title truncate ...">{data.title}</h2>
                 <p>현재가 : {current}원</p>
                 {immediate && <p> 즉시 구매가 : {immediate}원 </p>}
                 <p className="text-sm">{convertSec}</p>

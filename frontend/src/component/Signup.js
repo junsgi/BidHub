@@ -1,6 +1,8 @@
 import { useCallback, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
+    const navi = useNavigate();
     const [data, SetData] = useState({
         id: "",
         nickname: "",
@@ -21,18 +23,13 @@ const Signup = () => {
         }
 
         let URL = "http://localhost:3977/member/signup";
-        const body = {
-            id : data.id,
-            nickname : data.nickname,
-            pw : data.pw
-        }
         const response = await axios
                                 .post(URL, data)
                                 .then((res) => {return res.data;})
                                 .catch((e) => {return {status : false, message : e.message};});
         alert(response.message);
         if (response.status) {
-
+            navi("/login")
         }
     }, [data])
 
