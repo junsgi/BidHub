@@ -5,6 +5,7 @@ import com.example.bidhub.dto.*;
 import com.example.bidhub.file.FileService;
 import com.example.bidhub.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -60,7 +61,6 @@ public class AuctionItemService {
                 .aitemCurrent(ai.getAitemCurrent().trim())
                 .aitemImmediate(ai.getAitemImmediate())
                 .aitemDate(ai.getAitemDate())
-                .aitemImg(ai.getAitemImg())
                 .status(ai.getAitemStatus())
                 .build();
     }

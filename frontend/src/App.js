@@ -7,6 +7,7 @@ import { getPoint, getAuctionItems } from "./Api";
 import Login from "./component/Login";
 import Signup from "./component/Signup";
 import MyPage from "./component/MyPage";
+import Detail from "./component/Detail";
 export const P = React.createContext();
 function App() {
   const [point, SetPoint] = useState(() => {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/mypage" element = {<MyPage />}></Route>
           <Route path="/signup" element = {<Signup />}></Route>
           <Route path="/approve" element = {<PaymentProc />}></Route>
+          <Route path="/detail/:id" element = {<Detail />}></Route>
         </Routes>
       </P.Provider>
     </div>

@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Setter
 public class AuctionItemResponse {
     private String aitemId;
-    private String aitemImg;
     private String aitemTitle;
     private String aitemContent;
     private String aitemStart;
@@ -21,9 +20,8 @@ public class AuctionItemResponse {
     private String memId;
     private String status;
     @Builder
-    public AuctionItemResponse(String aitemId, String aitemImg, String aitemTitle, String aitemContent, String aitemStart, String aitemBid, LocalDateTime aitemDate, String aitemImmediate, String aitemCurrent, String memId, String status) {
+    public AuctionItemResponse(String aitemId, String aitemTitle, String aitemContent, String aitemStart, String aitemBid, LocalDateTime aitemDate, String aitemImmediate, String aitemCurrent, String memId, String status) {
         this.aitemId = aitemId;
-        this.aitemImg = aitemImg;
         this.aitemTitle = aitemTitle;
         this.aitemContent = aitemContent;
         this.aitemStart = aitemStart;

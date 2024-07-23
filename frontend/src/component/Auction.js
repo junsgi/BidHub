@@ -9,10 +9,9 @@ import { getAuctionItems } from "../Api";
 import AuctionItem from "./AuctionItem";
 
 const currentPageAndSort = (state, action) => {
-  console.log("ACTION!")
-  console.log(action)
   switch (action.type) {
     case "UPDATE page":
+      sessionStorage.setItem("page", action.value);
       return {...state, page : action.value};
     case "UPDATE sort":
       return {...state, sort : action.value};
@@ -24,12 +23,11 @@ const Auction = () => {
     len: 0,
     list: [],
   });
-  const [current, dispatch] = useReducer(currentPageAndSort, { page : 1, sort : 0 });
+  const [current, dispatch] = useReducer(currentPageAndSort, { page : sessionStorage.getItem("page") ?? 1, sort : 0 });
   const pageLength = useRef(0);
 
   const callBack = (res) => {
     const list = res.data.list;
-    console.log(res.data.len)
     pageLength.current = Math.ceil(res.data.len / 9);
     SetAuctionObj((prev) => {
       let result = [];
@@ -52,20 +50,14 @@ const Auction = () => {
   }
 
   const updatePage = (num) => {
-    console.log(num)
     dispatch({ type : "UPDATE page", value : num})
   }
   const updateSort = (num) => {
     dispatch({ type : "UPDATE sort", value : num})
   }
-  useEffect(()=>{
-    console.log("Auction mounted")
-  }, [])
   useEffect(() => {
-    console.log("change currentPage")
     getAuctionItems(callBack, current.page, current.sort);
   }, [current]);
-  useEffect(()=>console.log("Auction update"));
   return (
     <>
       {AuctionObj.list}
@@ -74,9 +66,8 @@ const Auction = () => {
   );
 };
 
-const Paging = ({pageLength, currentPage, updatePage}) => {
+const Paging = React.memo(({pageLength, currentPage, updatePage}) => {
   const LEN = pageLength.current;
-  console.log(LEN)
   const CURRENT = currentPage;
 
   const update = useCallback((idx)=>updatePage(Math.floor(LEN / 5) * 5 + idx + 1), []);
@@ -96,6 +87,6 @@ const Paging = ({pageLength, currentPage, updatePage}) => {
       <button className="join-item btn">»</button>
     </div>
   );
-};
+});
 
 export default React.memo(Auction);

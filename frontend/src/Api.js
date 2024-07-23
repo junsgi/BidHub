@@ -1,10 +1,8 @@
 import axios from "axios";
 import SucItem from "./component/SucItem";
-const S = "http://localhost:3977/";
-
 export const login = async (data, SetUser, navi) => {
   console.log(data)
-  let URL = S + "member/login";
+  let URL = "/member/login";
   await axios
     .post(URL, data)
     .then((res) => {
@@ -20,7 +18,7 @@ export const login = async (data, SetUser, navi) => {
 };
 
 export const signup = async (data, mes, con, status) => {
-  let URL = S + "member/signup";
+  let URL = "/member/signup";
   await axios
     .post(URL, data)
     .then((res) => {
@@ -36,7 +34,7 @@ export const signup = async (data, mes, con, status) => {
 };
 
 export const recharge = async (data) => {
-  const URL = S + "member/point";
+  const URL = "/member/point";
 
   await axios
     .post(URL, data)
@@ -60,7 +58,7 @@ export const recharge = async (data) => {
 };
 
 export const pointApproved = async (data, setpoint) => {
-  let URL = S + "member/point/approved";
+  let URL = "/member/point/approved";
   await axios.post(URL, data).then((res) => {
     alert(res.data.message);
     sessionStorage.removeItem("tid");
@@ -71,7 +69,7 @@ export const pointApproved = async (data, setpoint) => {
 };
 
 export const getPoint = async (SetPoint) => {
-  let URL = S + `member/getpoint?id=${sessionStorage.getItem("id")}`;
+  let URL = `/member/getpoint?id=${sessionStorage.getItem("id")}`;
   await axios
     .get(URL)
     .then((res) => {
@@ -87,7 +85,7 @@ export const getPoint = async (SetPoint) => {
 };
 
 export const submit = async (data, refresh, back) => {
-  let URL = S + "auctionitem/submit";
+  let URL = "/auctionitem/submit";
   await axios
     .post(URL, data)
     .then((res) => {
@@ -103,7 +101,7 @@ export const submit = async (data, refresh, back) => {
 };
 
 export const getAuctionItems = async (callBack, st, sort) => {
-  let URL = S + `auctionitem/?st=${st}&sort=${sort}`;
+  let URL = `/auctionitem/?st=${st}&sort=${sort}`;
   if (sort === 2) URL += `&id=${sessionStorage.getItem("id")}`;
   await axios
     .get(URL)
@@ -114,7 +112,7 @@ export const getAuctionItems = async (callBack, st, sort) => {
 };
 
 export const getAuctionItemDetail = async (id, setInfo) => {
-  let URL = S + `auctionitem/${id}`;
+  let URL = `/auctionitem/${id}`;
   await axios
     .get(URL)
     .then((res) => {
@@ -130,7 +128,7 @@ export const bidding_api = async (
   setRemaining,
   setpoint
 ) => {
-  let URL = S + "auction/bidding";
+  let URL = "/auction/bidding";
   if (imm) URL += "/immediately";
   await axios
     .post(URL, data)
@@ -146,7 +144,7 @@ export const bidding_api = async (
 };
 
 export const auctionClose = async (data, setRemaining) => {
-  let URL = S + "auction/close";
+  let URL = "/auction/close";
   await axios
     .post(URL, data)
     .then((res) => {
@@ -157,7 +155,7 @@ export const auctionClose = async (data, setRemaining) => {
 };
 
 const auctionDecide = async (data, setRemaining) => {
-  let URL = S + "auction/decide";
+  let URL = "/auction/decide";
   console.log(data);
   await axios
     .post(URL, data)
@@ -173,7 +171,7 @@ const auctionDecide = async (data, setRemaining) => {
 };
 
 export const bidPayment = async (data, setpoint) => {
-  let URL = S + "suc/payment";
+  let URL = "/suc/payment";
   console.log(data);
   await axios.post(URL, data).then((res) => {
     alert(res.data.message);
@@ -184,7 +182,7 @@ export const bidPayment = async (data, setpoint) => {
 };
 
 export const getSucItems = async (SetList) => {
-  let URL = S + `suc/${sessionStorage.getItem("id")}`;
+  let URL = `/suc/${sessionStorage.getItem("id")}`;
   await axios
     .get(URL)
     .then((res) =>
@@ -194,7 +192,7 @@ export const getSucItems = async (SetList) => {
 };
 
 export const updateNickOrPasswd = async (data, path) => {
-  let URL = S + `member/update/${path}`;
+  let URL = `/member/update/${path}`;
   await axios
     .post(URL, data, {
       headers: {
@@ -213,7 +211,7 @@ export const updateNickOrPasswd = async (data, path) => {
 export const without = async (logout) => {
   let flag = window.confirm("탈퇴 하시겠습니까?");
   if (flag) {
-    let URL = S + `member/without/${sessionStorage.getItem("id")}`;
+    let URL = `/member/without/${sessionStorage.getItem("id")}`;
     await axios
       .delete(URL)
       .then((res) => {
@@ -225,7 +223,7 @@ export const without = async (logout) => {
 };
 
 export const getPaymentLog = async (SetList) => {
-  let URL = S + `paymentLog/${sessionStorage.getItem("id")}`;
+  let URL = `/paymentLog/${sessionStorage.getItem("id")}`;
   await axios
     .get(URL)
     .then((res) => {
