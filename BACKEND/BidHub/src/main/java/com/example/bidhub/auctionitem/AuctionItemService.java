@@ -58,9 +58,9 @@ public class AuctionItemService {
                 .aitemStart(ai.getAitemStart())
                 .aitemTitle(ai.getAitemTitle())
                 .aitemBid(ai.getAitemBid())
-                .aitemCurrent(ai.getAitemCurrent().trim())
+                .aitemCurrent(Long.parseLong(ai.getAitemCurrent().trim()))
                 .aitemImmediate(ai.getAitemImmediate())
-                .aitemDate(ai.getAitemDate())
+                .aitemDate(getRemaining(ai.getAitemDate()))
                 .status(ai.getAitemStatus())
                 .build();
     }

@@ -271,7 +271,6 @@ export const dot = (num) => {
 };
 
 export function convertSeconds(seconds) {
-  if (seconds <= 0) return "종료된 경매";
   const MINUTE = 60;
   const HOUR = 3600;
   const DAY = 86400;
@@ -280,7 +279,7 @@ export function convertSeconds(seconds) {
   let hours = 0;
   let minutes = 0;
   let remainingSeconds = seconds;
-
+  
   // days
   days = Math.floor(remainingSeconds / DAY);
   remainingSeconds %= DAY;
@@ -293,5 +292,5 @@ export function convertSeconds(seconds) {
   minutes = Math.floor(remainingSeconds / MINUTE);
   remainingSeconds %= MINUTE;
 
-  return `${days}일 ${hours}시간 ${minutes}분 ${remainingSeconds}초 남음`;
+  return { days, hours, minutes, remainingSeconds };
 }

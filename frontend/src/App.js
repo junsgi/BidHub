@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, useState, useRef, useEffect } from "react";
+import "./App.css"
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Auction from "./component/Auction";
 import Navi from "./component/Navi";
 import PaymentProc from "./component/PaymentProc";
-import { getPoint, getAuctionItems } from "./Api";
+import { getPoint } from "./Api";
 import Login from "./component/Login";
 import Signup from "./component/Signup";
 import MyPage from "./component/MyPage";

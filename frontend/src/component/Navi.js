@@ -5,10 +5,10 @@ const Navi = ({logout, NICKNAME, ID}) => {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1 mx-56">
-        <Link to="/" className="btn btn-ghost text-3xl">Bid<span className="text-amber-300">Hub</span></Link>
+        <Link to="/" className="btn btn-ghost text-5xl">Bid<span className="text-amber-300">Hub</span></Link>
       </div>
       <div className="flex-none mx-56">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 text-2xl">
           {
             ID.length >= 1
               ? <>

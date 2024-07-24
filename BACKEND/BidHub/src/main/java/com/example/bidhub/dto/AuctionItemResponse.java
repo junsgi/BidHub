@@ -14,13 +14,13 @@ public class AuctionItemResponse {
     private String aitemContent;
     private String aitemStart;
     private String aitemBid;
-    private LocalDateTime aitemDate;
+    private Long aitemDate;
     private String aitemImmediate;
-    private String aitemCurrent;
+    private Long aitemCurrent;
     private String memId;
     private String status;
     @Builder
-    public AuctionItemResponse(String aitemId, String aitemTitle, String aitemContent, String aitemStart, String aitemBid, LocalDateTime aitemDate, String aitemImmediate, String aitemCurrent, String memId, String status) {
+    public AuctionItemResponse(String aitemId, String aitemTitle, String aitemContent, String aitemStart, String aitemBid, Long aitemDate, String aitemImmediate, Long aitemCurrent, String memId, String status) {
         this.aitemId = aitemId;
         this.aitemTitle = aitemTitle;
         this.aitemContent = aitemContent;

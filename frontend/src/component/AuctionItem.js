@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function AuctionItem({data}) {
     const navi = useNavigate();
     const [remaining, setRemaining] = useState(+data.remaining);
-    const convertSec = useMemo(() => convertSeconds(remaining), [remaining]);
+    const { days, hours, minutes, remainingSeconds } = useMemo(() => convertSeconds(remaining), [remaining]);
     const current = useMemo(() => dot(data.current), [data]);
     const immediate = useMemo(() => dot(data.immediate), [data]);
     const goToDetail = () => navi(`/detail/${data.aitem_id}`)
@@ -43,10 +43,11 @@ function AuctionItem({data}) {
             </figure>
             <hr />
             <div className="card-body top-0">
-                <h2 className="card-title font-semibold line-clamp-1">{data.title}</h2>
-                <p>현재가 : {current}원</p>
-                {immediate && <p> 즉시 구매가 : {immediate}원 </p>}
-                <p className="text-sm">{convertSec}</p>
+                <h2 className="card-title font-semibold line-clamp-1 text-3xl">{data.title}</h2>
+                <p className="text-xl">현재가 : {current}원</p>
+                {immediate && <p className="text-xl"> 즉시 구매가 : {immediate}원 </p>}
+                <p className="text-xl">{`${days}일 ${hours}시간 ${minutes}분 ${remainingSeconds}초 남음`}</p>
+                
             </div>
         </div>
     );
