@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-const Navi = ({logout, NICKNAME, ID}) => {
-  
+const Navi = ({ logout, NICKNAME, ID }) => {
+
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1 mx-56">
@@ -12,22 +12,25 @@ const Navi = ({logout, NICKNAME, ID}) => {
           {
             ID.length >= 1
               ? <>
-                  <li>
-                    <Link to="/mypage">{NICKNAME}님</Link>
-                  </li>
-                  <li>
-                    <Link to="/" onClick={logout}>로그아웃</Link>
-                  </li>
-                  
-                </>
+                <li>
+                  <Link to="/regist">경매 등록</Link>
+                </li>
+                <li>
+                  <Link to="/mypage">{NICKNAME}님</Link>
+                </li>
+                <li>
+                  <Link to="/" onClick={logout}>로그아웃</Link>
+                </li>
+
+              </>
               : <>
-                  <li>
-                    <Link to="./login">로그인</Link>
-                  </li>
-                  <li>
-                    <Link to="./signup">회원가입</Link>
-                  </li>
-                </>
+                <li>
+                  <Link to="./login">로그인</Link>
+                </li>
+                <li>
+                  <Link to="./signup">회원가입</Link>
+                </li>
+              </>
           }
         </ul>
       </div>

@@ -11,6 +11,7 @@ export const login = async (data, SetUser, navi) => {
         SetUser({id : data.id, nickname : res.data.nickname});
         sessionStorage.setItem("id", data.id);
         sessionStorage.setItem("nickname", res.data.nickname);
+        sessionStorage.setItem("point", res.data.point);
         navi("/")
       }
     })
@@ -84,19 +85,17 @@ export const getPoint = async (SetPoint) => {
     });
 };
 
-export const submit = async (data, refresh, back) => {
+export const submit = async (data) => {
   let URL = "/auctionitem/submit";
-  await axios
+  return await axios
     .post(URL, data)
     .then((res) => {
       alert(res.data.message);
-      if (res.data.status) {
-        back();
-        refresh();
-      }
+      return {status : res.data.status}
     })
     .catch((e) => {
       console.error(e);
+      return {status : false};
     });
 };
 
@@ -253,7 +252,7 @@ export const getPaymentLog = async (SetList) => {
 };
 
 export const dot = (num) => {
-  if (!num) return null;
+  if (!num) return 0;
   num = String(num);
   let LEN = num.length;
   if (LEN <= 3) return num;

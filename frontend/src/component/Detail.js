@@ -20,7 +20,7 @@ const Detail = () => {
     const current = useMemo(() => dot(data.aitemCurrent), [data]);
     const bid = useMemo(() => dot(data.aitemBid), [data]);
     const immediate = useMemo(() => dot(data.aitemImmediate), [data]);
-    const ID = useMemo(() => window.location.pathname.split("/")[2])
+    const ID = useMemo(() => window.location.pathname.split("/")[2], [])
 
     useEffect(() => {
         const getDetail = async () => {
@@ -32,12 +32,11 @@ const Detail = () => {
                 alert("다시 시도해주세요");
                 navi(-1);
             } else {
-                console.log(response)
                 setData(prev => response)
             }
         }
         getDetail();
-    }, [])
+    }, [ID, navi])
 
 
     return (
@@ -47,7 +46,7 @@ const Detail = () => {
                 <h1 className="text-2xl">시작가 : {start}원</h1>
             </div>
             <div className="place-items-center w-96 m-auto mb-4">
-                <img className="w-96 shadow-2xl" src={`http://localhost:3977/auctionitem/img/${ID}`}></img>
+                <img className="w-96 shadow-2xl" src={`http://localhost:3977/auctionitem/img/${ID}`} alt="img"></img>
             </div>
             <div className="divider w-96 m-auto mb-4 text-2xl">남은시간</div>
             <div className=" place-items-center w-96 m-auto mb-4">
@@ -58,11 +57,11 @@ const Detail = () => {
                 {current}원
             </div>
             <div className="divider w-96 m-auto mb-4 text-2xl">입찰 단위</div>
-            <div className=" place-items-center text-4xl w-96 m-auto mb-4 text-center">
+            <div className="place-items-center text-4xl w-96 m-auto mb-4 text-center">
                 {bid}원
             </div>
             {
-                immediate &&
+                immediate !== 0 &&
                 <>
                     <div className="divider w-96 m-auto mb-4 text-2xl">즉시 구매가</div>
                     <div className=" place-items-center text-4xl w-96 m-auto mb-4 text-center">
@@ -71,6 +70,22 @@ const Detail = () => {
                 </>
             }
 
+            <div className="divider w-96 m-auto mb-4"></div>
+            <div className="place-items-center text-4xl w-96 m-auto mb-4 text-center">
+                <button className="btn w-96 btn-block text-3xl btn-info">입찰하기</button>
+            </div>
+
+            <div className="place-items-center text-4xl w-96 m-auto mb-4 text-center">
+                <button className="btn w-96 btn-block text-3xl">즉시 구매</button>
+            </div>
+
+            <div className="place-items-center text-4xl w-96 m-auto mb-4 text-center">
+                <button className="btn w-96 btn-block text-3xl btn-warning">경매 중지</button>
+            </div>
+
+            <div className="place-items-center text-4xl w-96 m-auto mb-4 text-center">
+                <button className="btn w-96 btn-block text-3xl btn-error">경매 삭제</button>
+            </div>
         </div >
     )
 }
@@ -83,7 +98,6 @@ export default Detail;
 const Timer = ({ re }) => {
     const [remaining, setRemaining] = useState(re);
     const { days, hours, minutes, remainingSeconds } = useMemo(() => convertSeconds(remaining), [remaining]);
-    console.log(days + " " + hours + " " + minutes + " " + remainingSeconds + " " + remaining)
 
     useEffect(() => {
         let interval = null;
@@ -100,7 +114,7 @@ const Timer = ({ re }) => {
             if (interval)
                 clearInterval(interval);
         }
-    }, [])
+    }, [remaining])
     return (
         <div className="flex gap-5">
             <div>

@@ -24,7 +24,7 @@ function AuctionItem({data}) {
             if (interval)
                 clearInterval(interval);
         }
-    }, [])
+    }, [remaining])
     return (
         <div
             key={data.aitem_id}
@@ -39,13 +39,14 @@ function AuctionItem({data}) {
                         height: "200px",
                         botton: "0"
                     }}
+                    alt="img"
                 />
             </figure>
             <hr />
             <div className="card-body top-0">
                 <h2 className="card-title font-semibold line-clamp-1 text-3xl">{data.title}</h2>
                 <p className="text-xl">현재가 : {current}원</p>
-                {immediate && <p className="text-xl"> 즉시 구매가 : {immediate}원 </p>}
+                {immediate !== 0 && <p className="text-xl"> 즉시 구매가 : {immediate}원 </p>}
                 <p className="text-xl">{`${days}일 ${hours}시간 ${minutes}분 ${remainingSeconds}초 남음`}</p>
                 
             </div>
