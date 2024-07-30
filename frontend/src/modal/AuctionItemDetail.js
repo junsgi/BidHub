@@ -3,7 +3,7 @@ import { dot, bidding_api, getAuctionItemDetail, auctionClose, bidPayment } from
 import { Button, Modal } from 'react-bootstrap';
 import {P} from "../App";
 const AuctionItemDetail = (props) => {
-    const {setpoint} = useContext(P);
+    const {setpoint} = {setpoint : () => {}};
 
     const [info, setInfo] = useState({
         aitemBid: "",

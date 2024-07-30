@@ -1,14 +1,13 @@
 import axios from "axios";
 import SucItem from "./component/SucItem";
 export const login = async (data, SetUser, navi) => {
-  console.log(data)
   let URL = "/member/login";
   await axios
     .post(URL, data)
     .then((res) => {
       alert(res.data.message);
       if (res.data.status) {
-        SetUser({id : data.id, nickname : res.data.nickname});
+        SetUser({id : data.id, nickname : res.data.nickname, point : res.data.point});
         sessionStorage.setItem("id", data.id);
         sessionStorage.setItem("nickname", res.data.nickname);
         sessionStorage.setItem("point", res.data.point);

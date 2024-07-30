@@ -26,8 +26,8 @@ const Auction = () => {
     len: 0,
     list: [],
   });
-  const p = sessionStorage.getItem("page");
-  const [current, dispatch] = useReducer(currentPageAndSort, { page: isNaN(p) ? 1 : p, sort: 0 });
+  const p = sessionStorage.getItem("page") ?? 1;
+  const [current, dispatch] = useReducer(currentPageAndSort, { page: p, sort: 0 });
   const pageLength = useRef(0);
 
   const callBack = (res) => {

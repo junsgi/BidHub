@@ -5,7 +5,7 @@ const PaymentProc = () => {
     const token = window.location.search.split("=")[1];
     const tid = sessionStorage.getItem("tid");
     const partner_order_id = sessionStorage.getItem("orderId");
-    const { point, setpoint } = useContext(P);
+    const { point, setpoint } = {point : 0, setpoint : ()=>{}};
     useEffect(() => {
         // 창이 닫힐 때 실행될 함수
         window.onbeforeunload = function () {

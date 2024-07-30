@@ -158,7 +158,7 @@ public class MemberService {
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
             wr.write(new Gson().toJson(request));
             wr.flush();
-            System.out.println("request : " + new Gson().toJson(request));
+            System.out.println("point method request : " + new Gson().toJson(request));
             // response
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder result = new StringBuilder();

@@ -1,12 +1,14 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../Api";
+import USER from "../context/userInfo";
 
-const Login = ({SetUser}) => {
+const Login = () => {
+    const {setUser} = useContext(USER);
     const navi = useNavigate();
     const [data, SetData] = useState({id : "", pw : ""});
     const onChange = useCallback((e) => SetData(prev => {return {...prev, [e.target.name] : e.target.value}}), []);
-    const submit = useCallback(() => login(data, SetUser, navi), [data])
+    const submit = useCallback(() => login(data, setUser, navi), [data])
     return (
         <div className="mt-4">
             <p className="m-auto mb-4 w-64 text-2xl">로그인</p>

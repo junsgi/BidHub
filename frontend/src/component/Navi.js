@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-const Navi = ({ logout, NICKNAME, ID }) => {
-
+import USER from "../context/userInfo";
+const Navi = ({ logout }) => {
+  const {user} = useContext(USER);
+  const {id, nickname} = user;
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1 mx-56">
@@ -10,13 +12,13 @@ const Navi = ({ logout, NICKNAME, ID }) => {
       <div className="flex-none mx-56">
         <ul className="menu menu-horizontal px-1 text-2xl">
           {
-            ID.length >= 1
+            id.length >= 1
               ? <>
                 <li>
                   <Link to="/regist">경매 등록</Link>
                 </li>
                 <li>
-                  <Link to="/mypage">{NICKNAME}님</Link>
+                  <Link to="/mypage">{nickname}님</Link>
                 </li>
                 <li>
                   <Link to="/" onClick={logout}>로그아웃</Link>
