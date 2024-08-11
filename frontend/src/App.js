@@ -11,13 +11,14 @@ import Detail from "./component/Detail";
 import Regist from "./component/Regist";
 import Recharge from "./component/Recharge";
 import USER from "./context/userInfo";
+import MemberUpdate from "./component/MemberUpdate";
 function App() {
   const [user, setUser] = useState({
      id: sessionStorage.getItem("id") ?? "", 
      nickname: sessionStorage.getItem("nickname") ?? "",
-     point : sessionStorage.getItem("point") ?? 0,
+     point : +(sessionStorage.getItem("point")) ?? 0,
     });
-  const contextUser = useMemo(()=>{return {user, setUser}}, [user])
+  const contextUser = useMemo(()=>{return {user, setUser}}, [user, setUser])
   const logout = useCallback(() => { sessionStorage.clear(); setUser({ id: "", nickname: "", point : 0 }) }, []);
 
   useEffect(() => {
@@ -36,9 +37,11 @@ function App() {
           <Route path="/mypage">
             <Route index path="" element={<MyPage />} />
             <Route path="recharge" element={<Recharge />}></Route>
+            <Route path="update" element={<MemberUpdate />}></Route>
           </Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/approve" element={<PaymentProc />}></Route>
+          <Route path="*" element={<Auction />}></Route>
           <Route path="/detail/:id" element={<Detail />}></Route>
           <Route path="/regist" element={<Regist />}></Route>
         </Routes>

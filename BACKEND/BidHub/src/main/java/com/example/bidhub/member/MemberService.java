@@ -40,14 +40,13 @@ public class MemberService {
 
     private final String kakaoPaymentURL = "https://open-api.kakaopay.com/online/v1/payment/ready";
 
-    public ResponseDTO signUp(SignUpDTO request){
+    public ResponseDTO signUp(SignUpDTO request) {
         if (request.getNickname().isEmpty()) request.setNickname(request.getId());
         ResponseDTO response = new ResponseDTO();
         Optional<Member> idCheck = repository.findById(request.getId());
         if (idCheck.isPresent()) {
             response.setMessage("사용할 수 없는 아이디입니다. (중복 아이디)");
-        }
-        else {
+        } else {
             request.setPw(bcryptPasswordEncoder.encode(request.getPw()));
             Member member = SignUpDTO.toMember(request);
 
@@ -58,14 +57,13 @@ public class MemberService {
         return response;
     }
 
-    public ResponseDTO login(LoginDTO request){
+    public ResponseDTO login(LoginDTO request) {
         ResponseDTO response = new ResponseDTO();
         Optional<Member> member = repository.findById(request.getId());
 
-        if (member.isEmpty() || !bcryptPasswordEncoder.matches(request.getPw(), member.get().getMemPw())){
+        if (member.isEmpty() || !bcryptPasswordEncoder.matches(request.getPw(), member.get().getMemPw())) {
             response.setMessage("아이디 혹은 비밀번호를 다시 확인해주세요.");
-        }
-        else {
+        } else {
             response.setStatus(true);
             response.setMessage("로그인 성공");
             response.setNickname(member.get().getMemNickname());
@@ -102,26 +100,22 @@ public class MemberService {
         res.setMessage("닉네임 변경에 성공하였습니다.");
         return res;
     }
+
     public ResponseDTO updatePw(UpdateDTO request) {
         ResponseDTO res = new ResponseDTO();
         Optional<Member> target = repository.findById(request.getId());
 
         if (target.isPresent()) {
             Member mem = target.get();
-            if (!bcryptPasswordEncoder.matches(request.getBefore(), mem.getMemPw())) {
-                res.setStatus(false);
-                res.setMessage("이전 비밀번호가 일치하지 않습니다.");
-            }else {
-                mem.setMemPw(bcryptPasswordEncoder.encode(request.getAfter()));
-                repository.save(mem);
-                res.setStatus(true);
-                res.setMessage("비밀번호 변경에 성공하였습니다.");
-            }
+            mem.setMemPw(bcryptPasswordEncoder.encode(request.getAfter()));
+            repository.save(mem);
+            res.setStatus(true);
+            res.setMessage("비밀번호 변경에 성공하였습니다.");
         }
         return res;
     }
 
-    public ResponseDTO deleteMem(String id){
+    public ResponseDTO deleteMem(String id) {
         ResponseDTO res = new ResponseDTO();
         res.setStatus(true);
         res.setMessage("탈퇴 성공");
@@ -130,7 +124,7 @@ public class MemberService {
         return res;
     }
 
-    public ResponseDTO point(KakaoPointRequest request){
+    public ResponseDTO point(KakaoPointRequest request) {
         ResponseDTO res = new ResponseDTO();
         // client : partner_user_id, total_amount
 
@@ -184,13 +178,14 @@ public class MemberService {
             wr.close();
             // response DB 저장
             PaymentLogId id = new PaymentLogId();
-            id.setTid(tid); id.setMemId(request.getPartner_user_id());
+            id.setTid(tid);
+            id.setMemId(request.getPartner_user_id());
             PaymentLog entity = new PaymentLog();
             entity.setPaymentLogId(id);
             entity.setOrderId(orderId);
             paymentRepository.save(entity);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             res.setStatus(false);
             res.setMessage("오류가 발생했습니다. 다시 시도해 주세요");
@@ -201,7 +196,7 @@ public class MemberService {
     public ResponseDTO approved(ApprovedRequest request) {
         ResponseDTO res = new ResponseDTO();
         request.setCid(cid);
-        try{
+        try {
             URL url = new URL("https://open-api.kakaopay.com/online/v1/payment/approve");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -239,7 +234,8 @@ public class MemberService {
                 approvedAt = approvedAt.substring(1, approvedAt.length() - 1);
 
                 PaymentLogId id = new PaymentLogId();
-                id.setMemId(memId); id.setTid(tid);
+                id.setMemId(memId);
+                id.setTid(tid);
 
                 Optional<PaymentLog> obj = paymentRepository.findById(id);
                 Optional<Member> mem = repository.findById(memId);
@@ -255,16 +251,16 @@ public class MemberService {
                     res.setStatus(true);
                     res.setMessage("충전이 완료되었습니다.");
 
-                }else {
+                } else {
                     System.out.println("Entity Error");
                     throw new Exception();
                 }
-            }else {
+            } else {
                 res.setMessage(el.get("extras").getAsJsonObject().get("method_result_message").toString());
                 res.setStatus(false);
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             res.setStatus(false);
             res.setMessage("다시 시도해주세요");
             e.printStackTrace();
@@ -272,16 +268,14 @@ public class MemberService {
         return res;
     }
 
-    public ResponseDTO getPoint(String id) {
+    public UserInfo getUser(String id) {
         Optional<Member> opt = repository.findById(id);
-        ResponseDTO res = new ResponseDTO();
         if (opt.isPresent()) {
-            res.setStatus(true);
-            res.setPoint(opt.get().getMemPoint());
-        }else {
-            res.setMessage("다시 로그인 해주세요");
-            res.setStatus(false);
+            Member mem = opt.get();
+            return UserInfo.builder()
+                    .nickname(mem.getMemNickname())
+                    .point(mem.getMemPoint()).build();
         }
-        return res;
+        return UserInfo.builder().build();
     }
 }

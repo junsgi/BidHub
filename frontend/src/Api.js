@@ -7,7 +7,7 @@ export const login = async (data, SetUser, navi) => {
     .then((res) => {
       alert(res.data.message);
       if (res.data.status) {
-        SetUser({id : data.id, nickname : res.data.nickname, point : res.data.point});
+        SetUser(prev => {return {id : data.id, nickname : res.data.nickname, point : Number(res.data.point)}});
         sessionStorage.setItem("id", data.id);
         sessionStorage.setItem("nickname", res.data.nickname);
         sessionStorage.setItem("point", res.data.point);
@@ -57,14 +57,11 @@ export const recharge = async (data) => {
     });
 };
 
-export const pointApproved = async (data, setpoint) => {
+export const pointApproved = async (data) => {
   let URL = "/member/point/approved";
   await axios.post(URL, data).then((res) => {
     alert(res.data.message);
-    sessionStorage.removeItem("tid");
-    sessionStorage.removeItem("orderId");
     window.close();
-    setpoint();
   });
 };
 
@@ -189,7 +186,7 @@ export const getSucItems = async (SetList) => {
     .catch((e) => console.error(e));
 };
 
-export const updateNickOrPasswd = async (data, path) => {
+export const updateNickOrPasswd = async (data, path, callBack) => {
   let URL = `/member/update/${path}`;
   await axios
     .post(URL, data, {
@@ -199,9 +196,12 @@ export const updateNickOrPasswd = async (data, path) => {
     })
     .then((res) => {
       alert(res.data.message);
-      if (res.data.status && path === "nickname") {
+      if (res.data.status)
+        callBack(path)
+
+      if (res.data.status && path === "nickname")
         sessionStorage.setItem("nickname", data.after);
-      }
+      
     })
     .catch((e) => console.error(e));
 };

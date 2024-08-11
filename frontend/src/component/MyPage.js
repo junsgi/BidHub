@@ -1,9 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import USER from "../context/userInfo";
+import axios from "axios";
 const MyPage = () => {
-  const ID = sessionStorage.getItem("id");
-  const POINT = sessionStorage.getItem("point");
-  const NICK = sessionStorage.getItem("nickname");
+  const navi = useNavigate();
+  const { user, setUser } = useContext(USER);
+  const ID = user.id;
+  const POINT = user.point;
+  const NICK = user.nickname;
+  useEffect(()=>{
+    if (!ID) {
+      navi("/login")
+    }else{
+      const getUser = async () => {
+        const response = await axios.get(`/member/detail/${ID}`)
+                                  .then(res => res.data)
+                                  .catch(e => {return {point : -1, message : e.message}})
+        if (response.point < 0){
+          alert(response.message);
+        }else{
+          setUser(prev => {return {...prev, point : response.point, nickname : response.nickname}});
+          sessionStorage.setItem("nickname", response.nickname);
+          sessionStorage.setItem("point", response.point);
+        }
+      }
+      getUser();
+    }
+  }, [ID, navi, setUser])
   return (
     <div className="mt-4">
       <p className="m-auto mb-4 w-64 text-2xl">마이페이지</p>
@@ -34,7 +57,7 @@ const MyPage = () => {
         <input type="text" className="grow" value={POINT + " (point)"} readOnly />
       </label>
       <div className="m-auto w-64 input-bordered items-center">
-        <button className="btn w-64 btn-block text-3xl mb-2">정보 수정</button>
+        <Link to={"./update"} className="btn w-64 btn-block text-3xl mb-2">정보 수정</Link>
         <Link to={"./recharge"} className="btn w-64 btn-block text-3xl btn-info mb-2">포인트 충전</Link>
 
       </div>
