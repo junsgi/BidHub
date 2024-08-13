@@ -77,16 +77,11 @@ const Auction = () => {
   );
 };
 
-const Paging = ({ pageLength, currentPage, updatePage }) => {
+const Paging = React.memo(({ pageLength, currentPage, updatePage }) => {
   const LEN = pageLength.current;
   const CURRENT = currentPage;
   const update = useCallback((idx) => updatePage(Math.floor(LEN / 5) * 5 + idx + 1), [LEN, updatePage]);
-  useEffect(() => {
-    console.log("MOUNTED");
-  }, [])
-  useEffect(() => {
-    console.log("UPDATE")
-  })
+
   const SELECT = " btn-active"
   const joinItemsList = useMemo(() => {
     return new Array(LEN).fill(0).map((it, idx) => {
@@ -106,6 +101,6 @@ const Paging = ({ pageLength, currentPage, updatePage }) => {
       <button className="join-item btn">»</button>
     </div>
   );
-};
+});
 
 export default Auction;

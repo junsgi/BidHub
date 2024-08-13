@@ -12,6 +12,8 @@ import Regist from "./component/Regist";
 import Recharge from "./component/Recharge";
 import USER from "./context/userInfo";
 import MemberUpdate from "./component/MemberUpdate";
+import Toss from "./component/Toss";
+import TossProc from "./component/TossProc";
 function App() {
   const [user, setUser] = useState({
      id: sessionStorage.getItem("id") ?? "", 
@@ -20,10 +22,11 @@ function App() {
     });
   const contextUser = useMemo(()=>{return {user, setUser}}, [user, setUser])
   const logout = useCallback(() => { sessionStorage.clear(); setUser({ id: "", nickname: "", point : 0 }) }, []);
-
+  useEffect(() => {
+    console.log("App mounted")
+  }, [])
   useEffect(() => {
     console.log("App updated")
-
   })
 
 
@@ -34,17 +37,25 @@ function App() {
         <Routes>
           <Route path="/" element={<Auction />} ></Route>
           <Route path="/login" element={<Login/>}></Route>
+
           <Route path="/mypage">
             <Route index path="" element={<MyPage />} />
-            <Route path="recharge" element={<Recharge />}></Route>
             <Route path="update" element={<MemberUpdate />}></Route>
+
+            <Route path="recharge" >
+              <Route index path="" element={<Recharge />}></Route>
+              <Route path="toss" element={<Toss />}></Route>
+            </Route>
+
           </Route>
+
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/approve" element={<PaymentProc />}></Route>
-          <Route path="*" element={<Auction />}></Route>
+          <Route path="/success" element={<TossProc />}></Route>
           <Route path="/detail/:id" element={<Detail />}></Route>
           <Route path="/regist" element={<Regist />}></Route>
-        </Routes>
+          <Route path="*" element={<Auction />}></Route>
+          </Routes>
       </USER.Provider>
     </div>
   );

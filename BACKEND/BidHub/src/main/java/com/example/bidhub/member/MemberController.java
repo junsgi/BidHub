@@ -56,6 +56,11 @@ public class MemberController {
         return service.approved(request);
     }
 
+    @PostMapping(path = "/toss")
+    public ResponseDTO toss(@RequestBody ApprovedRequest request) {
+        return service.toss(request);
+    }
+
     @GetMapping(path = "/detail/{id}")
     public UserInfo getPoint(@PathVariable("id") String id) { return service.getUser(id);}
 

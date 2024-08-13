@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { dot, bidding_api, getAuctionItemDetail, auctionClose, bidPayment } from "../Api";
 import { Button, Modal } from 'react-bootstrap';
-import {P} from "../App";
 const AuctionItemDetail = (props) => {
     const {setpoint} = {setpoint : () => {}};
 
@@ -28,9 +27,8 @@ const AuctionItemDetail = (props) => {
         getAuctionItemDetail(id, setInfo);
     }
     useEffect(()=>{
-        // console.log("Detail mounted");
-        refreshInfo();
-    }, []);
+        getAuctionItemDetail(id, setInfo);
+    }, [id]);
     // console.log("Detail updated");
     const bidding = () => {
         let flag = window.confirm("입찰하시겠습니까?\n환불 x, 확인 후 취소 x");

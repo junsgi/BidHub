@@ -2,7 +2,7 @@ import { useCallback, useContext, useMemo, useState } from "react";
 import { dot } from "../Api";
 import axios from "axios";
 import USER from "../context/userInfo";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Recharge = () => {
     const {user} = useContext(USER);
@@ -52,7 +52,7 @@ const Recharge = () => {
             
             <div className="w-64 input-bordered items-center">
                 <button className="btn btn-block text-3xl btn-warning mb-2" onClick={onClick}>카카오페이</button>
-                <button className="btn btn-block text-3xl btn-info mb-2" >토스</button>
+                <Link to={"./toss"} state={{amount : recharge}} className="btn btn-block text-3xl btn-info mb-2" >토스</Link>
             </div>
         </div>
     );

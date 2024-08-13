@@ -268,13 +268,43 @@ public class MemberService {
         return res;
     }
 
+    public ResponseDTO toss(ApprovedRequest request) {
+        String now = LocalDateTime.now().toString();
+        ResponseDTO res = ResponseDTO.builder().build();
+
+        request.setPartner_order_id(now + "_" + request.getPartner_user_id() + "_" + request.getPg_token());
+        PaymentLogId ID = new PaymentLogId();
+        ID.setMemId(request.getPartner_user_id());
+        ID.setTid(request.getTid());
+
+        Optional<Member> obj = repository.findById(request.getPartner_user_id());
+        if (obj.isPresent()) {
+            Member mem = obj.get();
+            mem.setMemPoint(mem.getMemPoint() + Long.parseLong(request.getPg_token()));
+
+            PaymentLog entity = new PaymentLog();
+            entity.setPaymentLogId(ID);
+            entity.setOrderId(request.getPartner_order_id());
+            entity.setApprovedAt(now);
+
+            Member result = repository.save(mem);
+            paymentRepository.save(entity);
+
+            res.setMessage("충전이 완료되었습니다.");
+            res.setStatus(true);
+            res.setPoint(result.getMemPoint());
+        }else {
+            res.setMessage("다시 시도해주세요");
+            res.setStatus(false);
+        }
+        return res;
+    }
+
     public UserInfo getUser(String id) {
         Optional<Member> opt = repository.findById(id);
         if (opt.isPresent()) {
             Member mem = opt.get();
-            return UserInfo.builder()
-                    .nickname(mem.getMemNickname())
-                    .point(mem.getMemPoint()).build();
+            return UserInfo.builder().nickname(mem.getMemNickname()).point(mem.getMemPoint()).build();
         }
         return UserInfo.builder().build();
     }

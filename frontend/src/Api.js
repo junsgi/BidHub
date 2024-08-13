@@ -121,7 +121,6 @@ export const bidding_api = async (
   callBack,
   imm,
   setRemaining,
-  setpoint
 ) => {
   let URL = "/auction/bidding";
   if (imm) URL += "/immediately";
@@ -134,7 +133,6 @@ export const bidding_api = async (
     .catch((e) => console.error(e))
     .finally(() => {
       callBack();
-      setpoint();
     });
 };
 
