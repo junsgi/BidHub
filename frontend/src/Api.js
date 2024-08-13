@@ -136,29 +136,25 @@ export const bidding_api = async (
     });
 };
 
-export const auctionClose = async (data, setRemaining) => {
+export const auctionClose = async (data) => {
   let URL = "/auction/close";
   await axios
     .post(URL, data)
     .then((res) => {
       let flag = window.confirm(res.data.message);
-      auctionDecide({ ...data, flag: flag }, setRemaining);
+      auctionDecide({ ...data, flag: flag });
     })
     .catch((e) => console.error(e));
 };
 
-const auctionDecide = async (data, setRemaining) => {
+const auctionDecide = async (data) => {
   let URL = "/auction/decide";
-  console.log(data);
   await axios
     .post(URL, data)
     .then((res) => {
       if (res.data.status) {
         alert(res.data.message);
-        setRemaining((e) => -1);
-      } else {
-        alert("다시 시도해주세요");
-      }
+      } 
     })
     .catch((e) => console.error(e));
 };

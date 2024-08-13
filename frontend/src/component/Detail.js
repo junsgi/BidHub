@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { bidding_api, convertSeconds, dot } from "../Api";
+import { auctionClose, bidding_api, convertSeconds, dot } from "../Api";
 import USER from "../context/userInfo";
 const Detail = () => {
     const { user } = useContext(USER);
@@ -47,13 +47,41 @@ const Detail = () => {
             }
             bidding_api(request, getDetail, false, null)
         }
-    }, [data, user, getDetail])
+    }, [data.aitemId, data.aitemCurrent, user.id, getDetail])
+    const biddingImm = useCallback(() => {
+        let flag = window.confirm("즉시 구매하시겠습니까?\n환불 x, 확인 후 취소 x");
+        if (flag) {
+            const body = {
+                userId: user.id,
+                itemId: data.aitemId,
+                current: data.aitemCurrent
+            }
+            bidding_api(body, getDetail, true)
+        }
+    }, [data.aitemId, data.aitemCurrent, user.id, getDetail])
+
+    const biddingClose = useCallback(() => {
+        auctionClose({ itemId: ID })
+    }, [ID]);
+
+    const REMOVE = useCallback(async () => {
+        let flag = window.confirm("삭제하시겠습니까?");
+        if (flag) {
+            const response = await axios.delete(`/auctionitem/${ID}`)
+                .then(res => res.data)
+                .catch(e => { return { status: false, message: e.message } })
+            alert(response.message);
+            if (response.status) {
+                navi(-1)
+            }
+        }
+
+    }, [ID])
 
     const getDetailAndSetButtons = useCallback(async () => {
         const response = await axios.get(`/auctionitem/${ID}`)
             .then(res => res.data)
             .catch(e => { console.error(e); return { status: 400 } })
-
         if (response.status === 400) {
             alert("다시 시도해주세요");
             navi(-1);
@@ -62,9 +90,9 @@ const Detail = () => {
                 let list = []
                 const nope = <div key="nope" className=" text-4xl w-full m-auto mb-4 text-center" aria-readonly><Link to={"/login"} className="btn w-full btn-block text-3xl" >로그인 후 이용할 수 있습니다.</Link></div>
                 const bid = <div key="bid" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-info" onClick={bidding}>입찰하기</button></div>
-                const imm = <div key="imm" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full btn-block text-3xl">즉시 구매</button></div>
-                const cancel = <div key="cancel" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-warning">경매 중지</button></div>
-                const remove = <div key="remove" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-error">경매 삭제</button></div>
+                const imm = <div key="imm" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full btn-block text-3xl" onClick={biddingImm}>즉시 구매</button></div>
+                const cancel = <div key="cancel" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-warning" onClick={biddingClose}>경매 종료</button></div>
+                const remove = <div key="remove" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-error" onClick={REMOVE}>경매 삭제</button></div>
                 if (!user.id) {
                     list.push(nope)
                 }
@@ -74,14 +102,17 @@ const Detail = () => {
                         list.push(imm)
                     }
                 } else if (user?.id && user.id === response.memId) {
-                    list.push(cancel);
-                    list.push(remove);
+                    if (response.status === "1")
+                        list.push(cancel);
+                    else
+                        list.push(remove);
                 }
                 setBtns(() => list);
                 return response;
             })
         }
-    }, [user, ID])
+    }, [user, ID, bidding, biddingImm, biddingClose, REMOVE, navi])
+
 
 
     useEffect(() => {
@@ -104,7 +135,7 @@ const Detail = () => {
 
             <div className="divider w-full m-auto mb-4 text-2xl">남은시간</div>
             <div className="  w-full m-auto mb-4">
-                {data.aitemDate > 0 ? <Timer re={data.aitemDate}></Timer> : "종료된 거래"}
+                {data.aitemDate > 0 ? <Timer re={data.aitemDate}></Timer> : <p className="text-2xl text-center">종료된 거래</p>}
             </div>
             <div className="divider w-full m-auto mb-4 text-2xl">현재가격</div>
             <div className="  text-4xl w-full m-auto mb-4 text-center font-bold">
@@ -133,7 +164,7 @@ export default Detail;
 
 
 
-const Timer = ({ re }) => {
+const Timer = React.memo(({ re }) => {
     const [remaining, setRemaining] = useState(re);
     const { days, hours, minutes, remainingSeconds } = useMemo(() => convertSeconds(remaining), [remaining]);
 
@@ -181,4 +212,4 @@ const Timer = ({ re }) => {
             </div>
         </div>
     );
-}
+});
