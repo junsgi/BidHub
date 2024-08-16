@@ -1,8 +1,10 @@
 import AuctionItemDetail from "../modal/AuctionItemDetail";
 import React, {  useState } from "react";
 import { convertSeconds,dot } from "../Api";
+import { useNavigate } from "react-router-dom";
 
-const SucItem = (props) => {
+const WinItem = (props) => {
+    const navi = useNavigate();
     const id = props.data.aitem_id;
     const title = props.data.title;
     const current = dot(props.data.current);
@@ -12,7 +14,7 @@ const SucItem = (props) => {
     const [modalShow, setModalShow] = useState(false);
     return (
         <>
-            <tr className="item" style={{ top: `${top}px` }} onClick={() => setModalShow(true)}>
+            <tr className="item" style={{ top: `${top}px` }} onClick={() => navi(`/mypage/${id}`)}>
                 <td className="img element">
                     <img src={`http://localhost:3977/auctionitem/img/${id}`} width={128} height={128}></img>
                 </td>
@@ -40,4 +42,4 @@ const SucItem = (props) => {
         </>
     );
 };
-export default SucItem;
+export default WinItem;

@@ -57,8 +57,10 @@ const MyPage = () => {
         <input type="text" className="grow" value={POINT + " (point)"} readOnly />
       </label>
       <div className="m-auto w-64 input-bordered items-center">
-        <Link to={"./update"} className="btn w-64 btn-block text-3xl mb-2">정보 수정</Link>
         <Link to={"./recharge"} className="btn w-64 btn-block text-3xl btn-info mb-2">포인트 충전</Link>
+        <Link to={"./recharge/log"} className="btn w-64 btn-block text-3xl btn-info mb-2">포인트 충전 내역</Link>
+        <Link to={"./update"} className="btn w-64 btn-block text-3xl mb-2">정보 수정</Link>
+        <Link to={"./successfulBid"} className="btn w-64 btn-block text-3xl mb-2">낙찰 목록</Link>
 
       </div>
     </div>

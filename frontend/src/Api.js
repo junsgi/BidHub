@@ -1,5 +1,5 @@
 import axios from "axios";
-import SucItem from "./component/SucItem";
+import WinItem from "./component/WinItem";
 export const login = async (data, SetUser, navi) => {
   let URL = "/member/login";
   await axios
@@ -7,7 +7,7 @@ export const login = async (data, SetUser, navi) => {
     .then((res) => {
       alert(res.data.message);
       if (res.data.status) {
-        SetUser(prev => {return {id : data.id, nickname : res.data.nickname, point : Number(res.data.point)}});
+        SetUser(prev => { return { id: data.id, nickname: res.data.nickname, point: Number(res.data.point) } });
         sessionStorage.setItem("id", data.id);
         sessionStorage.setItem("nickname", res.data.nickname);
         sessionStorage.setItem("point", res.data.point);
@@ -87,11 +87,11 @@ export const submit = async (data) => {
     .post(URL, data)
     .then((res) => {
       alert(res.data.message);
-      return {status : res.data.status}
+      return { status: res.data.status }
     })
     .catch((e) => {
       console.error(e);
-      return {status : false};
+      return { status: false };
     });
 };
 
@@ -120,7 +120,6 @@ export const bidding_api = async (
   data,
   callBack,
   imm,
-  setRemaining,
 ) => {
   let URL = "/auction/bidding";
   if (imm) URL += "/immediately";
@@ -128,7 +127,6 @@ export const bidding_api = async (
     .post(URL, data)
     .then((res) => {
       alert(res.data.message);
-      if (res.data.status) setRemaining((e) => -1);
     })
     .catch((e) => console.error(e))
     .finally(() => {
@@ -136,25 +134,26 @@ export const bidding_api = async (
     });
 };
 
-export const auctionClose = async (data) => {
+export const auctionClose = async (data, callback) => {
   let URL = "/auction/close";
   await axios
     .post(URL, data)
     .then((res) => {
       let flag = window.confirm(res.data.message);
-      auctionDecide({ ...data, flag: flag });
+      auctionDecide({ ...data, flag: flag }, callback);
     })
     .catch((e) => console.error(e));
 };
 
-const auctionDecide = async (data) => {
+const auctionDecide = async (data, callback) => {
   let URL = "/auction/decide";
   await axios
     .post(URL, data)
     .then((res) => {
       if (res.data.status) {
         alert(res.data.message);
-      } 
+        callback();
+      }
     })
     .catch((e) => console.error(e));
 };
@@ -175,7 +174,7 @@ export const getSucItems = async (SetList) => {
   await axios
     .get(URL)
     .then((res) =>
-      SetList(res.data.map((e) => <SucItem key={e.aitem_id} data={e} />))
+      SetList(res.data.map((e) => <WinItem key={e.aitem_id} data={e} />))
     )
     .catch((e) => console.error(e));
 };
@@ -195,7 +194,7 @@ export const updateNickOrPasswd = async (data, path, callBack) => {
 
       if (res.data.status && path === "nickname")
         sessionStorage.setItem("nickname", data.after);
-      
+
     })
     .catch((e) => console.error(e));
 };
@@ -227,14 +226,14 @@ export const getPaymentLog = async (SetList) => {
         const order = e.order
           .replace("T", " ")
           .substring(0, e.order.indexOf("."));
-        const amount = e.amount;
+        const amount = dot(e.amount);
         const tid = e.tid;
         return (
-          <tr key={tid}>
-            <td>{approvedAt}</td>
-            <td>{order}</td>
-            <td>{tid}</td>
-            <td>{amount}</td>
+          <tr key={tid} className="hover">
+            <td className="text-2xl">{order}</td>
+            <td className="text-2xl">{approvedAt}</td>
+            <td className="text-2xl">{tid}</td>
+            <td className="text-2xl">{amount}원</td>
           </tr>
         );
       });
@@ -271,7 +270,7 @@ export function convertSeconds(seconds) {
   let hours = 0;
   let minutes = 0;
   let remainingSeconds = seconds;
-  
+
   // days
   days = Math.floor(remainingSeconds / DAY);
   remainingSeconds %= DAY;

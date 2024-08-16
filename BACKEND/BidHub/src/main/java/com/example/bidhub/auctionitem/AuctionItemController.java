@@ -40,4 +40,6 @@ public class AuctionItemController {
         return service.getImg(aitemId);
     }
 
+    @DeleteMapping(path = "/{id}")
+    public ResponseDTO deleteItem(@PathVariable("id") String id) { return service.deleteItem(id); }
 }

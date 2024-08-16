@@ -111,6 +111,22 @@ public class AuctionItemService {
         }
         return response;
     }
+
+    public ResponseDTO deleteItem(String id){
+        ResponseDTO res = new ResponseDTO();
+        Optional<AuctionItem> obj = repository.findById(id);
+        if (obj.isPresent()) {
+            AuctionItem item = obj.get();
+            repository.delete(item);
+            res.setMessage("삭제되었습니다.");
+            res.setStatus(true);
+        }else {
+            res.setMessage("다시 시도해주세요");
+            res.setStatus(false);
+        }
+        return res;
+    }
+
     public AuctionItem dtoToEntity(AuctionItemRequest dto, LocalDateTime end) {
         AuctionItem entity = new AuctionItem();
         String id = LocalDateTime.now().toString() + "_" + repository.getSeq().toString();

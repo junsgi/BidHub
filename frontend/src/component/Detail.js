@@ -35,8 +35,7 @@ const Detail = () => {
         } else {
             setData(prev => response)
         }
-    }, [ID])
-
+    }, [ID, navi])
     const bidding = useCallback(() => {
         let flag = window.confirm("입찰하시겠습니까?\n환불 x, 확인 후 취소 x");
         if (flag) {
@@ -47,7 +46,8 @@ const Detail = () => {
             }
             bidding_api(request, getDetail, false, null)
         }
-    }, [data.aitemId, data.aitemCurrent, user.id, getDetail])
+    }, [data.aitemCurrent, data.aitemId, user.id, getDetail])
+
     const biddingImm = useCallback(() => {
         let flag = window.confirm("즉시 구매하시겠습니까?\n환불 x, 확인 후 취소 x");
         if (flag) {
@@ -61,8 +61,8 @@ const Detail = () => {
     }, [data.aitemId, data.aitemCurrent, user.id, getDetail])
 
     const biddingClose = useCallback(() => {
-        auctionClose({ itemId: ID })
-    }, [ID]);
+        auctionClose({ itemId: ID }, getDetail)
+    }, [ID, getDetail]);
 
     const REMOVE = useCallback(async () => {
         let flag = window.confirm("삭제하시겠습니까?");
@@ -76,17 +76,16 @@ const Detail = () => {
             }
         }
 
-    }, [ID])
-
-    const getDetailAndSetButtons = useCallback(async () => {
-        const response = await axios.get(`/auctionitem/${ID}`)
-            .then(res => res.data)
-            .catch(e => { console.error(e); return { status: 400 } })
-        if (response.status === 400) {
-            alert("다시 시도해주세요");
-            navi(-1);
-        } else {
-            setData(() => {
+    }, [ID, navi])
+    useEffect(() => {
+        const getDetailAndSetButtons = async () => {
+            const response = await axios.get(`/auctionitem/${ID}`)
+                .then(res => res.data)
+                .catch(e => { console.error(e); return { status: 400 } })
+            if (response.status === 400) {
+                alert("다시 시도해주세요");
+                navi(-1);
+            } else {
                 let list = []
                 const nope = <div key="nope" className=" text-4xl w-full m-auto mb-4 text-center" aria-readonly><Link to={"/login"} className="btn w-full btn-block text-3xl" >로그인 후 이용할 수 있습니다.</Link></div>
                 const bid = <div key="bid" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-info" onClick={bidding}>입찰하기</button></div>
@@ -107,17 +106,13 @@ const Detail = () => {
                     else
                         list.push(remove);
                 }
-                setBtns(() => list);
-                return response;
-            })
+                setBtns(list);
+                setData(response);
+            }
         }
-    }, [user, ID, bidding, biddingImm, biddingClose, REMOVE, navi])
-
-
-
-    useEffect(() => {
         getDetailAndSetButtons();
-    }, [ID, navi])
+    }, [ID, navi, bidding, biddingImm, biddingClose, REMOVE, user.id])
+
     return (
         <div className="flex flex-col w-96 border-opacity-50 m-auto place-items-center">
             <div className="w-full  w-full text-center mb-4">

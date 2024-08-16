@@ -14,6 +14,8 @@ import USER from "./context/userInfo";
 import MemberUpdate from "./component/MemberUpdate";
 import Toss from "./component/Toss";
 import TossProc from "./component/TossProc";
+import PaymentLog from "./modal/PaymentLog";
+import Winning from "./component/Winning";
 function App() {
   const [user, setUser] = useState({
     id: sessionStorage.getItem("id") ?? "",
@@ -45,9 +47,11 @@ function App() {
 
               <Route path="recharge" >
                 <Route index path="" element={<Recharge />}></Route>
+                <Route index path="log" element={<PaymentLog />}></Route>
                 <Route path="toss" element={<Toss />}></Route>
               </Route>
-
+              <Route path = "successfulBid" element = {<Winning />}/>
+              <Route path=":id" element={<Detail />}></Route>
             </Route>
 
             <Route path="/signup" element={<Signup />}></Route>

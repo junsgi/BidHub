@@ -52,11 +52,11 @@ public class AuctionService {
                 // Auction Item
                 item.setAitemCurrent(String.valueOf(immediate));
                 item.setAitemDate(LocalDateTime.of(1970, 1, 1, 0, 0));
-                item.setAitemCurrent(String.valueOf(immediate));
                 item.setAitemStatus("0");
 
                 //member
                 mem.setMemPoint(mem_point - immediate);
+
 
                 // SucBidder
                 SucBidderId sbId = new SucBidderId();
@@ -127,8 +127,9 @@ public class AuctionService {
                 id.setAitemId(item);
                 SucBidder entity = new SucBidder();
                 entity.setSucBidderId(id);
-//                mem.setMemPoint(mem.getMemPoint());
+                mem.setMemPoint(mem.getMemPoint() + Long.parseLong(item.getAitemCurrent().trim()));
                 sucBidderRepository.save(entity);
+                memberRepository.save(mem);
             }
             res.setStatus(true);
             res.setMessage("경매가 종료되었습니다.");
