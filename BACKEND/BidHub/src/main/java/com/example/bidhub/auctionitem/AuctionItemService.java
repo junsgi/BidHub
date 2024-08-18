@@ -73,14 +73,14 @@ public class AuctionItemService {
         AuctionListResponse response = new AuctionListResponse();
         List<AitemsResponse> result = new LinkedList<>();
         List<AuctionItem> list = switch (sort) {
-            case 1 -> repository.findAllByStEdProcessing(st, ed);
-            case 2 -> repository.findAllByStEdMine(st, ed, id);
+            case 0 -> repository.findAllByStEdProcessing(st, ed);
+            case 1 -> repository.findAllByStEdMine(st, ed, id);
             default -> repository.findAllByStEd(st, ed);
         };
         Integer length = switch (sort) {
-            case 1 -> getCount();
-            case 2 -> repository.findAllByStEdMineCount(id);
-            default -> repository.findAllByStEdProcessingCount();
+            case 0 -> repository.findAllByStEdProcessingCount();
+            case 1 -> repository.findAllByStEdMineCount(id);
+            default -> getCount();
         };
         for(AuctionItem item : list) {
             result.add(AitemsResponse.builder()

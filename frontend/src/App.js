@@ -24,13 +24,6 @@ function App() {
   });
   const contextUser = useMemo(() => { return { user, setUser } }, [user, setUser])
   const logout = useCallback(() => { sessionStorage.clear(); setUser({ id: "", nickname: "", point: 0 }) }, []);
-  useEffect(() => {
-    console.log("App mounted")
-  }, [])
-  useEffect(() => {
-    console.log("App updated")
-  })
-
 
   return (
     <div className="App">

@@ -97,7 +97,7 @@ export const submit = async (data) => {
 
 export const getAuctionItems = async (callBack, st, sort) => {
   let URL = `/auctionitem/?st=${st}&sort=${sort}`;
-  if (sort === 2) URL += `&id=${sessionStorage.getItem("id")}`;
+  if (sort === 1) URL += `&id=${sessionStorage.getItem("id")}`;
   await axios
     .get(URL)
     .then(res => callBack(res))
@@ -169,13 +169,11 @@ export const bidPayment = async (data, setpoint) => {
   });
 };
 
-export const getSucItems = async (SetList) => {
+export const getSucItems = async (callBack) => {
   let URL = `/suc/${sessionStorage.getItem("id")}`;
   await axios
     .get(URL)
-    .then((res) =>
-      SetList(res.data.map((e) => <WinItem key={e.aitem_id} data={e} />))
-    )
+    .then(res => callBack(res))
     .catch((e) => console.error(e));
 };
 

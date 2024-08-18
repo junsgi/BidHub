@@ -22,7 +22,7 @@ public class AuctionItemController {
             @RequestParam(name = "sort") Integer sort,
             @RequestParam(name = "id", required = false) String id
     ) {
-        if (sort == 2 && (id.equals("null") || id.isEmpty())) sort = 0;
+        if (sort == 1 && (id == null || id.isEmpty())) sort = 0;
         return service.getItems(st * 9 - 8, st * 9, sort, id);
     }
 

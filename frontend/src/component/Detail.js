@@ -92,20 +92,23 @@ const Detail = () => {
                 const imm = <div key="imm" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full btn-block text-3xl" onClick={biddingImm}>즉시 구매</button></div>
                 const cancel = <div key="cancel" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-warning" onClick={biddingClose}>경매 종료</button></div>
                 const remove = <div key="remove" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-error" onClick={REMOVE}>경매 삭제</button></div>
-                if (!user.id) {
-                    list.push(nope)
-                }
-                else if (user.id !== response.memId) {
-                    list.push(bid);
-                    if (dot(response.aitemImmediate) !== 0) {
-                        list.push(imm)
+                if (response.status !== "0") {
+                    if (!user.id) {
+                        list.push(nope)
                     }
-                } else if (user?.id && user.id === response.memId) {
-                    if (response.status === "1")
-                        list.push(cancel);
-                    else
-                        list.push(remove);
+                    else if (user.id !== response.memId) {
+                        list.push(bid);
+                        if (dot(response.aitemImmediate) !== 0) {
+                            list.push(imm)
+                        }
+                    } else if (user?.id && user.id === response.memId) {
+                        if (response.status === "1")
+                            list.push(cancel);
+                        else
+                            list.push(remove);
+                    }
                 }
+
                 setBtns(list);
                 setData(response);
             }
