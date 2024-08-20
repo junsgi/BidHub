@@ -1,74 +1,18 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/frontend/node_modules
-/frontend/.pnp
-/frontend/.pnp.js
-
-# testing
-/frontend/coverage
-
-# production
-/frontend/build
-
-# misc
-/frontend/.DS_Store
-/frontend/.env
-/frontend/.env.local
-/frontend/.env.development.local
-/frontend/.env.test.local
-/frontend/.env.production.local
-
-/frontend/npm-debug.log*
-/frontend/yarn-debug.log*
-/frontend/yarn-error.log*
-
-
-
-### BACK ###
-
-/BACKEND/BidHub/HELP.md
-/BACKEND/BidHub/.gradle
-/BACKEND/BidHub/**/src/main/resources/
-/BACKEND/BidHub/build/
-!/BACKEND/BidHub/gradle/wrapper/gradle-wrapper.jar
-!/BACKEND/BidHub/**/src/main/**/build/
-!/BACKEND/BidHub/**/src/test/**/build/
-
-### STS ###
-/BACKEND/BidHub/.apt_generated
-/BACKEND/BidHub/.classpath
-/BACKEND/BidHub/.factorypath
-/BACKEND/BidHub/.project
-/BACKEND/BidHub/.settings
-/BACKEND/BidHub/.springBeans
-/BACKEND/BidHub/.sts4-cache
-/BACKEND/BidHub/bin/
-!/BACKEND/BidHub/**/src/main/**/bin/
-!/BACKEND/BidHub/**/src/test/**/bin/
-
-### IntelliJ IDEA ###
-/BACKEND/BidHub/.idea
-/BACKEND/BidHub/*.iws
-/BACKEND/BidHub/*.iml
-/BACKEND/BidHub/*.ipr
-/BACKEND/BidHub/out/
-!/BACKEND/BidHub/**/src/main/**/out/
-!/BACKEND/BidHub/**/src/test/**/out/
-
-### NetBeans ###
-/BACKEND/BidHub/nbproject/private/
-/BACKEND/BidHub/nbbuild/
-/BACKEND/BidHub/dist/
-/BACKEND/BidHub/nbdist/
-/BACKEND/BidHub/.nb-gradle/
-
-### VS Code ###
-/BACKEND/BidHub/.vscode/
-
-
-
-
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
 
 # Created by https://www.toptal.com/developers/gitignore/api/androidstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio
