@@ -41,10 +41,8 @@ dependencies {
 
 	// GSON : Java Object를 JSON으로 또는, JSON을 Java Object로의 변환을 도와주는 라이브러리
 	implementation 'com.google.code.gson:gson:2.8.5'
-
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

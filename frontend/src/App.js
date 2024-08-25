@@ -14,7 +14,7 @@ import USER from "./context/userInfo";
 import MemberUpdate from "./component/MemberUpdate";
 import Toss from "./component/Toss";
 import TossProc from "./component/TossProc";
-import PaymentLog from "./modal/PaymentLog";
+import PaymentLog from "./component/PaymentLog";
 import Winning from "./component/Winning";
 function App() {
   const [user, setUser] = useState({

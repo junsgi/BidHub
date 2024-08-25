@@ -16,7 +16,7 @@ public class AuctionItemController {
         return service.submit(request);
     }
 
-    @GetMapping(path = "/")
+    @GetMapping(path = "")
     public AuctionListResponse getItems(
             @RequestParam(name = "st") Integer st,
             @RequestParam(name = "sort") Integer sort,

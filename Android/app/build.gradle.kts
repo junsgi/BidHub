@@ -34,7 +34,6 @@ android {
         jvmTarget = "17"
     }
 }
-
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -57,4 +56,17 @@ dependencies {
 
     // Activity
     implementation(libs.androidx.activity.ktx)
+
+    // Image
+    implementation(libs.glide)
+
+    // coroutine
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Retrogit2
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // swipe refresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

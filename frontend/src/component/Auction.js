@@ -39,6 +39,7 @@ const Auction = () => {
 
   const callBack = useCallback((res) => {
     const list = res.data.list;
+    // console.log(list)
     pageLength.current = Math.ceil(res.data.len / 9);
     SetAuctionObj((prev) => {
       let result = [];
