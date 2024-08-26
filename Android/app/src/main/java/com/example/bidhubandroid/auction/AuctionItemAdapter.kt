@@ -1,19 +1,22 @@
 package com.example.bidhubandroid.auction
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.bidhubandroid.R
-import com.example.bidhubandroid.api.data.AuctionListReponse
+import com.example.bidhubandroid.api.data.AuctionItem
 import kotlin.math.floor
 
-open class AuctionItemAdapter: RecyclerView.Adapter<AuctionItemAdapter.AuctionItemViewHolder>() {
-    private var data : MutableList<AuctionItem> = mutableListOf();
+open class AuctionItemAdapter: PagingDataAdapter<AuctionItem, AuctionItemAdapter.AuctionItemViewHolder>(AuctionItemComparator) {
+//    private var data : MutableList<AuctionItem> = mutableListOf();
 
     // ViewHolder class
     class AuctionItemViewHolder(view : View) : RecyclerView.ViewHolder(view) {
@@ -32,27 +35,23 @@ open class AuctionItemAdapter: RecyclerView.Adapter<AuctionItemAdapter.AuctionIt
     }
 
     override fun onBindViewHolder(holder: AuctionItemViewHolder, position: Int) {
-        val item = data[position]
-        holder.title.text = item.title
-        holder.current.text = "현재가 : ${item.current.toString()}원"
-        holder.immediate.text = if (item.immediate != null) "즉시 구매가 : ${item.immediate}원" else ""
-        holder.remaining.text = convertSeconds(item.remaining)
+        Log.d("onBindViewHolder", "Binding item at position $position")
+        val item = getItem(position)
+        holder.title.text = item?.title
+        holder.current.text = "현재가 : ${item?.current.toString()}원"
+        holder.immediate.text = if (item?.immediate != null) "즉시 구매가 : ${item.immediate}원" else ""
+        holder.remaining.text = convertSeconds(item?.remaining ?: -1)
         Glide.with(holder.itemView.context)
-            .load("http://172.30.1.18:3977/auctionitem/img/${item.aitem_id}")
+            .load("http://172.30.1.18:3977/auctionitem/img/${item?.aitem_id}")
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(holder.img)
     }
-    override fun getItemCount(): Int {
-        return data.size
-    }
 
-    fun setData(data: MutableList<AuctionItem>) {
-        this.data = data;
-        notifyDataSetChanged()
-    }
-    private fun convertSeconds(sec:Long): String {
-        if (sec <= 0) return "종료된 거래"
+    private fun convertSeconds(sec:Long?): String {
+        if (sec == null || (sec <= 0)) {
+            return "종료된 거래"
+        }
         val MINUTE = 60L;
         val HOUR = 3600L;
         val DAY = 86400L;
@@ -75,5 +74,16 @@ open class AuctionItemAdapter: RecyclerView.Adapter<AuctionItemAdapter.AuctionIt
         remainingSeconds %= MINUTE;
 
         return "${days}일 ${hours}시 ${minutes}분 남음"
+    }
+
+    // DiffUtil.ItemCallback implementation
+    object AuctionItemComparator : DiffUtil.ItemCallback<AuctionItem>() {
+        override fun areItemsTheSame(oldItem: AuctionItem, newItem: AuctionItem): Boolean {
+            return oldItem.aitem_id == newItem.aitem_id
+        }
+
+        override fun areContentsTheSame(oldItem: AuctionItem, newItem: AuctionItem): Boolean {
+            return oldItem == newItem
+        }
     }
 }

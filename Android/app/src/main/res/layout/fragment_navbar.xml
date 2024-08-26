@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:gravity="center|center_horizontal|center_vertical"
-            android:text="로그인"
+            android:text="login"
             android:textSize="20sp"
             android:visibility="visible" />
     </LinearLayout>

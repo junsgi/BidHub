@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_auctionListFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_auctionListFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -21,6 +24,42 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_auctionListFragment"
+            app:destination="@id/auctionListFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.example.bidhubandroid.member.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup" >
+        <action
+            android:id="@+id/action_signupFragment_to_auctionListFragment"
+            app:destination="@id/auctionListFragment" />
+        <action
+            android:id="@+id/action_signupFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mypageFragment"
+        android:name="com.example.bidhubandroid.member.MypageFragment"
+        android:label="fragment_mypage"
+        tools:layout="@layout/fragment_mypage" >
+        <action
+            android:id="@+id/action_mypageFragment_to_auctionListFragment"
+            app:destination="@id/auctionListFragment" />
+        <action
+            android:id="@+id/action_mypageFragment_to_rechargeFragment"
+            app:destination="@id/rechargeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rechargeFragment"
+        android:name="com.example.bidhubandroid.member.RechargeFragment"
+        android:label="fragment_recharge"
+        tools:layout="@layout/fragment_recharge" >
+        <action
+            android:id="@+id/action_rechargeFragment_to_auctionListFragment"
             app:destination="@id/auctionListFragment" />
     </fragment>
 </navigation>

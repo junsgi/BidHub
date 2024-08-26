@@ -7,17 +7,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.bidhubandroid.R
+import com.example.bidhubandroid.UserSharedPreferences
+import com.example.bidhubandroid.api.data.LoginBody
 import com.example.bidhubandroid.databinding.FragmentLoginBinding
 import com.example.bidhubandroid.databinding.FragmentNavbarBinding
+import com.example.bidhubandroid.navbar.NavbarViewModel
 import com.example.bidhubandroid.setOnSingleClickListener
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel: LoginViewModel by viewModels();
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,8 +31,24 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.signin.setOnSingleClickListener {
+            val ID = binding.id.text.toString()
+            val PW = binding.pw.text.toString()
+            val body: LoginBody = LoginBody(id = ID, pw = PW)
+            viewModel.login(body, requireContext()) {
+                findNavController().navigate(R.id.action_loginFragment_to_auctionListFragment)
+            }
+        }
+
+        // to Main
         binding.navi.BidHub.setOnSingleClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_auctionListFragment)
+        }
+
+        // to signup
+        binding.signup.setOnSingleClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_signupFragment)
         }
     }
     override fun onDestroyView() {

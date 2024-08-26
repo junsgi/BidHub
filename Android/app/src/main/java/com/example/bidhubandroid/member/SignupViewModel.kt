@@ -8,18 +8,17 @@ import com.example.bidhubandroid.RetrofitClient
 import com.example.bidhubandroid.UserSharedPreferences
 import com.example.bidhubandroid.api.data.LoginBody
 import com.example.bidhubandroid.api.data.ResponseBody
+import com.example.bidhubandroid.api.data.SignupBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel : ViewModel() {
-    fun login(body : LoginBody, context: Context, onSuccess: () -> Unit) {
-        val edit = UserSharedPreferences.sharedPreferences.edit()
-        edit.clear().apply()
+class SignupViewModel : ViewModel() {
+    fun signup(body : SignupBody, context: Context, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            RetrofitClient.memberApi.login(body).enqueue(object : Callback<ResponseBody> {
+            RetrofitClient.memberApi.signup(body).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful && response.code() == 200) {
                         val res = response.body()
@@ -29,15 +28,8 @@ class LoginViewModel : ViewModel() {
                         builder.setNegativeButton("확인") { dialog, which ->
                             dialog.dismiss() // 대화상자 닫기
                             if (res?.status == true){
-                                edit.run {
-                                    edit.putString("id", body.id)
-                                    edit.putString("nickname", res.nickname)
-                                    edit.putLong("point", res.point ?: -1)
-                                    apply()
-                                }
                                 onSuccess()
                             }
-
                         }
                         builder.show()
                     }else {

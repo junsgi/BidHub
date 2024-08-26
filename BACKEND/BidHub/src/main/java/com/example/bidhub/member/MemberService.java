@@ -124,7 +124,7 @@ public class MemberService {
         return res;
     }
 
-    public ResponseDTO point(KakaoPointRequest request) {
+    public ResponseDTO point(KakaoPointRequest request, String from) {
         ResponseDTO res = new ResponseDTO();
         // client : partner_user_id, total_amount
 
@@ -168,7 +168,7 @@ public class MemberService {
             String tid = el.get("tid").toString();
             tid = tid.substring(1, tid.length() - 1);
 
-            String pcURL = el.get("next_redirect_pc_url").toString();
+            String pcURL = el.get(String.format("next_redirect_%s_url", from)).toString();
             pcURL = pcURL.substring(1, pcURL.length() - 1);
 
             res.setStatus(true);

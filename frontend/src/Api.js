@@ -1,10 +1,10 @@
 import axios from "axios";
-import WinItem from "./component/WinItem";
 export const login = async (data, SetUser, navi) => {
   let URL = "/member/login";
   await axios
     .post(URL, data)
     .then((res) => {
+      console.log(res.data)
       alert(res.data.message);
       if (res.data.status) {
         SetUser(prev => { return { id: data.id, nickname: res.data.nickname, point: Number(res.data.point) } });
@@ -96,7 +96,7 @@ export const submit = async (data) => {
 };
 
 export const getAuctionItems = async (callBack, st, sort) => {
-  let URL = `/auctionitem/?st=${st}&sort=${sort}`;
+  let URL = `/auctionitem?st=${st}&sort=${sort}`;
   if (sort === 1) URL += `&id=${sessionStorage.getItem("id")}`;
   await axios
     .get(URL)

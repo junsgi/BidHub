@@ -68,5 +68,24 @@ dependencies {
     implementation(libs.converter.gson)
 
     // swipe refresh
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation(libs.androidx.swiperefreshlayout)
+
+    //paging
+//    val paging_version = "3.3.2"
+    implementation(libs.androidx.paging.runtime)
+
+    // alternatively - without Android dependencies for tests
+    testImplementation(libs.androidx.paging.common)
+
+    // optional - RxJava2 support
+    implementation(libs.androidx.paging.rxjava2)
+
+    // optional - RxJava3 support
+    implementation(libs.androidx.paging.rxjava3)
+
+    // optional - Guava ListenableFuture support
+    implementation(libs.androidx.paging.guava)
+
+    // optional - Jetpack Compose integration
+    implementation(libs.androidx.paging.compose)
 }

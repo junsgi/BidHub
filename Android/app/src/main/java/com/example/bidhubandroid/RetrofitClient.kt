@@ -1,6 +1,7 @@
 package com.example.bidhubandroid
 
 import com.example.bidhubandroid.api.AuctionItemApi
+import com.example.bidhubandroid.api.MemberApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -11,5 +12,9 @@ class RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val auctionItemApi: AuctionItemApi = client.create(AuctionItemApi::class.java)
+        val memberApi: MemberApi = client.create(MemberApi::class.java)
+
+
     }
+
 }

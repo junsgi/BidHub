@@ -16,6 +16,7 @@ legacySupportV4 = "1.0.0"
 lifecycleLivedataKtx = "2.6.1"
 lifecycleViewmodelKtx = "2.6.1"
 fragmentKtx = "1.5.6"
+pagingRuntime = "3.3.2"
 retrogit = "2.9.0"
 supportV4 = "28.0.0"
 swiperefreshlayout = "1.1.0"
@@ -25,6 +26,12 @@ androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationUiKtx" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "pagingRuntime" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
+androidx-paging-guava = { module = "androidx.paging:paging-guava", version.ref = "pagingRuntime" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
+androidx-paging-rxjava2 = { module = "androidx.paging:paging-rxjava2", version.ref = "pagingRuntime" }
+androidx-paging-rxjava3 = { module = "androidx.paging:paging-rxjava3", version.ref = "pagingRuntime" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrogit" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
