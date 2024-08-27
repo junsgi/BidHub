@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".member.RechargeFragment">
 
+    <WebView
+        android:id="@+id/web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <include
         android:id="@+id/navi"
         layout="@layout/fragment_navbar"
@@ -17,6 +27,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/rechargelayout"
         android:layout_width="556dp"
         android:layout_height="394dp"
         android:orientation="vertical"
@@ -47,8 +58,8 @@
             android:layout_height="63dp"
             android:layout_marginBottom="32dp"
             android:ems="10"
-            android:inputType="number"
-            android:text="0" />
+            android:hint="금액"
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/textView2"
@@ -83,4 +94,5 @@
 
         </LinearLayout>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

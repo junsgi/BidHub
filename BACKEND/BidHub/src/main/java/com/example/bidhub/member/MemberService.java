@@ -152,7 +152,7 @@ public class MemberService {
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
             wr.write(new Gson().toJson(request));
             wr.flush();
-            System.out.println("point method request : " + new Gson().toJson(request));
+//            System.out.println("point method request : " + new Gson().toJson(request));
             // response
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder result = new StringBuilder();
@@ -168,8 +168,10 @@ public class MemberService {
             String tid = el.get("tid").toString();
             tid = tid.substring(1, tid.length() - 1);
 
-            String pcURL = el.get(String.format("next_redirect_%s_url", from)).toString();
+            String pcURL = el.get(from).toString();
+            System.out.println(pcURL + "sadlk;hjglkajsdhksadr00001");
             pcURL = pcURL.substring(1, pcURL.length() - 1);
+            System.out.println(pcURL + "sadlk;hjglkajsdhksadr00002");
 
             res.setStatus(true);
             res.setMessage(pcURL + "_" + tid + "_" + orderId);

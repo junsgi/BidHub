@@ -88,4 +88,6 @@ dependencies {
 
     // optional - Jetpack Compose integration
     implementation(libs.androidx.paging.compose)
+    // paging END
+
 }

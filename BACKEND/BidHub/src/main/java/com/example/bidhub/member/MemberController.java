@@ -49,7 +49,7 @@ public class MemberController {
     }
 
     @PostMapping(path = "/point")
-    public ResponseDTO point(@RequestBody KakaoPointRequest request, @RequestParam(value = "from", required = false, defaultValue = "pc") String mobile) {return service.point(request, mobile);}
+    public ResponseDTO point(@RequestBody KakaoPointRequest request, @RequestParam(value = "from", required = false, defaultValue = "next_redirect_pc_url") String from) {return service.point(request, from);}
 
     @PostMapping(path = "/point/approved")
     public ResponseDTO approved(@RequestBody ApprovedRequest request) {

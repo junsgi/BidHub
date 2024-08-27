@@ -68,7 +68,7 @@ class AuctionListFragment : Fragment() {
 
         // to Login
         binding.include.loginBox.setOnSingleClickListener {
-            if (binding.include.loginBtn.text.toString() != "login") {
+            if (binding.include.loginBtn.text.toString() != "login" && binding.include.loginBtn.text.toString() != "error" ) {
                 findNavController().navigate(R.id.action_auctionListFragment_to_mypageFragment)
             } else {
                 findNavController().navigate(R.id.action_auctionListFragment_to_loginFragment)
