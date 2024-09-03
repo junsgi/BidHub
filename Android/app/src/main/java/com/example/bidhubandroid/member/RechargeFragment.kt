@@ -2,7 +2,9 @@ package com.example.bidhubandroid.member
 
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +18,6 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.bidhubandroid.PayActivity
 import com.example.bidhubandroid.R
 import com.example.bidhubandroid.UserSharedPreferences
 import com.example.bidhubandroid.api.data.KakaoPointRequest
@@ -41,8 +42,6 @@ class RechargeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val share = UserSharedPreferences.sharedPreferences
         binding.navi.loginBtn.text = share.getString("nickname", "error")
-
-
         binding.kakaopay.setOnSingleClickListener {
             val point = binding.point.text
             if (point.isEmpty() || point.isBlank() || point.toString().toInt() <= 0) {
@@ -81,8 +80,8 @@ class RechargeFragment : Fragment() {
                             // 에러 발생 시 처리
                             Log.d("URLERROR", request?.url.toString())
                             val url = request?.url.toString()
-                            val payActivity:PayActivity = PayActivity(url)
-                            val intent: Intent = Intent(requireContext(), payActivity.javaClass)
+//                            val payActivity:PayActivity = PayActivity(url)
+//                            val intent: Intent = Intent(requireContext(), payActivity.javaClass)
 //                            startActivity(intent)
                         }
                     }

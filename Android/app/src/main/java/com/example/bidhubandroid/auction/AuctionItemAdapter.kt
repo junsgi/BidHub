@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.bidhubandroid.R
+import com.example.bidhubandroid.RetrofitClient
 import com.example.bidhubandroid.api.data.AuctionItem
 import kotlin.math.floor
 
@@ -42,7 +43,7 @@ open class AuctionItemAdapter: PagingDataAdapter<AuctionItem, AuctionItemAdapter
         holder.immediate.text = if (item?.immediate != null) "즉시 구매가 : ${item.immediate}원" else ""
         holder.remaining.text = convertSeconds(item?.remaining ?: -1)
         Glide.with(holder.itemView.context)
-            .load("http://172.30.1.18:3977/auctionitem/img/${item?.aitem_id}")
+            .load("http://192.168.0.19:3977/auctionitem/img/${item?.aitem_id}")
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(holder.img)

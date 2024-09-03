@@ -2,6 +2,7 @@ package com.example.bidhubandroid.member
 
 import android.app.AlertDialog
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bidhubandroid.RetrofitClient
@@ -52,7 +53,7 @@ class LoginViewModel : ViewModel() {
                 } // onResponse
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    Log.d("loginError", t.toString())
                 }
             })// retrofit
         }

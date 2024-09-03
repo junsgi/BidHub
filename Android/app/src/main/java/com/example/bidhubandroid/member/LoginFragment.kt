@@ -1,5 +1,6 @@
 package com.example.bidhubandroid.member
 
+import android.app.AlertDialog
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
@@ -35,9 +36,16 @@ class LoginFragment : Fragment() {
         binding.signin.setOnSingleClickListener {
             val ID = binding.id.text.toString()
             val PW = binding.pw.text.toString()
-            val body: LoginBody = LoginBody(id = ID, pw = PW)
-            viewModel.login(body, requireContext()) {
-                findNavController().navigate(R.id.action_loginFragment_to_auctionListFragment)
+            if (ID.isBlank() || PW.isBlank()) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Warning!")
+                    .setMessage("아이디 및 비밀번호를 입력해주세요")
+                    .show()
+            }else {
+                val body: LoginBody = LoginBody(id = ID, pw = PW)
+                viewModel.login(body, requireContext()) {
+                    findNavController().navigate(R.id.action_loginFragment_to_auctionListFragment)
+                }
             }
         }
 
