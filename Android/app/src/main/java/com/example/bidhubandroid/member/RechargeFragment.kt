@@ -68,8 +68,11 @@ class RechargeFragment : Fragment() {
                     binding.web.webViewClient = object : WebViewClient() {
                         override fun onPageFinished(view: WebView?, url: String?) {
                             // 페이지 로딩 완료 후 처리
-                            Log.d("석섹스1", url!!.split("=")[1])
-//                            binding.web.loadUrl(url.split("=")[1])
+                            Log.d("석섹스1", view.toString())
+                            Log.d("석섹스2", url.toString())
+                            Log.d("석섹스3", s)
+//                            Log.d("석섹스3", url!!.split("=")[1])
+
                         }
 
                         override fun onReceivedError(
@@ -85,7 +88,7 @@ class RechargeFragment : Fragment() {
 //                            startActivity(intent)
                         }
                     }
-                    binding.web.loadUrl(s)
+//                    binding.web.loadUrl(s)
                 }
             }
         }

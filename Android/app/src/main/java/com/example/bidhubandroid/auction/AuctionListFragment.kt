@@ -53,11 +53,11 @@ class AuctionListFragment : Fragment() {
             adapter = myAdapter
         }
 
-//        lifecycleScope.launch {
-//            viewModel.items.collectLatest {
-//                myAdapter.submitData(it)
-//            }
-//        }
+        lifecycleScope.launch {
+            viewModel.items.collectLatest {
+                myAdapter.submitData(it)
+            }
+        }
 
         // refresh layout
         binding.listLayout.setOnRefreshListener {

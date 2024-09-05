@@ -17,7 +17,7 @@ class RetrofitClient {
             //172.30.1.18
             //192.168.0.19
             //10.30.2.196
-            .baseUrl("http://10.30.2.196:3977")
+            .baseUrl("http://localhost:3977")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val auctionItemApi: AuctionItemApi = client.create(AuctionItemApi::class.java)

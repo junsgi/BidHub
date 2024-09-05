@@ -13,9 +13,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RechargeViewModel : ViewModel() {
-
+    private val androidAppScheme = "android_app_scheme"
+    private val nextRedirectAppUrl = "next_redirect_app_url"
     fun kakaopay(body: KakaoPointRequest, onSuccess:(s:String)->Unit) = viewModelScope.launch(Dispatchers.IO) {
-        RetrofitClient.memberApi.kakaopay("android_app_scheme", body).enqueue(object : Callback<ResponseBody> {
+        RetrofitClient.memberApi.kakaopay(nextRedirectAppUrl, body).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: retrofit2.Call<ResponseBody>,
                 response: Response<ResponseBody>
