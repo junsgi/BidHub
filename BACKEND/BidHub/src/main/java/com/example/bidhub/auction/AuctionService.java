@@ -62,7 +62,7 @@ public class AuctionService {
                 SucBidderId sbId = new SucBidderId();
                 sbId.setAitemId(auctionItemRepository.findById(item.getAitemId()).get());
                 sbId.setMemId(memberRepository.findById(mem.getMemId()).get());
-                SucBidder sucBidder = new SucBidder(sbId);
+                SucBidder sucBidder = new SucBidder(sbId, LocalDateTime.now());
 
                 auctionItemRepository.save(item);
                 memberRepository.save(mem);
