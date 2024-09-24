@@ -31,7 +31,7 @@
         <package android:name="com.nhn.android.search" /> <!-- 네이버페이 -->
         <package android:name="com.samsung.android.spay" /> <!-- 삼성페이 -->
         <package android:name="net.ib.android.smcard" /> <!-- 모니모페이 -->
-        <package android:name="com.mobiletoong.travelwallet" /> <!-- 신한카드 트레블월렛 -->
+        <package android:name="com.mobiletoong.travelwallet" /> <!-- 신한카드 트레블월렛 -->\
         <package android:name="com.samsung.android.spaylite" /> <!-- 삼성페이 -->
         <package android:name="com.ssg.serviceapp.android.egiftcertificate" /> <!-- SSGPAY -->
         <package android:name="com.nhnent.payapp" /> <!-- PAYCO -->

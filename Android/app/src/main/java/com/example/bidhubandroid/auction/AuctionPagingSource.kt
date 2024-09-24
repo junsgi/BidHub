@@ -14,7 +14,7 @@ class AuctionPagingSource() : PagingSource<Int, AuctionItem>() {
         // Start paging with the STARTING_KEY if this is the first load
         val start = params.key ?: 1
 
-        // Load as many items as hinted by params.loadSize
+
         val res = RetrofitClient.auctionItemApi.getAuctionItems(start, 0, null)
         return LoadResult.Page(
             data = res.list,

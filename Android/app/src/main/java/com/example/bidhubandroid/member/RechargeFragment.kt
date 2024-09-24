@@ -46,13 +46,14 @@ class RechargeFragment : Fragment() {
         val share = UserSharedPreferences.sharedPreferences
         binding.navi.loginBtn.text = share.getString("nickname", "error")
 
+        binding.toss.setOnSingleClickListener {
+            val ab = TossWebView(requireContext())
 
+        }
         // to main
         binding.navi.BidHub.setOnSingleClickListener {
             findNavController().navigate(R.id.action_rechargeFragment_to_auctionListFragment)
         }
-        val ab = TossWebView()
-
     }
     override fun onDestroy() {
         super.onDestroy()
@@ -60,20 +61,11 @@ class RechargeFragment : Fragment() {
     }
 }
 
-class TossWebView:WebViewClient() {
+class TossWebView(val context: Context):WebViewClient() {
     // API 수준 24 이상을 위한 메소드
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
         val url = request.url.toString()
         return handleUrl(url)
-    }
-    // (선택) API 수준 24 미만을 타겟팅하려면 다음 코드를 추가해 주세요
-    @Deprecated("Deprecated in Java")
-    @Suppress("DEPRECATION")
-    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            return handleUrl(url)
-        }
-        return super.shouldOverrideUrlLoading(view, url)
     }
     // 공통 URL 처리 로직
     private fun handleUrl(url: String): Boolean {
@@ -89,7 +81,7 @@ class TossWebView:WebViewClient() {
                 }
                 else -> {
                     return try {
-                        startActivity(Intent(Intent.ACTION_VIEW, uri))
+                        context.startActivity(Intent(Intent.ACTION_VIEW, uri))
                         true
                     } catch (e: Exception) {
                         false
@@ -107,12 +99,12 @@ class TossWebView:WebViewClient() {
             return false
         }
         try {
-            startActivity(schemeIntent)
+            context.startActivity(schemeIntent)
             return true
         } catch (e: ActivityNotFoundException) {
             val packageName = schemeIntent.getPackage()
             if (!packageName.isNullOrBlank()) {
-                startActivity(
+                context.startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
                         Uri.parse("market://details?id=$packageName")

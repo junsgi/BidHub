@@ -2,7 +2,6 @@ package com.example.bidhubandroid.auction
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,9 +44,8 @@ class AuctionListFragment : Fragment() {
                 dialog.dismiss() // 대화상자 닫기
             }
             alert.show()
-//            binding.include.loginBtn.text = if (binding.include.loginBtn.text.toString() == "로그인") "뭐 d련아" else "로그인"
         }
-        Log.d("errorJun", myAdapter.toString())
+
         binding.auctionList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = myAdapter

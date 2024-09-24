@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".member.RechargeFragment">
+
+    <WebView
+        android:id="@+id/tossWeb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/navi"
@@ -67,20 +78,11 @@
 
             <ImageView
                 android:id="@+id/toss"
-                android:layout_width="264dp"
+                android:layout_width="wrap_content"
                 android:layout_height="95dp"
                 android:background="#FDF6FE"
                 android:contentDescription="@string/toss"
                 android:src="@drawable/toss_logo_primary" />
-
-            <ImageView
-                android:id="@+id/kakaopay"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:contentDescription="@string/kakaopay"
-                android:src="@drawable/payment_icon_yellow_small" />
 
         </LinearLayout>
     </LinearLayout>

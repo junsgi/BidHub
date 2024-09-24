@@ -118,7 +118,6 @@ const Detail = () => {
         <div className="flex flex-col w-96 border-opacity-50 m-auto place-items-center">
             <div className="w-full  w-full text-center mb-4">
                 <h1 className="text-7xl">{data.aitemTitle}</h1>
-                <h1 className="text-2xl">시작가 : {start}원</h1>
             </div>
             <div className=" m-auto mb-4">
                 <img className="w-full shadow-2xl" src={`http://localhost:3977/auctionitem/img/${ID}`} alt="img"></img>
@@ -137,6 +136,11 @@ const Detail = () => {
             <div className="  text-4xl w-full m-auto mb-4 text-center font-bold">
                 {current}원
             </div>
+            <div className="divider w-full m-auto mb-4 text-2xl">시작가</div>
+            <div className="  text-4xl w-full m-auto mb-4 text-center">
+                {start}원
+            </div>
+
             <div className="divider w-full m-auto mb-4 text-2xl">입찰 단위</div>
             <div className=" text-4xl w-full m-auto mb-4 text-center">
                 {bid}원
@@ -150,11 +154,12 @@ const Detail = () => {
                     </div>
                 </>
             }
-            {buttons}
             <div className="divider w-full m-auto mb-4 text-2xl">상품 설명</div>
             <div className=" text-4xl w-full m-auto mb-4 text-center">
                 {data.aitemContent}
             </div>
+            {buttons}
+
         </div >
     )
 }

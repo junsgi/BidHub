@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_auctionListFragment_to_mypageFragment"
             app:destination="@id/mypageFragment" />
+        <action
+            android:id="@+id/action_auctionListFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -60,6 +63,15 @@
         tools:layout="@layout/fragment_recharge" >
         <action
             android:id="@+id/action_rechargeFragment_to_auctionListFragment"
+            app:destination="@id/auctionListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.bidhubandroid.auction.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <action
+            android:id="@+id/action_detailFragment_to_auctionListFragment"
             app:destination="@id/auctionListFragment" />
     </fragment>
 </navigation>

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.bidhubandroid.R
-import com.example.bidhubandroid.RetrofitClient
 import com.example.bidhubandroid.api.data.AuctionItem
 import kotlin.math.floor
 
@@ -25,7 +24,7 @@ open class AuctionItemAdapter: PagingDataAdapter<AuctionItem, AuctionItemAdapter
         val current : TextView = view.findViewById(R.id.current)
         val immediate : TextView = view.findViewById(R.id.immediate)
         val remaining : TextView = view.findViewById(R.id.remaining)
-        val img : ImageView = view.findViewById(R.id.img)
+        val img : ImageView = view.findViewById(R.id.imgView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AuctionItemViewHolder {
