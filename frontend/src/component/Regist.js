@@ -52,6 +52,10 @@ const Regist = () => {
         }
         if (!file) form.set("img", new Blob());
         else form.set("img", file);
+        console.log("Tlqkfsuddk")
+        for(const i of form){
+            console.log(i)
+        }
         const response = await submit(form);
         if (response.status) {
             navi('/')
