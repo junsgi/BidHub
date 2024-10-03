@@ -45,10 +45,15 @@ class AuctionListFragment : Fragment() {
             }
             alert.show()
         }
-
+        myAdapter.apply {
+            setListener { v, position -> // 여기서 클릭 이벤트 처리
+                findNavController().navigate(R.id.action_auctionListFragment_to_mypageFragment)
+            }
+        }
         binding.auctionList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = myAdapter
+
         }
 
         lifecycleScope.launch {
@@ -78,5 +83,8 @@ class AuctionListFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+    private fun listner() {
+        findNavController().navigate(R.id.action_auctionListFragment_to_detailFragment)
     }
 }
