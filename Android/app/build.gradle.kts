@@ -92,5 +92,6 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     // paging END
     
-
+    // toss
+    implementation(libs.payment.sdk.android)
 }

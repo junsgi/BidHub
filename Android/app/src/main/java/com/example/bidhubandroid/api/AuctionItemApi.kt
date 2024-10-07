@@ -13,6 +13,6 @@ interface AuctionItemApi {
     suspend fun getAuctionItems(@Query("st") st:Int, @Query("sort") sort:Int, @Query("id") id:String?): AuctionListReponse
 
     @GET("/auctionitem/{aitemId}")
-    suspend fun getItem(@Path("aitemId") id:String): Call<DetailResponse>
+    fun getItem(@Path("aitemId") id:String): Call<DetailResponse>
 
 }

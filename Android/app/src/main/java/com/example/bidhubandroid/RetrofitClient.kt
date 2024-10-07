@@ -14,8 +14,6 @@ import java.util.Enumeration
 class RetrofitClient {
     companion object {
         private val client = Retrofit.Builder()
-            //192.168.0.19
-            //10.30.2.196
             .baseUrl("http://172.30.1.25:3977")
             .addConverterFactory(GsonConverterFactory.create())
             .build()

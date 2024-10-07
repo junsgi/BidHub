@@ -47,8 +47,9 @@ class RechargeFragment : Fragment() {
         binding.navi.loginBtn.text = share.getString("nickname", "error")
 
         binding.toss.setOnSingleClickListener {
-            val ab = TossWebView(requireContext())
-
+            val ab = TossWebViewClient(requireContext())
+            val web = WebView(requireContext())
+            web.webViewClient = ab
         }
         // to main
         binding.navi.BidHub.setOnSingleClickListener {
@@ -61,7 +62,7 @@ class RechargeFragment : Fragment() {
     }
 }
 
-class TossWebView(val context: Context):WebViewClient() {
+class TossWebViewClient(val context: Context):WebViewClient() {
     // API 수준 24 이상을 위한 메소드
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
         val url = request.url.toString()

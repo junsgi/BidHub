@@ -63,34 +63,36 @@ open class AuctionItemAdapter() :
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(holder.img)
     }
+    companion object{
+        fun convertSeconds(sec: Long?): String {
+            if (sec == null || (sec <= 0)) {
+                return "종료된 거래"
+            }
+            val MINUTE = 60L;
+            val HOUR = 3600L;
+            val DAY = 86400L;
 
-    private fun convertSeconds(sec: Long?): String {
-        if (sec == null || (sec <= 0)) {
-            return "종료된 거래"
+            var days = 0L;
+            var hours = 0L;
+            var minutes = 0L;
+            var remainingSeconds = sec;
+
+            // days
+            days = floor((remainingSeconds / DAY).toDouble()).toLong();
+            remainingSeconds %= DAY;
+
+            // hours
+            hours = floor((remainingSeconds / HOUR).toDouble()).toLong();
+            remainingSeconds %= HOUR;
+
+            // minutes
+            minutes = floor((remainingSeconds / MINUTE).toDouble()).toLong();
+            remainingSeconds %= MINUTE;
+
+            return "${days}일 ${hours}시 ${minutes}분 남음"
         }
-        val MINUTE = 60L;
-        val HOUR = 3600L;
-        val DAY = 86400L;
-
-        var days = 0L;
-        var hours = 0L;
-        var minutes = 0L;
-        var remainingSeconds = sec;
-
-        // days
-        days = floor((remainingSeconds / DAY).toDouble()).toLong();
-        remainingSeconds %= DAY;
-
-        // hours
-        hours = floor((remainingSeconds / HOUR).toDouble()).toLong();
-        remainingSeconds %= HOUR;
-
-        // minutes
-        minutes = floor((remainingSeconds / MINUTE).toDouble()).toLong();
-        remainingSeconds %= MINUTE;
-
-        return "${days}일 ${hours}시 ${minutes}분 남음"
     }
+
 
     // DiffUtil.ItemCallback implementation
     object AuctionItemComparator : DiffUtil.ItemCallback<AuctionItem>() {
