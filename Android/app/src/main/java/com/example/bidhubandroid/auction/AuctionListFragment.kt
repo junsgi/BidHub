@@ -2,6 +2,7 @@ package com.example.bidhubandroid.auction
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +48,8 @@ class AuctionListFragment : Fragment() {
         }
         myAdapter.apply {
             setListener { v, position -> // 여기서 클릭 이벤트 처리
-                findNavController().navigate(R.id.action_auctionListFragment_to_mypageFragment)
+                val aitem_id = AuctionListFragmentDirections.actionAuctionListFragmentToDetailFragment(myAdapter.getId(position)!!)
+                findNavController().navigate(aitem_id)
             }
         }
         binding.auctionList.apply {

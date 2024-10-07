@@ -86,6 +86,7 @@ const Detail = () => {
                 alert("다시 시도해주세요");
                 navi(-1);
             } else {
+                console.log(response)
                 let list = []
                 const nope = <div key="nope" className=" text-4xl w-full m-auto mb-4 text-center" aria-readonly><Link to={"/login"} className="btn w-full btn-block text-3xl" >로그인 후 이용할 수 있습니다.</Link></div>
                 const bid = <div key="bid" className=" text-4xl w-full m-auto mb-4 text-center"><button className="btn w-full text-3xl btn-info" onClick={bidding}>입찰하기</button></div>

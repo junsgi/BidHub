@@ -15,25 +15,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/detailLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/include2">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/detailLayout"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="visible">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -137,6 +138,22 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="즉시 구매가" />
+
+                    <TextView
+                        android:id="@+id/immediate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:gravity="center"
+                        android:text="얼마"
+                        android:textSize="20sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="상품 설명" />
@@ -146,7 +163,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:text="어쩌고"
+                        android:maxWidth="350dp"
+                        android:text="이것은 예시 텍스트입니다. 이것은 예시 텍스트입니다. 이것은 예시 텍스트입니다. 이것은 예시 텍스트입니다. 이것은 예시 텍스트입니다. "
                         android:textSize="20sp" />
 
                     <Button
@@ -165,10 +183,11 @@
                         android:backgroundTint="#EEEEEEEE"
                         android:text="Button"
                         android:textColor="#000000" />
+
                 </LinearLayout>
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
