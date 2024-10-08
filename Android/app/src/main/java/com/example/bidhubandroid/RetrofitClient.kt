@@ -14,7 +14,7 @@ import java.util.Enumeration
 class RetrofitClient {
     companion object {
         private val client = Retrofit.Builder()
-            .baseUrl("http://172.30.1.25:3977")
+            .baseUrl("http://localhost:3977")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val auctionItemApi: AuctionItemApi = client.create(AuctionItemApi::class.java)

@@ -56,6 +56,15 @@ class DetailFragment : Fragment() {
             findNavController().navigate(R.id.action_detailFragment_to_auctionListFragment)
         }
 
+        // login or mypage
+        binding.include2.loginBtn.setOnSingleClickListener {
+            when(nav) {
+                "login" -> findNavController().navigate(R.id.action_detailFragment_to_loginFragment)
+                else -> findNavController().navigate(R.id.action_detailFragment_to_mypageFragment)
+            }
+
+        }
+
 
     }
 
@@ -68,7 +77,7 @@ class DetailFragment : Fragment() {
         viewModel.getDetail(aid) { res ->
             binding.title.text = res.aitemTitle
             Glide.with(binding.imgView.context)
-                .load("http://172.30.1.25:3977/auctionitem/img/${aid}")
+                .load("http://localhost:3977/auctionitem/img/${aid}")
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.imgView)

@@ -58,7 +58,7 @@ open class AuctionItemAdapter() :
         holder.immediate.text = if (item?.immediate != null) "즉시 구매가 : ${item.immediate}원" else ""
         holder.remaining.text = convertSeconds(item?.remaining ?: -1)
         Glide.with(holder.itemView.context)
-            .load("http://172.30.1.25:3977/auctionitem/img/${item?.aitem_id}")
+            .load("http://localhost:3977/auctionitem/img/${item?.aitem_id}")
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(holder.img)
