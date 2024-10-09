@@ -10,7 +10,7 @@ android {
     buildFeatures.viewBinding = true
     defaultConfig {
         applicationId = "com.example.bidhubandroid"
-        minSdk = 25
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

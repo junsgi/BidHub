@@ -77,7 +77,7 @@ class DetailFragment : Fragment() {
         viewModel.getDetail(aid) { res ->
             binding.title.text = res.aitemTitle
             Glide.with(binding.imgView.context)
-                .load("http://localhost:3977/auctionitem/img/${aid}")
+                .load("http://172.30.1.25:3977/auctionitem/img/${aid}")
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.imgView)
