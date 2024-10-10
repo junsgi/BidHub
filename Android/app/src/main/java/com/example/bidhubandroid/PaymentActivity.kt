@@ -94,7 +94,7 @@ class PaymentActivity : AppCompatActivity() {
                     }
 
                     override fun onPaymentFailed(fail: TossPaymentResult.Fail) {
-                        Log.e("fail:::", fail.errorMessage)
+                        Log.e("fail:::11111111", fail.errorMessage)
                     }
                 }
             ) // request

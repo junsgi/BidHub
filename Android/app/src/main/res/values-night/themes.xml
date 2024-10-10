@@ -3,13 +3,13 @@
     <style name="Base.Theme.BidHubAndroid" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">@color/mono100</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="background">@color/white</item>
-        <item name="backgroundColor">@color/white</item>
-        <!-- 상태바 텍스트를 어둡게 설정 -->
-        <item name="android:windowLightStatusBar">true</item>
+<!--        <item name="colorPrimary">@color/white</item>-->
+<!--        <item name="colorPrimaryVariant">@color/mono100</item>-->
+<!--        <item name="colorOnPrimary">@color/white</item>-->
+<!--        <item name="background">@color/white</item>-->
+<!--        <item name="backgroundColor">@color/white</item>-->
+<!--        &lt;!&ndash; 상태바 텍스트를 어둡게 설정 &ndash;&gt;-->
+<!--        <item name="android:windowLightStatusBar">true</item>-->
     </style>
 
 </resources>

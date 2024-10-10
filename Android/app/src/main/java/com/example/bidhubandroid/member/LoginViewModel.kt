@@ -27,20 +27,15 @@ class LoginViewModel : ViewModel() {
                         val builder = AlertDialog.Builder(context)
                         builder.setTitle("알림")
                         builder.setMessage(res?.message)
-                        builder.setNegativeButton("확인") { dialog, which ->
-                            dialog.dismiss() // 대화상자 닫기
-                            if (res?.status == true){
-                                edit.run {
-                                    edit.putString("id", body.id)
-                                    edit.putString("nickname", res.nickname)
-                                    edit.putLong("point", res.point ?: -1)
-                                    apply()
-                                }
-                                onSuccess()
-                            }
-
-                        }
                         builder.show()
+                        edit.run {
+                            edit.putString("id", body.id)
+                            edit.putString("nickname", res!!.nickname)
+                            edit.putLong("point", res!!.point ?: -1)
+                            onSuccess()
+
+                            apply()
+                        }
                     }else {
                         val builder = AlertDialog.Builder(context)
                         builder.setTitle("알림")

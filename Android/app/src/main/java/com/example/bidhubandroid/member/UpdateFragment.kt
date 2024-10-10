@@ -83,6 +83,8 @@ class UpdateFragment : Fragment() {
                         .setMessage(res.message)
                         .show()
                     if (res.status!!) {
+                        share.edit().putString("nickname", binding.n.text.toString())
+                        binding.navi.loginBtn.text = binding.n.text.toString()
                         binding.n.text.clear()
                     }
                 }
