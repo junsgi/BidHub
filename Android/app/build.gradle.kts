@@ -67,6 +67,7 @@ dependencies {
 
     // Retrogit2
     implementation(libs.retrofit)
+    implementation(libs.okhttp)
     implementation(libs.converter.gson)
 
     // swipe refresh

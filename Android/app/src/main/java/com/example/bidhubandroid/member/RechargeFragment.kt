@@ -1,5 +1,6 @@
 package com.example.bidhubandroid.member
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -35,7 +36,19 @@ class RechargeFragment : Fragment() {
         resultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            Log.d("됐다 드디어 ㅅ발련아", result.toString())
+            val res = result.data?.getBooleanExtra("result", false)
+            if (!(res!!)) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Warning!")
+                    .setMessage("다시 시도해주세요")
+                    .show()
+            }else {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Success!")
+                    .setMessage("결제 성공!")
+                    .show()
+            }
+            findNavController().navigate(R.id.action_rechargeFragment_to_mypageFragment)
         }
     }
 
@@ -48,12 +61,27 @@ class RechargeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val share = UserSharedPreferences.sharedPreferences
-        binding.navi.loginBtn.text = share.getString("nickname", "error")
+        val nick = UserSharedPreferences.sharedPreferences.getString("nickname", "login")
+        binding.navi.loginBtn.text = nick
+        if (!nick.equals("login")) {
+            binding.navi.regist.visibility = View.VISIBLE
+            binding.navi.regist.setOnSingleClickListener {
+                findNavController().navigate(R.id.action_auctionListFragment_to_registFragment)
+            }
+        }
 
         binding.toss.setOnSingleClickListener {
-            val intent = Intent(requireContext(), PaymentActivity::class.java)
-            resultLauncher.launch(intent)
+            val amount = binding.point.text.toString()
+            if (amount.isBlank() || amount.isEmpty()) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Warning!")
+                    .setMessage("금액을 입력해주세요!")
+                    .show()
+            }else {
+                val intent = Intent(requireContext(), PaymentActivity::class.java)
+                intent.putExtra("amount", amount.toLong())
+                resultLauncher.launch(intent)
+            }
         }
 
         binding.navi.BidHub.setOnSingleClickListener {

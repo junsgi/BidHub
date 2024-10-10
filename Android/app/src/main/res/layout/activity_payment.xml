@@ -48,9 +48,12 @@
 
             <Button
                 android:id="@+id/pay_button"
-                android:layout_width="wrap_content"
-                android:layout_height="64dp"
-                android:text="button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#0064FF"
+                android:text="결제하기"
+                android:textSize="40dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"

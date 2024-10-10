@@ -1,29 +1,28 @@
-package com.example.bidhubandroid.member
+package com.example.bidhubandroid.auction
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bidhubandroid.RetrofitClient
 import com.example.bidhubandroid.api.data.ResponseBody
-import com.example.bidhubandroid.api.data.TossRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RechargeViewModel : ViewModel() {
-    fun toss(body: TossRequest, onSuccess: (res: Boolean) -> Unit) {
+class RegistViewModel : ViewModel() {
+    fun submit(imagePart: MultipartBody.Part?, dataMap: Map<String, RequestBody>, onSuccess: (status:Boolean?, message:String?) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            RetrofitClient.memberApi.toss(body).enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
+            RetrofitClient.auctionItemApi.submit(imagePart, dataMap).enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful && response.code() == 200) {
-                        onSuccess(response.body()?.status ?: true)
-                    } else {
-                        onSuccess(response.body()?.status ?: false)
+                        val res = response.body()!!
+                        onSuccess(res.status, res.message)
+                    }else {
+                        onSuccess(false, "서버오류")
                     }
                 } // onResponse
 

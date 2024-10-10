@@ -26,7 +26,6 @@ public class AuctionService {
         Auction auction = new Auction();
         Optional<AuctionItem> obj = auctionItemRepository.findById(request.getItemId());
         Optional<Member> obj1 = memberRepository.findById(request.getUserId());
-
         if (obj.isPresent() && obj1.isPresent() && request.getCurrent().equals(obj.get().getAitemCurrent().trim())) {
             AuctionItem item = obj.get();
             Optional<Member> targetObj = memberRepository.findById(item.getMember().getMemId());

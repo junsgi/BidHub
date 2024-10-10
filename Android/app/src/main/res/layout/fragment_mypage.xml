@@ -100,7 +100,8 @@
             android:backgroundTint="#EEEEEEEE"
             android:text="낙찰 목록"
             android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/logout"

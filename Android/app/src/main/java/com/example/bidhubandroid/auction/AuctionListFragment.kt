@@ -34,8 +34,15 @@ class AuctionListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.include.loginBtn.text =
-            UserSharedPreferences.sharedPreferences.getString("nickname", "login")
+        val nick = UserSharedPreferences.sharedPreferences.getString("nickname", "login")
+        binding.include.loginBtn.text = nick
+        if (!nick.equals("login")) {
+            binding.include.regist.visibility = View.VISIBLE
+            binding.include.regist.setOnSingleClickListener {
+                findNavController().navigate(R.id.action_auctionListFragment_to_registFragment)
+            }
+        }
+
         binding.include.BidHub.setOnSingleClickListener {
             val alert = AlertDialog.Builder(requireContext())
             alert.setTitle("BidHub!")

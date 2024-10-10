@@ -3,7 +3,7 @@ package com.example.bidhubandroid
 import android.os.SystemClock
 import android.view.View
 
-class SingleClickListener (
+class OnSingleClickListener (
     private var interval: Int = 500,
     private var onSingleClick: (View) -> Unit
 ) : View.OnClickListener {
@@ -21,6 +21,6 @@ class SingleClickListener (
 }
 
 fun View.setOnSingleClickListener(onSingleClick: (View) -> Unit) {
-    val oneClick = SingleClickListener(onSingleClick = onSingleClick)
+    val oneClick = OnSingleClickListener(onSingleClick = onSingleClick)
     setOnClickListener(oneClick)
 }

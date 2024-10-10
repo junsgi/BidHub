@@ -23,6 +23,9 @@
             android:name="aitem_id"
             app:argType="string"
             android:defaultValue=""/>
+        <action
+            android:id="@+id/action_auctionListFragment_to_registFragment"
+            app:destination="@id/registFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -59,6 +62,15 @@
         <action
             android:id="@+id/action_mypageFragment_to_rechargeFragment"
             app:destination="@id/rechargeFragment" />
+        <action
+            android:id="@+id/action_mypageFragment_to_registFragment"
+            app:destination="@id/registFragment" />
+        <action
+            android:id="@+id/action_mypageFragment_to_paymentLogFragment"
+            app:destination="@id/paymentLogFragment" />
+        <action
+            android:id="@+id/action_mypageFragment_to_updateFragment"
+            app:destination="@id/updateFragment" />
     </fragment>
     <fragment
         android:id="@+id/rechargeFragment"
@@ -68,6 +80,12 @@
         <action
             android:id="@+id/action_rechargeFragment_to_auctionListFragment"
             app:destination="@id/auctionListFragment" />
+        <action
+            android:id="@+id/action_rechargeFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
+        <action
+            android:id="@+id/action_rechargeFragment_to_registFragment"
+            app:destination="@id/registFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -93,5 +111,50 @@
         <action
             android:id="@+id/action_detailFragment_to_mypageFragment"
             app:destination="@id/mypageFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_registFragment"
+            app:destination="@id/registFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registFragment"
+        android:name="com.example.bidhubandroid.auction.RegistFragment"
+        android:label="fragment_regist"
+        tools:layout="@layout/fragment_regist" >
+        <action
+            android:id="@+id/action_registFragment_to_auctionListFragment"
+            app:destination="@id/auctionListFragment" />
+        <action
+            android:id="@+id/action_registFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentLogFragment"
+        android:name="com.example.bidhubandroid.paymentlog.PaymentLogFragment"
+        android:label="fragment_payment_log"
+        tools:layout="@layout/fragment_payment_log" >
+        <action
+            android:id="@+id/action_paymentLogFragment_to_auctionListFragment"
+            app:destination="@id/auctionListFragment" />
+        <action
+            android:id="@+id/action_paymentLogFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
+        <action
+            android:id="@+id/action_paymentLogFragment_to_registFragment"
+            app:destination="@id/registFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.example.bidhubandroid.member.UpdateFragment"
+        android:label="fragment_update"
+        tools:layout="@layout/fragment_update" >
+        <action
+            android:id="@+id/action_updateFragment_to_mypageFragment"
+            app:destination="@id/mypageFragment" />
+        <action
+            android:id="@+id/action_updateFragment_to_auctionListFragment"
+            app:destination="@id/auctionListFragment" />
+        <action
+            android:id="@+id/action_updateFragment_to_registFragment"
+            app:destination="@id/registFragment" />
     </fragment>
 </navigation>

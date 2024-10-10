@@ -282,6 +282,7 @@ public class MemberService {
         Optional<Member> obj = repository.findById(request.getPartner_user_id());
         if (obj.isPresent()) {
             Member mem = obj.get();
+            System.out.println("돈이다 ㅅ발 돈돈돈ㄷ " + request.getPg_token());
             mem.setMemPoint(mem.getMemPoint() + Long.parseLong(request.getPg_token()));
 
             PaymentLog entity = new PaymentLog();

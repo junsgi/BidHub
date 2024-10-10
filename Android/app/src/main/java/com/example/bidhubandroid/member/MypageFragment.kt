@@ -36,6 +36,10 @@ class MypageFragment : Fragment() {
             binding.myId.setText("${share.getString("id", "error").toString()} (id)")
             binding.myNick.setText("${share.getString("nickname", "error").toString()} (nickname)")
             binding.myPoint.setText("${share.getLong("point", -1)} (point)")
+            binding.navi.regist.visibility = View.VISIBLE
+            binding.navi.regist.setOnSingleClickListener {
+                findNavController().navigate(R.id.action_mypageFragment_to_registFragment)
+            }
         }
 
         // logout
@@ -52,6 +56,16 @@ class MypageFragment : Fragment() {
         // to recharge
         binding.recharge.setOnSingleClickListener {
             findNavController().navigate(R.id.action_mypageFragment_to_rechargeFragment)
+        }
+
+        // to log
+        binding.rechargeLog.setOnSingleClickListener {
+            findNavController().navigate(R.id.action_mypageFragment_to_paymentLogFragment)
+        }
+
+        // to update
+        binding.update.setOnSingleClickListener {
+            findNavController().navigate(R.id.action_mypageFragment_to_updateFragment)
         }
     }
     override fun onDestroy() {
