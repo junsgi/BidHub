@@ -16,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
-    fun login(body : LoginBody, context: Context, onSuccess: () -> Unit) {
+    fun login(body : LoginBody, context: Context, onSuccess: (status:Boolean) -> Unit) {
         val edit = UserSharedPreferences.sharedPreferences.edit()
         edit.clear().apply()
         viewModelScope.launch(Dispatchers.IO) {
@@ -32,7 +32,7 @@ class LoginViewModel : ViewModel() {
                             edit.putString("id", body.id)
                             edit.putString("nickname", res!!.nickname)
                             edit.putLong("point", res!!.point ?: -1)
-                            onSuccess()
+                            onSuccess(res!!.status!!)
 
                             apply()
                         }

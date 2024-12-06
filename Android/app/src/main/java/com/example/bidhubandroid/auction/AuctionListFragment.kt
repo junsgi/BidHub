@@ -44,14 +44,8 @@ class AuctionListFragment : Fragment() {
         }
 
         binding.include.BidHub.setOnSingleClickListener {
-            val alert = AlertDialog.Builder(requireContext())
-            alert.setTitle("BidHub!")
-            alert.setMessage("BidHub!")
-            alert.setNegativeButton("확인") { dialog, which ->
-                UserSharedPreferences.sharedPreferences.edit().clear().apply()
-                dialog.dismiss() // 대화상자 닫기
-            }
-            alert.show()
+            myAdapter.refresh()
+            binding.listLayout.isRefreshing = false
         }
         myAdapter.apply {
             setListener { v, position -> // 여기서 클릭 이벤트 처리

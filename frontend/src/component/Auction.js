@@ -69,10 +69,10 @@ const Auction = () => {
     let num = +e.target.getAttribute("name")
     if (num === 0){
       nomal.current.className = "tab text-2xl tab-active"
-      onlyMine.current.className = "tab text-2xl"
+      // onlyMine.current.className = "tab text-2xl"
     }else {
       nomal.current.className = "tab text-2xl"
-      onlyMine.current.className = "tab text-2xl tab-active"
+      // onlyMine.current.className = "tab text-2xl tab-active"
     }
     dispatch({ type: "UPDATE sort", value: num })
   }, [dispatch])
@@ -85,7 +85,7 @@ const Auction = () => {
       <div className="flex flex-wrap m-auto mt-4 justify-center">
         <div role="tablist" className="tabs tabs-bordered">
           <span name = "0" role="tab" className="tab text-2xl tab-active" ref = {nomal} onClick={updateSort}>기본</span>
-          <span name = "1" role="tab" className="tab text-2xl" ref = {onlyMine} onClick={updateSort}>내것만</span>
+          {/* <span name = "1" role="tab" className="tab text-2xl" ref = {onlyMine} onClick={updateSort}>내것만</span> */}
         </div>
       </div>
       {AuctionObj.list}

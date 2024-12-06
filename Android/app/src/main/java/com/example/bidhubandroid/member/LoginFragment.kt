@@ -43,8 +43,10 @@ class LoginFragment : Fragment() {
                     .show()
             }else {
                 val body: LoginBody = LoginBody(id = ID, pw = PW)
-                viewModel.login(body, requireContext()) {
-                    findNavController().navigate(R.id.action_loginFragment_to_auctionListFragment)
+                viewModel.login(body, requireContext()) { status ->
+                    if (status){
+                        findNavController().navigate(R.id.action_loginFragment_to_auctionListFragment)
+                    }
                 }
             }
         }
